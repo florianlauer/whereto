@@ -190,8 +190,7 @@ so that the world map immediately shows which destinations match my criteria.
 
 ## Epic 2 : Fiche Destination et Wishlist
 
-**Objectif** : L'utilisateur clique sur un pays et obtient une fiche synthétique.
-Il peut sélectionner des POIs dans une wishlist et voir le temps estimé s'accumuler.
+**Objectif** : L'utilisateur clique sur un pays et obtient une fiche synthétique. Il peut sélectionner des POIs dans plusieurs pays pour construire un voyage multi-destinations, et voir le temps et le budget total s'accumuler.
 
 **Prérequis** : Epic 1 terminé (carte interactive avec pays cliquables)
 **FRs couverts** : FR-006, FR-007, FR-009
@@ -243,7 +242,7 @@ so that I can evaluate the destination without leaving the map view.
 
 ---
 
-### Story 2.2 : Wishlist session — sélection POIs et temps estimé
+### Story 2.2 : Wishlist multi-pays — sélection POIs et temps estimé
 
 As a **user exploring a destination**,
 I want to check the POIs I'm interested in and see the total estimated duration update,
@@ -265,11 +264,16 @@ so that I can quickly judge if the destination fits my available time.
    Then country A's POIs remain in the wishlist (Zustand store)
    And country B's POIs appear unchecked.
 
-4. Given POIs are in the wishlist,
+4. Given the user has selected POIs in multiple countries (e.g. Géorgie + Arménie),
+   When the WishlistCounter is displayed in any destination panel,
+   Then it shows the **total** across all countries (not just the current one)
+   And the format is "{N} POIs · ~{Xj}" where N and X span all countries.
+
+5. Given POIs are in the wishlist,
    When the user unchecks a POI,
    Then it is removed from the store and the total updates immediately.
 
-5. Given the user closes the browser and reopens the app,
+6. Given the user closes the browser and reopens the app,
    When the app loads,
    Then the wishlist is restored from localStorage (Zustand persist)
    And previously checked POIs appear checked in their respective country panels.
@@ -278,6 +282,38 @@ so that I can quickly judge if the destination fits my available time.
 - Zustand `addToWishlist` / `removeFromWishlist` (voir ADR-005)
 - `partialize` dans persist : seuls `wishlistItems` sont en localStorage
 - `WishlistItem` type : `{ poiId: string, countryCode: string, daysMin: number }`
+
+---
+
+### Story 2.3 : Vue récapitulative du voyage multi-pays
+
+As a **user who has selected POIs across multiple countries**,
+I want to see a summary view of my entire trip with all selected countries and POIs,
+so that I can evaluate the full trip at a glance and plan next steps.
+
+**Acceptance Criteria :**
+
+1. Given the WishlistCounter is visible,
+   When the user clicks on it (or an expand icon),
+   Then a "Mon Voyage" summary panel opens showing all countries with selected POIs, grouped by country.
+
+2. Given the summary panel is open,
+   When it displays a country with selected POIs,
+   Then it shows: country name, selected POIs list, days subtotal for that country, estimated budget range (dailyBudgetLow × daysMin → dailyBudgetHigh × daysMax).
+
+3. Given the summary panel is open,
+   When the overall totals are displayed,
+   Then it shows: total POI count, total days (sum of daysMin), and a "Voir les vols" link per country.
+
+4. Given the user unchecks a POI from the summary view,
+   When the removal is confirmed,
+   Then the POI is removed from the wishlist and the totals update immediately.
+
+**Notes d'implémentation** :
+- `src/components/destination/TripSummaryPanel.tsx` — panel slide-in gauche ou bottom sheet
+- Données depuis `useAppStore().wishlistItems` + `useAppStore().pois[countryCode]`
+- Regroupement par `countryCode` côté client
+- Budget estimé : `daysMin × country.dailyBudgetLow` → `(daysMin+daysMax)/2 × country.dailyBudgetHigh`
 
 ---
 
@@ -292,9 +328,9 @@ so that I can quickly judge if the destination fits my available time.
 
 ### Story 3.1 : Comparaison côte à côte
 
-As a **user who has shortlisted 2–3 destinations**,
-I want to compare them side by side with the same metrics,
-so that I can make a final decision without switching between panels.
+As a **user building a multi-country trip**,
+I want to compare 2–3 candidate destinations side by side with the same metrics,
+so that I can choose between destinations for the same trip without switching between panels.
 
 **Acceptance Criteria :**
 
@@ -448,9 +484,10 @@ so that I can continue trip planning from any device.
 - [x] FR-007 → Story 2.2 (POIList + WishlistCounter)
 - [x] FR-008 → Story 1.3 (validateSearch + URL query params)
 - [x] FR-009 → Story 2.1 (lien Google Flights)
-- [x] FR-010 → Story 3.1 (ComparisonDrawer)
+- [x] FR-010 → Story 3.1 (ComparisonDrawer — aide à choisir les étapes d'un voyage multi-pays)
 - [x] FR-011 → Story 4.2 (AuthModal + Supabase Auth)
 - [x] FR-012 → Story 4.3 (wishlist persistante via tRPC)
+- [x] FR-013 → Story 2.3 (vue récapitulative voyage)
 
 **Toutes les stories ont ≥ 2 ACs Given/When/Then. ✅**
 **Aucune story ne nécessite une décision d'architecture non documentée. ✅**

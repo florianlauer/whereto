@@ -47,8 +47,10 @@ wishlist persistante).
 │  │  │  State               │   │  URL Query Params          │   │   │
 │  │  │  Zustand             │   │  TanStack Router           │   │   │
 │  │  │  - données statiques │   │  - filtres (budget/durée/  │   │   │
-│  │  │  - wishlist anon     │   │    mois) source of truth   │   │   │
-│  │  │  - UI state          │   │  - partageable (FR-008)    │   │   │
+│  │  │  - wishlist multi-   │   │    mois) source of truth   │   │   │
+│  │  │    pays (anon)       │   │  - partageable (FR-008)    │   │   │
+│  │  │  - UI state          │   │                             │   │   │
+│  │  │  - comparison list   │   │                             │   │   │
 │  │  └──────────────────────┘   └───────────────────────────┘   │   │
 │  └──────────────────────────────────────────────────────────────┘   │
 │                          │ tRPC (auth requis)                        │
@@ -171,14 +173,24 @@ export const MATCH_COLORS: Record<MatchLevel, [number, number, number, number]> 
   'no-data': [42, 45,  62,  255],  // #2A2D3E
 }
 
+export type Filters = {
+  budgetMin?: number   // €/jour
+  budgetMax?: number
+  daysMin?: number
+  daysMax?: number
+  monthFrom?: number   // 1-12
+  monthTo?: number     // 1-12
+}
+
 export function calculateMatch(country: Country, filters: Filters): MatchLevel {
   if (!country.dailyBudgetMid) return 'no-data'
 
-  const budgetMatch  = !filters.budget || country.dailyBudgetMid <= filters.budget
-  const seasonMatch  = !filters.month  || country.bestMonths.includes(filters.month)
-  const durationMatch = !filters.days
-    || (filters.days >= country.recommendedDaysMin
-        && filters.days <= country.recommendedDaysMax)
+  const budgetMatch = (filters.budgetMin === undefined || country.dailyBudgetMid >= filters.budgetMin)
+                   && (filters.budgetMax === undefined || country.dailyBudgetMid <= filters.budgetMax)
+  const seasonMatch = filters.monthFrom === undefined
+    || country.bestMonths.some(m => m >= (filters.monthFrom ?? 1) && m <= (filters.monthTo ?? 12))
+  const durationMatch = (filters.daysMin === undefined || country.recommendedDaysMax >= filters.daysMin)
+                     && (filters.daysMax === undefined || country.recommendedDaysMin <= filters.daysMax)
 
   const score = [budgetMatch, seasonMatch, durationMatch].filter(Boolean).length
   if (score === 3) return 'great'
@@ -186,6 +198,12 @@ export function calculateMatch(country: Country, filters: Filters): MatchLevel {
   return 'poor'
 }
 ```
+
+**Mode Voyage (multi-pays) :**
+Quand l'utilisateur définit un budget total (ex: 2000€) et une durée (14 jours), la fonction
+`computeFilters()` dans `routes/index.tsx` calcule le budget journalier effectif :
+`budgetMax = Math.round(tripBudget / tripDaysMin)`. Ce budget effectif est ensuite utilisé
+dans `calculateMatch` pour filtrer et colorer la carte.
 
 ---
 
@@ -197,16 +215,24 @@ export function calculateMatch(country: Country, filters: Filters): MatchLevel {
 Les query params sont la solution canonique — pas besoin de store global pour les filtres.
 Le bouton "retour" navigateur restore les filtres précédents gratuitement.
 
-**Format URL** : `/?budget=50&days=10&month=7`
+**Format URL** :
+- Mode simple : `/?budgetMin=20&budgetMax=80&daysMin=7&daysMax=14&monthFrom=4&monthTo=9`
+- Mode voyage (multi-pays) : `/?tripBudget=2000&tripDaysMin=10&tripDaysMax=14&monthFrom=6&monthTo=8`
 
 ```typescript
 // src/routes/index.tsx
 import { z } from 'zod'
 
 const filterSchema = z.object({
-  budget: z.coerce.number().optional(),
-  days:   z.coerce.number().optional(),
-  month:  z.coerce.number().min(1).max(12).optional(),
+  budgetMin:    z.coerce.number().optional(),
+  budgetMax:    z.coerce.number().optional(),
+  daysMin:      z.coerce.number().optional(),
+  daysMax:      z.coerce.number().optional(),
+  tripBudget:   z.coerce.number().optional(),
+  tripDaysMin:  z.coerce.number().optional(),
+  tripDaysMax:  z.coerce.number().optional(),
+  monthFrom:    z.coerce.number().min(1).max(12).optional(),
+  monthTo:      z.coerce.number().min(1).max(12).optional(),
 })
 
 export const Route = createFileRoute('/')({
@@ -230,8 +256,9 @@ const updateFilter = (key: string, value: number) =>
 |-------|----------|-------|-------|
 | Filtres carte | URL query params | TanStack Router `useSearch` | Partageable |
 | Données statiques (pays, POIs) | Mémoire | Zustand (read-only) | Global, chargé 1x |
-| Wishlist session (anonyme) | localStorage | Zustand + persist middleware | Survit rechargement |
+| Wishlist session multi-pays (anonyme) | localStorage | Zustand + persist middleware | Survit rechargement |
 | Wishlist persistante (auth) | Supabase | TanStack Query + tRPC | Synchronisée au login |
+| Comparaison (liste de pays) | Mémoire React | useState local | Éphémère — non persisté |
 | UI state (panel ouvert, pays sélectionné) | Mémoire React | useState local | Éphémère |
 
 ```typescript

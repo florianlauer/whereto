@@ -59,6 +59,10 @@ La wishlist n'est visible que quand elle contient des éléments.
 │                                          └─────────────────────┘   │
 │                                                                     │
 │  [Badge: X destinations dans les clous]                             │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │  COMPARAISON DRAWER (slide-up bas, visible si ≥1 pays)      │  │
+│  │  [Géorgie ✕] [Serbie ✕] [Maroc ✕]   [Tout effacer]        │  │
+│  └──────────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -135,11 +139,12 @@ Le badge de résultats se met à jour : "34 destinations dans tes critères".
 │  ☐ Batumi            ~2 jours       │
 │  ☐ Kutaisi           ~1-2 jours     │
 │                                     │
-│  ┌─────────────────────────────┐    │
-│  │  Wishlist : 3 lieux · 7j   │    │
-│  └─────────────────────────────┘    │
+│  ┌──────────────────────────────────┐ │
+│  │  🧳 4 POIs · ~9j (tous pays)   │ │
+│  └──────────────────────────────────┘ │
 │                                     │
-│  [  🔗 Voir les vols →  ]          │
+│  [  ⚖️ Comparer cette destination  ]  │
+│  [  ✈ Voir les vols →  ]              │
 │                                     │
 │  ⚠️ Données estimatives (2022)      │
 └─────────────────────────────────────┘
@@ -163,6 +168,37 @@ mêmes métriques pour 2-3 destinations sélectionnées.
 
 ---
 
+### Écran 5 — Vue récapitulative "Mon Voyage" (Story 2.3)
+
+**Objectif** : Voir l'ensemble du voyage multi-pays construit, avec le détail par pays et les totaux.
+
+**Déclencheur** : Clic sur le WishlistCounter (🧳 badge) dans n'importe quel DestinationPanel.
+
+**Layout** :
+```
+┌─────────────────────────────────────┐
+│  ✕  Mon Voyage                      │
+├─────────────────────────────────────┤
+│  🇬🇪 Géorgie          ~4j           │
+│     • Tbilissi    2-3j  [✕]        │
+│     • Kazbegi     1-2j  [✕]        │
+│     Budget estimé : 80€ – 220€     │
+│     [✈ Voir les vols]              │
+├─────────────────────────────────────┤
+│  🇦🇲 Arménie          ~3j           │
+│     • Erevan      2j    [✕]        │
+│     • Lac Sevan   1j    [✕]        │
+│     Budget estimé : 60€ – 150€     │
+│     [✈ Voir les vols]              │
+├─────────────────────────────────────┤
+│  TOTAL                              │
+│  4 POIs · ~7 jours                 │
+│  Budget estimé : 140€ – 370€       │
+└─────────────────────────────────────┘
+```
+
+---
+
 ## Composants Critiques
 
 | Composant | Rôle | États |
@@ -172,9 +208,11 @@ mêmes métriques pour 2-3 destinations sélectionnées.
 | **CountryTooltip** | Mini tooltip au hover sur un pays | default (nom + score), no-data (grisé) |
 | **DestinationPanel** | Panel slide-in droite — fiche pays | closed, open, loading, error, no-data |
 | **POICheckbox** | Item sélectionnable dans la fiche | unchecked, checked, disabled |
-| **WishlistCounter** | Badge récapitulatif wishlist dans le panel | empty (masqué), 1+ item (visible + count), max-days-warning |
+| **WishlistCounter** | Badge récapitulatif wishlist MULTI-PAYS dans le panel — total tous pays confondus. Clic → ouvre vue récapitulative. | empty (masqué), 1+ item (visible + count), max-days-warning |
 | **ScoreBadge** | Indicateur de match coloré | great-match (vert), good (amber), poor (rouge) |
 | **MatchBadge** | Badge global "X destinations dans tes critères" | zero (message différent), 1-10, 11-50, 50+ |
+| **ComparisonDrawer** | Drawer fixé en bas — comparaison 1-3 destinations côte à côte | hidden (0 pays), 1-3 pays (visible), max-3 (replace oldest + toast) |
+| **TripSummaryPanel** | Panel récapitulatif voyage multi-pays | empty (masqué), 1-N pays avec POIs sélectionnés |
 
 ---
 

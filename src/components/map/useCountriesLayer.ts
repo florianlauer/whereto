@@ -29,6 +29,7 @@ export type HoverInfo = {
 export function useCountriesLayer(
   mapStyle: MapStyle = 'dark',
   filters: Filters = {},
+  onCountryClick?: (code: string) => void,
 ): {
   layer: GeoJsonLayer | null
   hoverInfo: HoverInfo
@@ -75,6 +76,12 @@ export function useCountriesLayer(
       getFillColor: [hoverInfo?.object, mapStyle, filters.budgetMin, filters.budgetMax, filters.daysMin, filters.daysMax, filters.monthFrom, filters.monthTo],
       getLineColor: [mapStyle],
       lineWidthMinPixels: [mapStyle],
+    },
+    onClick: (info: PickingInfo<Feature>) => {
+      const iso = info.object?.properties?.iso_a2 as string | undefined
+      if (iso && countries[iso] && onCountryClick) {
+        onCountryClick(iso)
+      }
     },
     onHover: (info: PickingInfo<Feature>) => {
       const feature = info.object

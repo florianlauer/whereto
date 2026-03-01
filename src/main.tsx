@@ -1,6 +1,7 @@
 import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { Toaster } from 'sonner'
 import { routeTree } from './routeTree.gen'
 import { useAppStore } from '@/stores/appStore'
 import { loadStaticData } from '@/lib/data'
@@ -42,7 +43,12 @@ function App() {
     )
   }
 
-  return <RouterProvider router={router} />
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster position="bottom-center" theme="dark" />
+    </>
+  )
 }
 
 const rootEl = document.getElementById('root')!

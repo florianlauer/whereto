@@ -5,7 +5,11 @@ import type { Layer } from '@deck.gl/core'
 import { useCountriesLayer } from './useCountriesLayer'
 import { CountryTooltip } from './CountryTooltip'
 import { MapStyleToggle, type MapStyle } from './MapStyleToggle'
+import { DestinationPanel } from '@/components/destination/DestinationPanel'
+import { ComparisonDrawer } from '@/components/destination/ComparisonDrawer'
+import { TripSummaryPanel } from '@/components/destination/TripSummaryPanel'
 import type { Filters } from '@/lib/scoring'
+import { toast } from 'sonner'
 
 const INITIAL_VIEW_STATE = {
   longitude: 15,
@@ -146,16 +150,38 @@ type Props = {
 export function MapView({ filters = {} }: Props) {
   const [mapStyle, setMapStyle] = useState<MapStyle>('dark')
   const [is3D, setIs3D] = useState(false)
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(null)
+  const [comparisonList, setComparisonList] = useState<string[]>([])
+  const [tripSummaryOpen, setTripSummaryOpen] = useState(false)
+
+  function toggleComparison(code: string) {
+    setComparisonList((prev) => {
+      if (prev.includes(code)) return prev.filter((c) => c !== code)
+      if (prev.length >= 3) {
+        toast('Destination la plus ancienne retirée', { duration: 2500 })
+        return [...prev.slice(1), code]
+      }
+      return [...prev, code]
+    })
+  }
   const mapRef = useRef<MapRef>(null)
   const styles = useMapStyles()
-  const { layer, hoverInfo } = useCountriesLayer(mapStyle, filters)
+  const { layer, hoverInfo } = useCountriesLayer(mapStyle, filters, setSelectedCountryCode)
 
   const resolvedStyle = styles ? styles[mapStyle] : DARK_STYLE_URL
 
   function toggle3D() {
     const next = !is3D
     setIs3D(next)
-    mapRef.current?.getMap().easeTo({ pitch: next ? 50 : 0, duration: 600 })
+    const map = mapRef.current?.getMap()
+    if (!map) return
+    if (next) {
+      map.dragRotate.enable()
+      map.easeTo({ pitch: 50, duration: 600 })
+    } else {
+      map.dragRotate.disable()
+      map.easeTo({ pitch: 0, bearing: 0, duration: 600 })
+    }
   }
 
   return (
@@ -167,13 +193,37 @@ export function MapView({ filters = {} }: Props) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mapStyle={resolvedStyle as any}
         cursor={hoverInfo ? 'pointer' : 'grab'}
+        maxPitch={is3D ? 85 : 0}
+        onLoad={() => mapRef.current?.getMap().dragRotate.disable()}
       >
         <DeckGLOverlay layers={layer ? [layer] : []} />
       </Map>
-      {hoverInfo && (
+      {hoverInfo && !selectedCountryCode && (
         <CountryTooltip x={hoverInfo.x} y={hoverInfo.y} name={hoverInfo.name} />
       )}
-      <div className="absolute bottom-8 right-4 z-10 flex gap-2">
+      {selectedCountryCode && (
+        <DestinationPanel
+          countryCode={selectedCountryCode}
+          filters={filters}
+          onClose={() => setSelectedCountryCode(null)}
+          isInComparison={comparisonList.includes(selectedCountryCode)}
+          onCompare={() => toggleComparison(selectedCountryCode)}
+          onOpenTripSummary={() => setTripSummaryOpen(true)}
+        />
+      )}
+      {tripSummaryOpen && (
+        <TripSummaryPanel onClose={() => setTripSummaryOpen(false)} />
+      )}
+      <ComparisonDrawer
+        codes={comparisonList}
+        filters={filters}
+        onRemove={(code) => setComparisonList((prev) => prev.filter((c) => c !== code))}
+        onClearAll={() => setComparisonList([])}
+      />
+      <div className={[
+        'absolute right-4 z-10 flex gap-2 transition-all duration-300',
+        comparisonList.length > 0 ? 'top-20' : 'bottom-8',
+      ].join(' ')}>
         <button
           onClick={toggle3D}
           title={is3D ? 'Passer en vue 2D' : 'Passer en vue 3D'}

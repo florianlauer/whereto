@@ -17,9 +17,10 @@ projectType: web-app
 
 Whereto est une web app de découverte de destinations de voyage qui permet à tout voyageur
 ne sachant pas encore où aller de visualiser sur une carte mondiale les destinations
-accessibles selon son budget journalier et sa durée disponible. En filtrant par coût de vie
-quotidien, durée et saison, l'utilisateur transforme une question paralysante ("où est-ce
-que je vais ?") en un choix éclairé en quelques minutes — sans avoir besoin d'une
+accessibles selon son budget journalier et sa durée disponible, et de construire un voyage
+multi-destinations en sélectionnant des étapes dans plusieurs pays. En filtrant par coût de
+vie quotidien, durée et saison, l'utilisateur transforme une question paralysante ("où
+est-ce que je vais ?") en un choix éclairé en quelques minutes — sans avoir besoin d'une
 destination de départ en tête.
 
 ---
@@ -87,7 +88,7 @@ pour arriver à une shortlist floue de 2-3 destinations.
 4. Explore visuellement les zones qui s'allument (ex: Balkans, Asie du Sud-Est)
 5. Clique sur un pays → fiche destination : budget/jour estimé, meilleure saison,
    durée recommandée, top POIs, niveau de sécurité
-6. Sélectionne des villes/POIs dans la wishlist → voit le temps estimé s'accumuler
+6. Sélectionne des POIs dans plusieurs pays → le temps et le budget total s'accumulent sur l'ensemble du voyage multi-destinations
 7. Clique "Voir les vols" → redirect Google Flights avec la destination pré-remplie
 8. Décide en < 20 minutes (vs. 2-5h avant)
 
@@ -117,6 +118,18 @@ l'instant "aha" qui crée l'engagement.
 
 ---
 
+### Journey 4 — Planification d'un voyage multi-pays (Persona A étendu)
+
+1. Définit un budget total voyage (ex: 2000€) et une durée (14 jours) → Mode Voyage calcule le budget journalier effectif (~143€/j)
+2. Explore la carte filtrée → tous les pays dans sa fourchette journalière s'allument
+3. Ouvre le panel Géorgie → sélectionne Tbilissi (2j) + Kazbegi (2j) → WishlistCounter : 2 POIs · ~4j
+4. Ouvre le panel Arménie → sélectionne Erevan (2j) + Lac Sevan (1j)
+5. WishlistCounter global : 4 POIs · ~7j (tous pays confondus)
+6. Compare Arménie vs Azerbaïdjan pour décider de la 3ème étape
+7. Vue récapitulative voyage : voir les pays sélectionnés + total jours + budget estimé
+
+---
+
 ## Functional Requirements
 
 | ID | Requirement | Priority | Journey |
@@ -127,12 +140,13 @@ l'instant "aha" qui crée l'engagement.
 | FR-004 | Le système doit permettre à l'utilisateur de filtrer les destinations par **mois ou saison** de voyage | Must Have | J1, J2 |
 | FR-005 | Le système doit calculer un **score de match** pour chaque destination indiquant si elle est "dans les clous" des filtres de l'utilisateur — et trier/colorer les destinations en conséquence | Must Have | J1, J2 |
 | FR-006 | Le système doit afficher une **fiche destination** au clic sur un pays, incluant : budget journalier estimé, meilleure saison, durée recommandée, top 3-5 POIs, niveau de sécurité | Must Have | J1, J2 |
-| FR-007 | Le système doit permettre à l'utilisateur de **sélectionner des villes/POIs** dans un pays et d'afficher le temps de visite estimé cumulé pour sa sélection | Must Have | J1 |
+| FR-007 | Le système doit permettre à l'utilisateur de sélectionner des POIs dans plusieurs pays et d'afficher le temps de visite estimé cumulé pour l'ensemble du voyage multi-destinations | Must Have | J1, J4 |
 | FR-008 | Le système doit permettre à l'utilisateur de partager sa configuration de filtres via une **URL avec query params** | Must Have | J3 |
 | FR-009 | Le système doit proposer un lien vers **Google Flights** depuis une fiche destination, avec la destination pré-remplie (lien informatif, pas de booking intégré) | Should Have | J1, J2 |
 | FR-010 | Le système doit permettre à l'utilisateur de **comparer 2-3 destinations côte à côte** avec les mêmes métriques | Should Have | J2 |
 | FR-011 | Le système doit permettre à l'utilisateur de **créer un compte optionnel** (email/magic link ou OAuth) pour sauvegarder ses explorations | Should Have | J1 |
 | FR-012 | Le système doit permettre à l'utilisateur authentifié de **sauvegarder une wishlist** entre sessions | Should Have | J1 |
+| FR-013 | Le système doit afficher une **vue récapitulative du voyage** regroupant tous les POIs sélectionnés par pays, le total de jours et une estimation de budget global | Should Have | J4 |
 
 ---
 
@@ -165,9 +179,10 @@ Ces critères valident la livraison complète du MVP (features Must Have) :
    avec au minimum : budget journalier estimé, meilleure saison, durée recommandée, et
    au moins 3 POIs. La fiche s'ouvre en < 500ms.
 
-3. **Wishlist et temps estimé** : L'utilisateur peut sélectionner des villes/POIs dans une
-   fiche pays et voir le total de jours estimés s'afficher. La sélection persiste pendant
-   la session (et entre sessions si connecté).
+3. **Wishlist et temps estimé** : L'utilisateur peut sélectionner des POIs dans les fiches
+   de plusieurs pays et voir le total de jours estimés s'afficher pour l'ensemble des pays
+   sélectionnés. La sélection persiste à travers les pays pendant la session (et entre
+   sessions si connecté). Le compteur affiche le total cumulé tous pays confondus.
 
 4. **Score de match** : Les destinations "dans les clous" (budget ≤ filtre ET saison
    compatible) sont visuellement distinctes des destinations hors-critères.
@@ -218,8 +233,9 @@ Voir section "Vision & Goals" — métriques mesurables à 6 mois post-lancement
 
 ## Out of Scope — v1
 
-1. **Itinéraire optimisé** : La wishlist affiche le temps estimé mais n'ordonne pas les
-   étapes ni ne calcule de route. C'est la v2.
+1. **Itinéraire optimisé** : La wishlist agrège les POIs de tous les pays sélectionnés et
+   affiche le total de jours estimé (v1). L'ordonnancement des étapes, l'optimisation de
+   route et le calcul des temps de transit entre pays restent en v2.
 2. **Données de vols en temps réel** : Pas de prix de vols, pas d'API Skyscanner/Amadeus.
 3. **Booking intégré** : Aucune transaction in-app. Pas de booking d'hébergement ou de vol.
 4. **Fonctionnalités groupe collaboratives** : Partage de trip, vote sur destination,

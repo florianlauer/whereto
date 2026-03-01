@@ -1,13 +1,13 @@
 ---
 createdAt: "2026-03-01"
-lastUpdated: "2026-03-01T19:42:00"
-currentEpic: epic-1
+lastUpdated: "2026-03-01T21:20:00"
+currentEpic: epic-2
 mvpTarget: "Epic 1 complet + Story 2.1"
 
 epics:
   epic-1:
     name: "Carte interactive et filtres"
-    status: in-progress
+    status: done
     stories:
       story-1.1:
         slug: project-setup
@@ -24,22 +24,29 @@ epics:
 
   epic-2:
     name: "Fiche destination et wishlist"
-    status: pending
+    status: in-progress
     stories:
       story-2.1:
         slug: destination-panel
-        status: backlog
+        status: done
+        file: _bmad/implementation/stories/story-2.1-destination-panel.md
       story-2.2:
         slug: wishlist-session
-        status: backlog
+        status: done
+        file: _bmad/implementation/stories/story-2.2-wishlist-session.md
+      story-2.3:
+        slug: trip-summary
+        status: done
+        file: _bmad/implementation/stories/story-2.3-trip-summary.md
 
   epic-3:
     name: "Comparaison destinations"
-    status: pending
+    status: done
     stories:
       story-3.1:
         slug: comparison
-        status: backlog
+        status: done
+        file: _bmad/implementation/stories/story-3.1-comparison.md
 
   epic-data-quality:
     name: "Enrichissement dataset destinations"

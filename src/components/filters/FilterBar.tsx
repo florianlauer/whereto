@@ -152,7 +152,7 @@ export function FilterBar({ search }: Props) {
       className="absolute left-0 right-0 top-0 z-10 border-b border-white/5 bg-gray-950/70 backdrop-blur-xl"
     >
       <div className="flex items-center gap-4 px-5 py-3.5">
-        <span className="shrink-0 text-sm font-bold text-white">🌍 whereto</span>
+        <img src="/logo.png" alt="whereto" className="h-10 w-auto shrink-0" />
 
         <div className="flex flex-1 items-center gap-3">
           {isVoyageMode ? (
