@@ -1,16 +1,20 @@
 import { useState } from 'react'
 import { GeoJsonLayer } from '@deck.gl/layers'
 import { useAppStore } from '@/stores/appStore'
+import {
+  calculateMatch,
+  hasActiveFilters,
+  MATCH_COLORS,
+  MATCH_COLORS_SATELLITE,
+} from '@/lib/scoring'
+import type { Filters } from '@/lib/scoring'
 import type { Feature } from 'geojson'
 import type { PickingInfo } from '@deck.gl/core'
 import type { MapStyle } from './MapStyleToggle'
 
-// Dark mode colors
 const COLOR_DATA_NEUTRAL: [number, number, number, number] = [99, 102, 120, 178]
 const COLOR_NO_DATA: [number, number, number, number] = [42, 45, 62, 255]
 const COLOR_HOVER: [number, number, number, number] = [140, 145, 170, 220]
-
-// Satellite mode: more transparent overlay to let imagery show through
 const COLOR_DATA_SATELLITE: [number, number, number, number] = [99, 102, 120, 80]
 const COLOR_NO_DATA_SATELLITE: [number, number, number, number] = [0, 0, 0, 0]
 const COLOR_HOVER_SATELLITE: [number, number, number, number] = [255, 255, 255, 60]
@@ -22,7 +26,10 @@ export type HoverInfo = {
   name: string
 } | null
 
-export function useCountriesLayer(mapStyle: MapStyle = 'dark'): {
+export function useCountriesLayer(
+  mapStyle: MapStyle = 'dark',
+  filters: Filters = {},
+): {
   layer: GeoJsonLayer | null
   hoverInfo: HoverInfo
 } {
@@ -33,6 +40,7 @@ export function useCountriesLayer(mapStyle: MapStyle = 'dark'): {
   if (!geojson) return { layer: null, hoverInfo: null }
 
   const isSatellite = mapStyle === 'satellite'
+  const filtersActive = hasActiveFilters(filters)
 
   const layer = new GeoJsonLayer({
     id: 'countries-layer',
@@ -40,6 +48,7 @@ export function useCountriesLayer(mapStyle: MapStyle = 'dark'): {
     pickable: true,
     stroked: true,
     filled: true,
+    beforeId: 'place_other',
     lineWidthMinPixels: isSatellite ? 0.8 : 0.5,
     getLineColor: isSatellite
       ? ([255, 255, 255, 60] as [number, number, number, number])
@@ -47,15 +56,23 @@ export function useCountriesLayer(mapStyle: MapStyle = 'dark'): {
     getLineWidth: 1,
     getFillColor: (feature: Feature) => {
       const iso = feature.properties?.iso_a2 as string | undefined
-      const hasData = iso && countries[iso]
+      const country = iso ? countries[iso] : undefined
+
       if (hoverInfo?.object === feature) {
         return isSatellite ? COLOR_HOVER_SATELLITE : COLOR_HOVER
       }
-      if (!hasData) return isSatellite ? COLOR_NO_DATA_SATELLITE : COLOR_NO_DATA
+
+      if (!country) return isSatellite ? COLOR_NO_DATA_SATELLITE : COLOR_NO_DATA
+
+      if (filtersActive) {
+        const level = calculateMatch(country, filters)
+        return isSatellite ? MATCH_COLORS_SATELLITE[level] : MATCH_COLORS[level]
+      }
+
       return isSatellite ? COLOR_DATA_SATELLITE : COLOR_DATA_NEUTRAL
     },
     updateTriggers: {
-      getFillColor: [hoverInfo?.object, mapStyle],
+      getFillColor: [hoverInfo?.object, mapStyle, filters.budgetMin, filters.budgetMax, filters.daysMin, filters.daysMax, filters.monthFrom, filters.monthTo],
       getLineColor: [mapStyle],
       lineWidthMinPixels: [mapStyle],
     },
