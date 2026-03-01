@@ -1,0 +1,50 @@
+track: full-bmad
+started_at: "2026-03-01"
+last_updated: "2026-03-01"
+
+phases:
+  phase-1:
+    name: Analysis
+    status: completed
+    steps:
+      brainstorm: completed
+      research: completed
+      product-brief: completed
+    artifacts:
+      - _bmad/planning/brainstorming-report.md
+      - _bmad/planning/research/market-travel-discovery-2026-03-01.md
+      - _bmad/planning/research/domain-travel-data-apis-2026-03-01.md
+      - _bmad/planning/research/technical-mapping-stack-2026-03-01.md
+      - _bmad/planning/product-brief.md
+
+  phase-2:
+    name: Planning
+    status: completed
+    steps:
+      create-prd: completed
+      create-ux: completed
+    artifacts:
+      - _bmad/planning/prd.md
+      - _bmad/planning/ux-spec.md
+
+  phase-3:
+    name: Solutioning
+    status: completed
+    steps:
+      architecture: completed
+      epics-stories: completed
+      readiness: completed
+    artifacts:
+      - _bmad/planning/architecture.md
+      - _bmad/planning/epics.md
+      - _bmad/planning/readiness-report.md
+    note: "Refait interactivement après correction du skill (manque d'interaction en mode Full)"
+
+  phase-4:
+    name: Implementation
+    status: pending
+    steps: {}
+    artifacts: []
+
+current_phase: phase-3
+current_step: null

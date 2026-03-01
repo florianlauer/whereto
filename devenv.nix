@@ -2,7 +2,7 @@
 
 {
   packages = with pkgs; [
-    nodejs_22
+    bun
     actionlint
     yamllint
     docker

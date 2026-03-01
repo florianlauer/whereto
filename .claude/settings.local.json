@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(devenv shell:*)",
+      "Bash(bun:*)",
+      "Bash(git:*)",
+      "Bash(gh repo:*)",
+      "Bash(bunx vite:*)",
+      "Bash(bunx:*)",
+      "Bash(python3:*)",
+      "Bash(curl:*)",
+      "Bash(grep:*)"
+    ]
+  }
+}

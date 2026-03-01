@@ -1,0 +1,129 @@
+{
+  "GE": [
+    { "id": "ge-tbilisi", "name": "Tbilissi", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "ge-kazbegi", "name": "Kazbegi", "daysMin": 1, "daysMax": 2, "type": "nature" },
+    { "id": "ge-signagi", "name": "Signagi & Kakhétie", "daysMin": 1, "daysMax": 2, "type": "culture" },
+    { "id": "ge-kutaisi", "name": "Koutaïssi & grottes Prométhée", "daysMin": 1, "daysMax": 2, "type": "nature" }
+  ],
+  "RS": [
+    { "id": "rs-belgrade", "name": "Belgrade", "daysMin": 2, "daysMax": 4, "type": "city" },
+    { "id": "rs-novi-sad", "name": "Novi Sad", "daysMin": 1, "daysMax": 2, "type": "city" },
+    { "id": "rs-djerdap", "name": "Parc national Đerdap", "daysMin": 1, "daysMax": 2, "type": "nature" }
+  ],
+  "AL": [
+    { "id": "al-tirana", "name": "Tirana", "daysMin": 1, "daysMax": 2, "type": "city" },
+    { "id": "al-berat", "name": "Berat (UNESCO)", "daysMin": 1, "daysMax": 2, "type": "culture" },
+    { "id": "al-gjirokaster", "name": "Gjirokastra (UNESCO)", "daysMin": 1, "daysMax": 1, "type": "culture" },
+    { "id": "al-riviera", "name": "Riviera albanaise", "daysMin": 2, "daysMax": 4, "type": "beach" },
+    { "id": "al-valbona", "name": "Vallée de Valbona", "daysMin": 2, "daysMax": 3, "type": "nature" }
+  ],
+  "BA": [
+    { "id": "ba-sarajevo", "name": "Sarajevo", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "ba-mostar", "name": "Mostar & Stari Most", "daysMin": 1, "daysMax": 2, "type": "culture" },
+    { "id": "ba-kravice", "name": "Chutes de Kravice", "daysMin": 1, "daysMax": 1, "type": "nature" }
+  ],
+  "BG": [
+    { "id": "bg-sofia", "name": "Sofia", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "bg-plovdiv", "name": "Plovdiv", "daysMin": 1, "daysMax": 2, "type": "city" },
+    { "id": "bg-rila", "name": "Monastère de Rila", "daysMin": 1, "daysMax": 1, "type": "culture" },
+    { "id": "bg-sozopol", "name": "Sozopol & côte mer Noire", "daysMin": 2, "daysMax": 4, "type": "beach" }
+  ],
+  "RO": [
+    { "id": "ro-bucharest", "name": "Bucarest", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "ro-transylvania", "name": "Transylvanie (Brasov, Sinaia)", "daysMin": 2, "daysMax": 4, "type": "nature" },
+    { "id": "ro-danube-delta", "name": "Delta du Danube", "daysMin": 2, "daysMax": 4, "type": "nature" },
+    { "id": "ro-sibiu", "name": "Sibiu", "daysMin": 1, "daysMax": 2, "type": "city" }
+  ],
+  "TH": [
+    { "id": "th-bangkok", "name": "Bangkok", "daysMin": 3, "daysMax": 5, "type": "city" },
+    { "id": "th-chiang-mai", "name": "Chiang Mai", "daysMin": 3, "daysMax": 5, "type": "city" },
+    { "id": "th-islands", "name": "Îles (Koh Samui, Koh Lanta)", "daysMin": 4, "daysMax": 7, "type": "beach" },
+    { "id": "th-ayutthaya", "name": "Ayutthaya (UNESCO)", "daysMin": 1, "daysMax": 1, "type": "culture" }
+  ],
+  "VN": [
+    { "id": "vn-hanoi", "name": "Hanoi", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "vn-halong", "name": "Baie d'Ha Long", "daysMin": 2, "daysMax": 3, "type": "nature" },
+    { "id": "vn-hoi-an", "name": "Hoi An (UNESCO)", "daysMin": 2, "daysMax": 3, "type": "culture" },
+    { "id": "vn-hcmc", "name": "Hô Chi Minh-Ville", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "vn-sapa", "name": "Sapa & rizières en terrasses", "daysMin": 2, "daysMax": 3, "type": "nature" }
+  ],
+  "KH": [
+    { "id": "kh-angkor", "name": "Angkor Wat (UNESCO)", "daysMin": 2, "daysMax": 4, "type": "culture" },
+    { "id": "kh-phnom-penh", "name": "Phnom Penh", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "kh-kep", "name": "Kep & côte cambodgienne", "daysMin": 2, "daysMax": 3, "type": "beach" }
+  ],
+  "MA": [
+    { "id": "ma-marrakech", "name": "Marrakech", "daysMin": 2, "daysMax": 4, "type": "city" },
+    { "id": "ma-fes", "name": "Fès (UNESCO)", "daysMin": 2, "daysMax": 3, "type": "culture" },
+    { "id": "ma-sahara", "name": "Désert du Sahara (Merzouga)", "daysMin": 2, "daysMax": 3, "type": "nature" },
+    { "id": "ma-essaouira", "name": "Essaouira", "daysMin": 1, "daysMax": 2, "type": "city" },
+    { "id": "ma-chefchaouen", "name": "Chefchaouen", "daysMin": 1, "daysMax": 2, "type": "city" }
+  ],
+  "CO": [
+    { "id": "co-medellin", "name": "Medellín", "daysMin": 3, "daysMax": 5, "type": "city" },
+    { "id": "co-cartagena", "name": "Carthagène des Indes", "daysMin": 3, "daysMax": 5, "type": "city" },
+    { "id": "co-coffee-region", "name": "Région caféière (Salento)", "daysMin": 2, "daysMax": 4, "type": "nature" },
+    { "id": "co-bogota", "name": "Bogotá", "daysMin": 2, "daysMax": 3, "type": "city" }
+  ],
+  "PE": [
+    { "id": "pe-lima", "name": "Lima", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "pe-machu-picchu", "name": "Machu Picchu (UNESCO)", "daysMin": 2, "daysMax": 4, "type": "culture" },
+    { "id": "pe-cusco", "name": "Cusco & Valle Sagrado", "daysMin": 3, "daysMax": 5, "type": "culture" },
+    { "id": "pe-lake-titicaca", "name": "Lac Titicaca", "daysMin": 2, "daysMax": 3, "type": "nature" }
+  ],
+  "TR": [
+    { "id": "tr-istanbul", "name": "Istanbul", "daysMin": 3, "daysMax": 5, "type": "city" },
+    { "id": "tr-cappadoce", "name": "Cappadoce", "daysMin": 3, "daysMax": 4, "type": "nature" },
+    { "id": "tr-ephese", "name": "Éphèse (UNESCO)", "daysMin": 1, "daysMax": 1, "type": "culture" },
+    { "id": "tr-bodrum", "name": "Côte égéenne (Bodrum, Fethiye)", "daysMin": 3, "daysMax": 5, "type": "beach" }
+  ],
+  "NP": [
+    { "id": "np-kathmandu", "name": "Katmandou", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "np-annapurna", "name": "Trek Annapurna", "daysMin": 7, "daysMax": 14, "type": "nature" },
+    { "id": "np-everest", "name": "Trek Base Camp Everest", "daysMin": 12, "daysMax": 16, "type": "nature" },
+    { "id": "np-pokhara", "name": "Pokhara & lac Phewa", "daysMin": 2, "daysMax": 3, "type": "nature" }
+  ],
+  "JP": [
+    { "id": "jp-tokyo", "name": "Tokyo", "daysMin": 4, "daysMax": 6, "type": "city" },
+    { "id": "jp-kyoto", "name": "Kyoto & temples", "daysMin": 3, "daysMax": 5, "type": "culture" },
+    { "id": "jp-osaka", "name": "Osaka", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "jp-hiroshima", "name": "Hiroshima & Miyajima", "daysMin": 1, "daysMax": 2, "type": "culture" },
+    { "id": "jp-hakone", "name": "Hakone & Mont Fuji", "daysMin": 1, "daysMax": 2, "type": "nature" }
+  ],
+  "IN": [
+    { "id": "in-rajasthan", "name": "Rajasthan (Jaipur, Udaipur, Jodhpur)", "daysMin": 7, "daysMax": 14, "type": "culture" },
+    { "id": "in-delhi", "name": "New Delhi", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "in-agra", "name": "Taj Mahal & Agra", "daysMin": 1, "daysMax": 2, "type": "culture" },
+    { "id": "in-kerala", "name": "Kerala & backwaters", "daysMin": 5, "daysMax": 10, "type": "nature" },
+    { "id": "in-varanasi", "name": "Varanasi & Gange", "daysMin": 2, "daysMax": 3, "type": "culture" }
+  ],
+  "IS": [
+    { "id": "is-reykjavik", "name": "Reykjavik", "daysMin": 2, "daysMax": 3, "type": "city" },
+    { "id": "is-ring-road", "name": "Route 1 (Ring Road)", "daysMin": 7, "daysMax": 12, "type": "nature" },
+    { "id": "is-northern-lights", "name": "Aurores boréales (zones Nord)", "daysMin": 2, "daysMax": 5, "type": "nature" }
+  ],
+  "MX": [
+    { "id": "mx-mexico-city", "name": "Mexico City", "daysMin": 3, "daysMax": 5, "type": "city" },
+    { "id": "mx-oaxaca", "name": "Oaxaca", "daysMin": 3, "daysMax": 5, "type": "city" },
+    { "id": "mx-yucatan", "name": "Yucatán (Chichén Itzá, Cenotes)", "daysMin": 4, "daysMax": 7, "type": "culture" },
+    { "id": "mx-tulum", "name": "Tulum & côte caribéenne", "daysMin": 3, "daysMax": 5, "type": "beach" }
+  ],
+  "UZ": [
+    { "id": "uz-samarkand", "name": "Samarcande (UNESCO)", "daysMin": 2, "daysMax": 3, "type": "culture" },
+    { "id": "uz-bukhara", "name": "Boukhara (UNESCO)", "daysMin": 2, "daysMax": 3, "type": "culture" },
+    { "id": "uz-khiva", "name": "Khiva (UNESCO)", "daysMin": 1, "daysMax": 2, "type": "culture" },
+    { "id": "uz-tashkent", "name": "Tachkent", "daysMin": 1, "daysMax": 2, "type": "city" }
+  ],
+  "PT": [
+    { "id": "pt-lisbon", "name": "Lisbonne", "daysMin": 3, "daysMax": 5, "type": "city" },
+    { "id": "pt-porto", "name": "Porto", "daysMin": 2, "daysMax": 4, "type": "city" },
+    { "id": "pt-algarve", "name": "Algarve", "daysMin": 3, "daysMax": 7, "type": "beach" },
+    { "id": "pt-douro", "name": "Vallée du Douro", "daysMin": 2, "daysMax": 3, "type": "nature" }
+  ],
+  "GR": [
+    { "id": "gr-athens", "name": "Athènes & Acropole", "daysMin": 2, "daysMax": 4, "type": "culture" },
+    { "id": "gr-santorini", "name": "Santorin", "daysMin": 3, "daysMax": 5, "type": "beach" },
+    { "id": "gr-crete", "name": "Crète", "daysMin": 5, "daysMax": 10, "type": "beach" },
+    { "id": "gr-meteora", "name": "Météores (UNESCO)", "daysMin": 1, "daysMax": 2, "type": "culture" }
+  ]
+}
