@@ -74,7 +74,6 @@ export function FilterBar({ search }: Props) {
       }),
       replace: true,
     })
-    setOpenPanel('voyage')
   }
 
   function exitVoyageMode() {
