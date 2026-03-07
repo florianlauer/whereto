@@ -1,103 +1,112 @@
-import { useState } from 'react'
-import { GeoJsonLayer } from '@deck.gl/layers'
-import { useAppStore } from '@/stores/appStore'
+import { useState } from "react";
+import { GeoJsonLayer } from "@deck.gl/layers";
+import { useAppStore } from "@/stores/appStore";
 import {
   calculateMatch,
   hasActiveFilters,
   MATCH_COLORS,
   MATCH_COLORS_SATELLITE,
-} from '@/lib/scoring'
-import type { Filters } from '@/lib/scoring'
-import type { Feature } from 'geojson'
-import type { PickingInfo } from '@deck.gl/core'
-import type { MapStyle } from './MapStyleToggle'
+} from "@/lib/scoring";
+import type { Filters } from "@/lib/scoring";
+import type { Feature } from "geojson";
+import type { PickingInfo } from "@deck.gl/core";
+import type { MapStyle } from "./MapStyleToggle";
 
-const COLOR_DATA_NEUTRAL: [number, number, number, number] = [99, 102, 120, 178]
-const COLOR_NO_DATA: [number, number, number, number] = [42, 45, 62, 255]
-const COLOR_HOVER: [number, number, number, number] = [140, 145, 170, 220]
-const COLOR_DATA_SATELLITE: [number, number, number, number] = [99, 102, 120, 80]
-const COLOR_NO_DATA_SATELLITE: [number, number, number, number] = [0, 0, 0, 0]
-const COLOR_HOVER_SATELLITE: [number, number, number, number] = [255, 255, 255, 60]
+const COLOR_DATA_NEUTRAL: [number, number, number, number] = [99, 102, 120, 178];
+const COLOR_NO_DATA: [number, number, number, number] = [42, 45, 62, 255];
+const COLOR_HOVER: [number, number, number, number] = [140, 145, 170, 220];
+const COLOR_DATA_SATELLITE: [number, number, number, number] = [99, 102, 120, 80];
+const COLOR_NO_DATA_SATELLITE: [number, number, number, number] = [0, 0, 0, 0];
+const COLOR_HOVER_SATELLITE: [number, number, number, number] = [255, 255, 255, 60];
 
 export type HoverInfo = {
-  object: Feature
-  x: number
-  y: number
-  name: string
-} | null
+  object: Feature;
+  x: number;
+  y: number;
+  name: string;
+} | null;
 
 export function useCountriesLayer(
-  mapStyle: MapStyle = 'dark',
+  mapStyle: MapStyle = "dark",
   filters: Filters = {},
   onCountryClick?: (code: string) => void,
 ): {
-  layer: GeoJsonLayer | null
-  hoverInfo: HoverInfo
+  layer: GeoJsonLayer | null;
+  hoverInfo: HoverInfo;
 } {
-  const countries = useAppStore((s) => s.countries)
-  const geojson = useAppStore((s) => s.geojson)
-  const [hoverInfo, setHoverInfo] = useState<HoverInfo>(null)
+  const countries = useAppStore((s) => s.countries);
+  const geojson = useAppStore((s) => s.geojson);
+  const [hoverInfo, setHoverInfo] = useState<HoverInfo>(null);
 
-  if (!geojson) return { layer: null, hoverInfo: null }
+  if (!geojson) return { layer: null, hoverInfo: null };
 
-  const isSatellite = mapStyle === 'satellite'
-  const filtersActive = hasActiveFilters(filters)
+  const isSatellite = mapStyle === "satellite";
+  const filtersActive = hasActiveFilters(filters);
 
   const layer = new GeoJsonLayer({
-    id: 'countries-layer',
+    id: "countries-layer",
     data: geojson,
     pickable: true,
     stroked: true,
     filled: true,
-    beforeId: 'place_other',
+    beforeId: "place_other",
     lineWidthMinPixels: isSatellite ? 0.8 : 0.5,
     getLineColor: isSatellite
       ? ([255, 255, 255, 60] as [number, number, number, number])
       : ([60, 60, 80, 180] as [number, number, number, number]),
     getLineWidth: 1,
     getFillColor: (feature: Feature) => {
-      const iso = feature.properties?.iso_a2 as string | undefined
-      const country = iso ? countries[iso] : undefined
+      const iso = feature.properties?.iso_a2 as string | undefined;
+      const country = iso ? countries[iso] : undefined;
 
       if (hoverInfo?.object === feature) {
-        return isSatellite ? COLOR_HOVER_SATELLITE : COLOR_HOVER
+        return isSatellite ? COLOR_HOVER_SATELLITE : COLOR_HOVER;
       }
 
-      if (!country) return isSatellite ? COLOR_NO_DATA_SATELLITE : COLOR_NO_DATA
+      if (!country) return isSatellite ? COLOR_NO_DATA_SATELLITE : COLOR_NO_DATA;
 
       if (filtersActive) {
-        const level = calculateMatch(country, filters)
-        return isSatellite ? MATCH_COLORS_SATELLITE[level] : MATCH_COLORS[level]
+        const level = calculateMatch(country, filters);
+        return isSatellite ? MATCH_COLORS_SATELLITE[level] : MATCH_COLORS[level];
       }
 
-      return isSatellite ? COLOR_DATA_SATELLITE : COLOR_DATA_NEUTRAL
+      return isSatellite ? COLOR_DATA_SATELLITE : COLOR_DATA_NEUTRAL;
     },
     updateTriggers: {
-      getFillColor: [hoverInfo?.object, mapStyle, filters.budgetMin, filters.budgetMax, filters.daysMin, filters.daysMax, filters.monthFrom, filters.monthTo],
+      getFillColor: [
+        hoverInfo?.object,
+        mapStyle,
+        filters.budgetMin,
+        filters.budgetMax,
+        filters.daysMin,
+        filters.daysMax,
+        filters.monthFrom,
+        filters.monthTo,
+      ],
       getLineColor: [mapStyle],
       lineWidthMinPixels: [mapStyle],
     },
     onClick: (info: PickingInfo<Feature>) => {
-      const iso = info.object?.properties?.iso_a2 as string | undefined
+      const iso = info.object?.properties?.iso_a2 as string | undefined;
       if (iso && countries[iso] && onCountryClick) {
-        onCountryClick(iso)
+        onCountryClick(iso);
       }
     },
     onHover: (info: PickingInfo<Feature>) => {
-      const feature = info.object
-      const iso = feature?.properties?.iso_a2 as string | undefined
+      const feature = info.object;
+      const iso = feature?.properties?.iso_a2 as string | undefined;
       if (feature && iso && countries[iso]) {
         setHoverInfo({
           object: feature,
           x: info.x,
           y: info.y,
           name: countries[iso]!.name,
-        })
+        });
       } else {
-        setHoverInfo(null)
+        setHoverInfo(null);
       }
     },
-  })
+  });
 
-  return { layer, hoverInfo }
+  return { layer, hoverInfo };
 }

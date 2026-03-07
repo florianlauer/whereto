@@ -1,9 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { z } from 'zod'
-import { MapView } from '@/components/map/MapView'
-import { FilterBar } from '@/components/filters/FilterBar'
-import { MatchBadge } from '@/components/filters/MatchBadge'
-import type { Filters } from '@/lib/scoring'
+import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
+import { MapView } from "@/components/map/MapView";
+import { FilterBar } from "@/components/filters/FilterBar";
+import { MatchBadge } from "@/components/filters/MatchBadge";
+import type { Filters } from "@/lib/scoring";
 
 const filterSchema = z.object({
   // Mode simple
@@ -18,27 +18,27 @@ const filterSchema = z.object({
   // Partagé
   monthFrom: z.coerce.number().min(1).max(12).optional(),
   monthTo: z.coerce.number().min(1).max(12).optional(),
-})
+});
 
-export type AppSearch = z.infer<typeof filterSchema>
+export type AppSearch = z.infer<typeof filterSchema>;
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   validateSearch: filterSchema,
   component: MapPage,
-})
+});
 
 function computeFilters(search: AppSearch): Filters {
   if (search.tripBudget !== undefined) {
-    const minDays = search.tripDaysMin ?? 7
+    const minDays = search.tripDaysMin ?? 7;
     const effectiveBudgetMax =
-      search.tripBudget >= 10000 ? undefined : Math.round(search.tripBudget / minDays)
+      search.tripBudget >= 10000 ? undefined : Math.round(search.tripBudget / minDays);
     return {
       budgetMax: effectiveBudgetMax,
       daysMin: search.tripDaysMin,
       daysMax: search.tripDaysMax,
       monthFrom: search.monthFrom,
       monthTo: search.monthTo,
-    }
+    };
   }
   return {
     budgetMin: search.budgetMin,
@@ -47,12 +47,12 @@ function computeFilters(search: AppSearch): Filters {
     daysMax: search.daysMax,
     monthFrom: search.monthFrom,
     monthTo: search.monthTo,
-  }
+  };
 }
 
 function MapPage() {
-  const search = Route.useSearch()
-  const filters = computeFilters(search)
+  const search = Route.useSearch();
+  const filters = computeFilters(search);
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
@@ -60,5 +60,5 @@ function MapPage() {
       <MapView filters={filters} />
       <MatchBadge filters={filters} />
     </div>
-  )
+  );
 }

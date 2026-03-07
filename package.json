@@ -9,7 +9,10 @@
     "preview": "vite preview",
     "type": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "lint": "oxlint",
+    "format": "oxfmt --write src",
+    "format:check": "oxfmt src"
   },
   "dependencies": {
     "@radix-ui/react-slider": "^1.3.6",
@@ -36,6 +39,8 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4",
     "jsdom": "^28.1.0",
+    "oxfmt": "^0.36.0",
+    "oxlint": "^1.51.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vite": "^6",

@@ -1,32 +1,30 @@
-import * as Slider from '@radix-ui/react-slider'
+import * as Slider from "@radix-ui/react-slider";
 
-const BUDGET_MIN = 100
-const BUDGET_MAX = 10000
-const DAYS_MIN = 1
-const DAYS_MAX = 90
+const BUDGET_MIN = 100;
+const BUDGET_MAX = 10000;
+const DAYS_MIN = 1;
+const DAYS_MAX = 90;
 
 const thumbClass =
-  'block h-4 w-4 cursor-grab rounded-full bg-white shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 active:cursor-grabbing'
+  "block h-4 w-4 cursor-grab rounded-full bg-white shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 active:cursor-grabbing";
 
 type Props = {
-  tripBudget: number
-  tripDaysMin: number
-  tripDaysMax: number
-  onChange: (budget: number, daysMin: number, daysMax: number) => void
-  style?: React.CSSProperties
-}
+  tripBudget: number;
+  tripDaysMin: number;
+  tripDaysMax: number;
+  onChange: (budget: number, daysMin: number, daysMax: number) => void;
+  style?: React.CSSProperties;
+};
 
 export function VoyageFilter({ tripBudget, tripDaysMin, tripDaysMax, onChange, style }: Props) {
-  const dailyMax = Math.round(tripBudget / tripDaysMin)
-  const dailyMin = tripDaysMax >= DAYS_MAX ? null : Math.round(tripBudget / tripDaysMax)
+  const dailyMax = Math.round(tripBudget / tripDaysMin);
+  const dailyMin = tripDaysMax >= DAYS_MAX ? null : Math.round(tripBudget / tripDaysMax);
 
   const budgetLabel =
-    tripBudget >= BUDGET_MAX ? '10 000€+' : `${tripBudget.toLocaleString('fr-FR')}€`
+    tripBudget >= BUDGET_MAX ? "10 000€+" : `${tripBudget.toLocaleString("fr-FR")}€`;
   const daysLabel =
-    tripDaysMin === tripDaysMax ? `${tripDaysMin}j` : `${tripDaysMin}–${tripDaysMax}j`
-  const dailyLabel = dailyMin
-    ? `≈ ${dailyMin}€ – ${dailyMax}€/jour`
-    : `≈ ${dailyMax}€/jour max`
+    tripDaysMin === tripDaysMax ? `${tripDaysMin}j` : `${tripDaysMin}–${tripDaysMax}j`;
+  const dailyLabel = dailyMin ? `≈ ${dailyMin}€ – ${dailyMax}€/jour` : `≈ ${dailyMax}€/jour max`;
 
   return (
     <div
@@ -82,5 +80,5 @@ export function VoyageFilter({ tripBudget, tripDaysMin, tripDaysMax, onChange, s
         {dailyLabel}
       </div>
     </div>
-  )
+  );
 }
