@@ -3,6 +3,7 @@
 **Purpose:** Interactive travel destination explorer — a map-based SPA where users can filter countries by budget, duration, and travel month, view destination details, manage a wishlist, and compare countries.
 
 **Tech Stack:**
+
 - **Language:** TypeScript ^5 (strict mode)
 - **Runtime:** Bun (package manager + runtime)
 - **Framework:** React ^19 + Vite ^6

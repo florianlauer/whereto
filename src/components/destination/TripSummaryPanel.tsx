@@ -43,7 +43,7 @@ export function TripSummaryPanel({ onClose }: Props) {
   // Fermer automatiquement quand la wishlist se vide
   useEffect(() => {
     if (wishlistItems.length === 0) handleClose();
-  }, [wishlistItems.length]);
+  }, [wishlistItems.length, handleClose]);
 
   // Regrouper par pays
   const groups = Object.entries(

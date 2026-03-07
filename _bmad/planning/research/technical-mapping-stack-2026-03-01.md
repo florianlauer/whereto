@@ -9,34 +9,34 @@ createdAt: "2026-03-01"
 
 ## Comparatif Librairies de Cartographie
 
-| Librairie | Coût | Technologie | Performance | Recommandation |
-|-----------|------|------------|-------------|----------------|
-| **MapLibre GL JS** | **Gratuit (open source BSD-2)** | WebGL | 60 FPS, millions de features | ⭐ MVP + production |
-| **Mapbox GL JS** | 50K map loads/mois gratuits, $5/1K ensuite | WebGL | Identique MapLibre | Migration facile si besoin |
-| **Leaflet.js** | Gratuit | DOM (pas WebGL) | Excellent < 50K features, dégrade au-delà | Apps simples / très léger |
-| **Google Maps JS API** | 10K–100K events/mois (free), puis $2–30/1K | Propriétaire | Bon | Cher à l'échelle, lock-in |
-| **Deck.gl** | Gratuit (Uber, open source) | WebGL/WebGPU (v9) | Excellent pour overlays | Complément MapLibre pour visualisations |
-| **Apple MapKit JS** | Écosystème Apple | Propriétaire | N/A | Non retenu (web généraliste) |
+| Librairie              | Coût                                       | Technologie       | Performance                               | Recommandation                          |
+| ---------------------- | ------------------------------------------ | ----------------- | ----------------------------------------- | --------------------------------------- |
+| **MapLibre GL JS**     | **Gratuit (open source BSD-2)**            | WebGL             | 60 FPS, millions de features              | ⭐ MVP + production                     |
+| **Mapbox GL JS**       | 50K map loads/mois gratuits, $5/1K ensuite | WebGL             | Identique MapLibre                        | Migration facile si besoin              |
+| **Leaflet.js**         | Gratuit                                    | DOM (pas WebGL)   | Excellent < 50K features, dégrade au-delà | Apps simples / très léger               |
+| **Google Maps JS API** | 10K–100K events/mois (free), puis $2–30/1K | Propriétaire      | Bon                                       | Cher à l'échelle, lock-in               |
+| **Deck.gl**            | Gratuit (Uber, open source)                | WebGL/WebGPU (v9) | Excellent pour overlays                   | Complément MapLibre pour visualisations |
+| **Apple MapKit JS**    | Écosystème Apple                           | Propriétaire      | N/A                                       | Non retenu (web généraliste)            |
 
 ---
 
 ## Providers de Tuiles / Fonds de Carte
 
-| Provider | Free Tier | Pricing Startup | Couverture | Notes |
-|----------|-----------|-----------------|-----------|-------|
-| **OpenStreetMap (OSM)** | Illimité | Gratuit | Global | Attribution requise; idéal MVP |
-| **Stadia Maps** | 200K crédits/mois | $20/mois (1M crédits) | Global | Compatible Mapbox styles, jusqu'à 90% moins cher que Mapbox |
-| **MapTiler** | Gratuit (non-commercial) | $24.90/mois | Global | Tuiles custom, satellite |
-| **Mapbox** | 50K map loads/mois | $5/1K loads | Global | Premium styling, features avancées |
+| Provider                | Free Tier                | Pricing Startup       | Couverture | Notes                                                       |
+| ----------------------- | ------------------------ | --------------------- | ---------- | ----------------------------------------------------------- |
+| **OpenStreetMap (OSM)** | Illimité                 | Gratuit               | Global     | Attribution requise; idéal MVP                              |
+| **Stadia Maps**         | 200K crédits/mois        | $20/mois (1M crédits) | Global     | Compatible Mapbox styles, jusqu'à 90% moins cher que Mapbox |
+| **MapTiler**            | Gratuit (non-commercial) | $24.90/mois           | Global     | Tuiles custom, satellite                                    |
+| **Mapbox**              | 50K map loads/mois       | $5/1K loads           | Global     | Premium styling, features avancées                          |
 
 ---
 
 ## Wrappers React
 
-| Lib | DL/semaine | GitHub Stars | Usage |
-|-----|-----------|-------------|-------|
-| **react-map-gl** | 753K | 8 237 | Mapbox GL / MapLibre + React, composants contrôlés, grands datasets |
-| **react-leaflet** | 743K | 5 468 | Leaflet + React, API plus simple |
+| Lib               | DL/semaine | GitHub Stars | Usage                                                               |
+| ----------------- | ---------- | ------------ | ------------------------------------------------------------------- |
+| **react-map-gl**  | 753K       | 8 237        | Mapbox GL / MapLibre + React, composants contrôlés, grands datasets |
+| **react-leaflet** | 743K       | 5 468        | Leaflet + React, API plus simple                                    |
 
 **Recommandation** : `react-map-gl` avec backend `maplibre-gl` (configuration explicite dans le code)
 
@@ -74,13 +74,13 @@ Wrapper React :     react-map-gl      (avec maplibre-gl)
 
 ### Coût estimé MVP
 
-| Poste | Coût |
-|-------|------|
-| MapLibre GL JS | $0 |
-| OSM tiles | $0 |
-| Stadia Maps (production) | $20/mois |
-| Deck.gl | $0 |
-| **Total carte** | **$0–20/mois** |
+| Poste                    | Coût           |
+| ------------------------ | -------------- |
+| MapLibre GL JS           | $0             |
+| OSM tiles                | $0             |
+| Stadia Maps (production) | $20/mois       |
+| Deck.gl                  | $0             |
+| **Total carte**          | **$0–20/mois** |
 
 ---
 
@@ -95,26 +95,27 @@ Wrapper React :     react-map-gl      (avec maplibre-gl)
 
 ## Quand Changer de Stack
 
-| Trigger | Action |
-|---------|--------|
-| Besoin de styling premium / 3D | Basculer sur Mapbox GL JS (payant) |
-| Dépassement OSM acceptable use | Passer Stadia Maps (tier payant) |
-| > 1M utilisateurs actifs | Réévaluer Mapbox vs infrastructure propre de tuiles |
+| Trigger                        | Action                                              |
+| ------------------------------ | --------------------------------------------------- |
+| Besoin de styling premium / 3D | Basculer sur Mapbox GL JS (payant)                  |
+| Dépassement OSM acceptable use | Passer Stadia Maps (tier payant)                    |
+| > 1M utilisateurs actifs       | Réévaluer Mapbox vs infrastructure propre de tuiles |
 
 ---
 
 ## Tuiles Satellite
 
-| Provider | Qualité | Pricing | Couverture | Recommandation |
-|----------|---------|---------|-----------|----------------|
-| **OpenAerialMap** | Variable (communautaire) | **Gratuit (CC-BY 4.0)** | Global (inégal) | ⭐ MVP gratuit |
-| **MapTiler** | Jusqu'à 8cm/pixel (premium) | Free = zoom 0–5 seulement | Global | Prototype basse résolution |
-| **ESRI World Imagery** | Professionnelle (NASA/USGS) | Gratuit avec compte ArcGIS (limites) | Global | Auth requise, qualité pro |
-| **Mapbox Satellite** | Bonne | 200K tiles/mois gratuits puis pay-per-use | Global | Free tier généreux pour MVP |
-| **Stadia Maps Alidade Satellite** | 1.5m global / 30cm zones précises | **$80/mois minimum** | Global | ⭐ Production — meilleur rapport qualité |
-| **Jawg Maps** | Très bonne | Free tier (limites floues) | Europe principalement | Limité géographiquement |
+| Provider                          | Qualité                           | Pricing                                   | Couverture            | Recommandation                           |
+| --------------------------------- | --------------------------------- | ----------------------------------------- | --------------------- | ---------------------------------------- |
+| **OpenAerialMap**                 | Variable (communautaire)          | **Gratuit (CC-BY 4.0)**                   | Global (inégal)       | ⭐ MVP gratuit                           |
+| **MapTiler**                      | Jusqu'à 8cm/pixel (premium)       | Free = zoom 0–5 seulement                 | Global                | Prototype basse résolution               |
+| **ESRI World Imagery**            | Professionnelle (NASA/USGS)       | Gratuit avec compte ArcGIS (limites)      | Global                | Auth requise, qualité pro                |
+| **Mapbox Satellite**              | Bonne                             | 200K tiles/mois gratuits puis pay-per-use | Global                | Free tier généreux pour MVP              |
+| **Stadia Maps Alidade Satellite** | 1.5m global / 30cm zones précises | **$80/mois minimum**                      | Global                | ⭐ Production — meilleur rapport qualité |
+| **Jawg Maps**                     | Très bonne                        | Free tier (limites floues)                | Europe principalement | Limité géographiquement                  |
 
 **Caractéristiques Stadia Satellite (production)** :
+
 - Résolution : 1.5m global, 50cm Amérique du Nord/Europe, 30cm zones de précision
 - Fraîcheur : < 1 an en ville, < 3 ans globalement, < 5% de nuages
 - Attribution : "© CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver"
@@ -129,22 +130,27 @@ Wrapper React :     react-map-gl      (avec maplibre-gl)
 **Verdict : Compatible ✅ — avec quelques points d'attention**
 
 ### TanStack Start + tRPC
+
 - tRPC v11 supporte officiellement TanStack Start via `@trpc/tanstack-react-query`
 - **Gotcha connu (déc. 2025 – fév. 2026)** : le scaffold `pnpm create @tanstack/start` génère un projet avec tRPC mal configuré → `TRPCProvider` manquant dans le root layout. À corriger manuellement.
 - Alternative légère : `createServerFn` (Server Functions TanStack Start natif) pour les cas simples
 
 ### TanStack Start + MapLibre / Deck.gl
+
 - Les libs WebGL sont client-side uniquement → conflit potentiel avec le SSR de TanStack Start
 - **Solution propre** : `ssr: false` sur la route de la carte (Selective SSR)
+
 ```typescript
-export const Route = createFileRoute('/map')({
+export const Route = createFileRoute("/map")({
   component: MapPage,
-  ssr: false,  // MapLibre ne charge que côté client
-})
+  ssr: false, // MapLibre ne charge que côté client
+});
 ```
+
 - Plus élégant que `dynamic(…, { ssr: false })` de Next.js
 
 ### Maturité TanStack Start (mars 2026)
+
 - Statut : **Release Candidate (v1 RC)** — feature-complete, API stable, pas encore 1.0
 - Utilisé en production par des early adopters
 - Bundles 30–35% plus légers que Next.js (pas de RSC overhead)
@@ -152,19 +158,20 @@ export const Route = createFileRoute('/map')({
 
 ### Comparaison rapide
 
-| Critère | TanStack Start | Next.js 16 |
-|---------|---------------|-----------|
-| tRPC | ✅ Supporté (bug scaffold) | ✅ Stable |
-| Maps (SSR) | `ssr: false` par route | `dynamic({ ssr: false })` |
-| Bundles | 30–35% plus légers | Plus lourds (RSC) |
-| Stabilité | RC (bientôt 1.0) | Stable, battle-tested |
-| Hébergement | Anywhere (Vite) | Best on Vercel |
+| Critère     | TanStack Start             | Next.js 16                |
+| ----------- | -------------------------- | ------------------------- |
+| tRPC        | ✅ Supporté (bug scaffold) | ✅ Stable                 |
+| Maps (SSR)  | `ssr: false` par route     | `dynamic({ ssr: false })` |
+| Bundles     | 30–35% plus légers         | Plus lourds (RSC)         |
+| Stabilité   | RC (bientôt 1.0)           | Stable, battle-tested     |
+| Hébergement | Anywhere (Vite)            | Best on Vercel            |
 
 **Recommandation** : TanStack Start est un excellent choix pour découvrir la stack, compatible avec tout le stack carto. Prévoir de corriger manuellement la config tRPC.
 
 ---
 
 ## Sources
+
 - MapLibre GL JS — maplibre.org + GitHub
 - Mapbox GL JS Pricing — docs.mapbox.com
 - Google Maps JavaScript API Billing — developers.google.com (2025)

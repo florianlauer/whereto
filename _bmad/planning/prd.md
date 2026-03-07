@@ -32,13 +32,13 @@ point de départ de chaque décision de voyage.
 
 **Objectifs business — 6 mois post-lancement :**
 
-| Objectif | Cible |
-|----------|-------|
-| Utilisateurs actifs mensuels | 5 000 MAU |
-| Rétention J30 | > 25% |
-| Taux de complétion du flow (filtres → fiche pays) | > 60% |
-| Taux de clic vers vols (Google Flights) | > 15% des sessions |
-| NPS utilisateurs actifs | > 40 |
+| Objectif                                          | Cible              |
+| ------------------------------------------------- | ------------------ |
+| Utilisateurs actifs mensuels                      | 5 000 MAU          |
+| Rétention J30                                     | > 25%              |
+| Taux de complétion du flow (filtres → fiche pays) | > 60%              |
+| Taux de clic vers vols (Google Flights)           | > 15% des sessions |
+| NPS utilisateurs actifs                           | > 40               |
 
 ---
 
@@ -114,7 +114,7 @@ l'instant "aha" qui crée l'engagement.
 3. Chaque membre peut visualiser la même carte filtrée et explorer indépendamment
 4. Discussion synchronisée autour d'une référence commune (vs. threads WhatsApp)
 
-*(La fonctionnalité vote/consensus est v2)*
+_(La fonctionnalité vote/consensus est v2)_
 
 ---
 
@@ -132,39 +132,39 @@ l'instant "aha" qui crée l'engagement.
 
 ## Functional Requirements
 
-| ID | Requirement | Priority | Journey |
-|----|-------------|----------|---------|
-| FR-001 | Le système doit permettre à l'utilisateur de visualiser une carte mondiale interactive avec les destinations colorées selon leur niveau de match budgétaire | Must Have | J1, J2 |
-| FR-002 | Le système doit permettre à l'utilisateur de filtrer les destinations par **budget journalier estimé** (coût de vie sur place, hors vol) | Must Have | J1, J2 |
-| FR-003 | Le système doit permettre à l'utilisateur de filtrer les destinations par **durée de séjour** (en jours) | Must Have | J1, J2 |
-| FR-004 | Le système doit permettre à l'utilisateur de filtrer les destinations par **mois ou saison** de voyage | Must Have | J1, J2 |
-| FR-005 | Le système doit calculer un **score de match** pour chaque destination indiquant si elle est "dans les clous" des filtres de l'utilisateur — et trier/colorer les destinations en conséquence | Must Have | J1, J2 |
-| FR-006 | Le système doit afficher une **fiche destination** au clic sur un pays, incluant : budget journalier estimé, meilleure saison, durée recommandée, top 3-5 POIs, niveau de sécurité | Must Have | J1, J2 |
-| FR-007 | Le système doit permettre à l'utilisateur de sélectionner des POIs dans plusieurs pays et d'afficher le temps de visite estimé cumulé pour l'ensemble du voyage multi-destinations | Must Have | J1, J4 |
-| FR-008 | Le système doit permettre à l'utilisateur de partager sa configuration de filtres via une **URL avec query params** | Must Have | J3 |
-| FR-009 | Le système doit proposer un lien vers **Google Flights** depuis une fiche destination, avec la destination pré-remplie (lien informatif, pas de booking intégré) | Should Have | J1, J2 |
-| FR-010 | Le système doit permettre à l'utilisateur de **comparer 2-3 destinations côte à côte** avec les mêmes métriques | Should Have | J2 |
-| FR-011 | Le système doit permettre à l'utilisateur de **créer un compte optionnel** (email/magic link ou OAuth) pour sauvegarder ses explorations | Should Have | J1 |
-| FR-012 | Le système doit permettre à l'utilisateur authentifié de **sauvegarder une wishlist** entre sessions | Should Have | J1 |
-| FR-013 | Le système doit afficher une **vue récapitulative du voyage** regroupant tous les POIs sélectionnés par pays, le total de jours et une estimation de budget global | Should Have | J4 |
+| ID     | Requirement                                                                                                                                                                                   | Priority    | Journey |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------- |
+| FR-001 | Le système doit permettre à l'utilisateur de visualiser une carte mondiale interactive avec les destinations colorées selon leur niveau de match budgétaire                                   | Must Have   | J1, J2  |
+| FR-002 | Le système doit permettre à l'utilisateur de filtrer les destinations par **budget journalier estimé** (coût de vie sur place, hors vol)                                                      | Must Have   | J1, J2  |
+| FR-003 | Le système doit permettre à l'utilisateur de filtrer les destinations par **durée de séjour** (en jours)                                                                                      | Must Have   | J1, J2  |
+| FR-004 | Le système doit permettre à l'utilisateur de filtrer les destinations par **mois ou saison** de voyage                                                                                        | Must Have   | J1, J2  |
+| FR-005 | Le système doit calculer un **score de match** pour chaque destination indiquant si elle est "dans les clous" des filtres de l'utilisateur — et trier/colorer les destinations en conséquence | Must Have   | J1, J2  |
+| FR-006 | Le système doit afficher une **fiche destination** au clic sur un pays, incluant : budget journalier estimé, meilleure saison, durée recommandée, top 3-5 POIs, niveau de sécurité            | Must Have   | J1, J2  |
+| FR-007 | Le système doit permettre à l'utilisateur de sélectionner des POIs dans plusieurs pays et d'afficher le temps de visite estimé cumulé pour l'ensemble du voyage multi-destinations            | Must Have   | J1, J4  |
+| FR-008 | Le système doit permettre à l'utilisateur de partager sa configuration de filtres via une **URL avec query params**                                                                           | Must Have   | J3      |
+| FR-009 | Le système doit proposer un lien vers **Google Flights** depuis une fiche destination, avec la destination pré-remplie (lien informatif, pas de booking intégré)                              | Should Have | J1, J2  |
+| FR-010 | Le système doit permettre à l'utilisateur de **comparer 2-3 destinations côte à côte** avec les mêmes métriques                                                                               | Should Have | J2      |
+| FR-011 | Le système doit permettre à l'utilisateur de **créer un compte optionnel** (email/magic link ou OAuth) pour sauvegarder ses explorations                                                      | Should Have | J1      |
+| FR-012 | Le système doit permettre à l'utilisateur authentifié de **sauvegarder une wishlist** entre sessions                                                                                          | Should Have | J1      |
+| FR-013 | Le système doit afficher une **vue récapitulative du voyage** regroupant tous les POIs sélectionnés par pays, le total de jours et une estimation de budget global                            | Should Have | J4      |
 
 ---
 
 ## Non-Functional Requirements
 
-| ID | Requirement | Métrique |
-|----|-------------|---------|
-| NFR-001 | Performance — chargement initial de la carte | < 2s (P90) sur connexion 4G |
-| NFR-002 | Performance — application des filtres et mise à jour de la carte | < 300ms (perçu comme instantané) |
-| NFR-003 | Performance — ouverture d'une fiche destination | < 500ms |
-| NFR-004 | Lighthouse Performance score | > 80 sur desktop |
-| NFR-005 | Disponibilité | > 99.5% uptime mensuel |
-| NFR-006 | Scalabilité | Supporte 500 utilisateurs simultanés sans dégradation (SPA + données statiques = charge serveur minimale) |
-| NFR-007 | Sécurité — données utilisateur | Supabase RLS activé sur toutes les tables utilisateur ; aucune donnée personnelle stockée pour les utilisateurs anonymes |
-| NFR-008 | Sécurité — authentification | Auth optionnelle via Supabase Auth (magic link ou OAuth) ; sessions gérées par JWT Supabase |
-| NFR-009 | Accessibilité | WCAG 2.1 AA sur les éléments critiques : filtres, carte (alt text), fiches destination, navigation clavier |
-| NFR-010 | Responsive | Utilisable sur mobile (breakpoint ≥ 375px) — desktop-first, mobile acceptable |
-| NFR-011 | Fraîcheur des données | Dataset statique (Kaggle CC0, ~5 000 villes, snapshot 2022) — mis à jour manuellement max 1x/an ; disclaimer affiché sur les estimations de coût |
+| ID      | Requirement                                                      | Métrique                                                                                                                                         |
+| ------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| NFR-001 | Performance — chargement initial de la carte                     | < 2s (P90) sur connexion 4G                                                                                                                      |
+| NFR-002 | Performance — application des filtres et mise à jour de la carte | < 300ms (perçu comme instantané)                                                                                                                 |
+| NFR-003 | Performance — ouverture d'une fiche destination                  | < 500ms                                                                                                                                          |
+| NFR-004 | Lighthouse Performance score                                     | > 80 sur desktop                                                                                                                                 |
+| NFR-005 | Disponibilité                                                    | > 99.5% uptime mensuel                                                                                                                           |
+| NFR-006 | Scalabilité                                                      | Supporte 500 utilisateurs simultanés sans dégradation (SPA + données statiques = charge serveur minimale)                                        |
+| NFR-007 | Sécurité — données utilisateur                                   | Supabase RLS activé sur toutes les tables utilisateur ; aucune donnée personnelle stockée pour les utilisateurs anonymes                         |
+| NFR-008 | Sécurité — authentification                                      | Auth optionnelle via Supabase Auth (magic link ou OAuth) ; sessions gérées par JWT Supabase                                                      |
+| NFR-009 | Accessibilité                                                    | WCAG 2.1 AA sur les éléments critiques : filtres, carte (alt text), fiches destination, navigation clavier                                       |
+| NFR-010 | Responsive                                                       | Utilisable sur mobile (breakpoint ≥ 375px) — desktop-first, mobile acceptable                                                                    |
+| NFR-011 | Fraîcheur des données                                            | Dataset statique (Kaggle CC0, ~5 000 villes, snapshot 2022) — mis à jour manuellement max 1x/an ; disclaimer affiché sur les estimations de coût |
 
 ---
 
@@ -204,12 +204,12 @@ Voir section "Vision & Goals" — métriques mesurables à 6 mois post-lancement
 
 **Métriques de validation post-MVP (J+30) :**
 
-| Signal | Seuil OK |
-|--------|----------|
-| Taux de complétion flow (filtres → fiche) | > 60% |
-| Durée médiane de session | > 4 min |
-| Taux de rebond page d'accueil | < 50% |
-| Erreurs JS (Sentry) | < 0.1% des sessions |
+| Signal                                    | Seuil OK            |
+| ----------------------------------------- | ------------------- |
+| Taux de complétion flow (filtres → fiche) | > 60%               |
+| Durée médiane de session                  | > 4 min             |
+| Taux de rebond page d'accueil             | < 50%               |
+| Erreurs JS (Sentry)                       | < 0.1% des sessions |
 
 ---
 

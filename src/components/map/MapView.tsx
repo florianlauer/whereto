@@ -131,6 +131,7 @@ function useMapStyles() {
         };
         cachedStyles = built;
         setStyles(built);
+        return;
       });
   }, []);
 

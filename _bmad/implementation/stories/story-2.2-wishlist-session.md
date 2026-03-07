@@ -45,8 +45,9 @@ clearWishlist()                      // vide tout
 ```
 
 Données POI disponibles dans le store :
+
 ```typescript
-const pois = useAppStore(s => s.pois)  // Record<string, POI[]>
+const pois = useAppStore((s) => s.pois); // Record<string, POI[]>
 // POI = { id, name, daysMin, daysMax, type }
 ```
 
@@ -75,6 +76,7 @@ const pois = useAppStore(s => s.pois)  // Record<string, POI[]>
 ## Acceptance Criteria
 
 ### AC-1 : Checkbox par POI
+
 Given the destination panel is open and shows a POI list,
 When the user looks at the POI items,
 Then each POI has a checkbox on the left of its row.
@@ -85,6 +87,7 @@ And la checkbox apparaît cochée visuellement
 And le `WishlistCounter` se met à jour immédiatement.
 
 ### AC-2 : Format du WishlistCounter
+
 Given one or more POIs are in the wishlist,
 When the WishlistCounter is rendered,
 Then it shows: "{N} POI{s} · ~{sum}j"
@@ -96,12 +99,14 @@ When the panel is rendered,
 Then the WishlistCounter is not visible (no empty state shown).
 
 ### AC-3 : Persistance cross-country
+
 Given the user checked POI "ge-kazbegi" in the Géorgie panel,
 When they close the panel and open the Serbie panel,
 Then "ge-kazbegi" is still in wishlistItems (Zustand store)
 And Serbia's POIs appear unchecked.
 
 ### AC-4 : Décocher un POI
+
 Given a POI is checked (in wishlistItems),
 When the user clicks its row again,
 Then `removeFromWishlist(poiId)` is called
@@ -109,6 +114,7 @@ And the checkbox appears unchecked
 And the WishlistCounter updates immediately.
 
 ### AC-5 : Persistance localStorage
+
 Given the user checked POIs and refreshes the page,
 When the app reloads,
 Then `wishlistItems` is restored from localStorage
@@ -116,6 +122,7 @@ And the previously checked POIs appear checked when their panel is opened.
 (This is guaranteed by the existing Zustand persist middleware — no extra code needed.)
 
 ### AC-6 : Bouton "Effacer" dans le counter
+
 Given the WishlistCounter is visible,
 When the user clicks "Effacer",
 Then `clearWishlist()` is called
@@ -127,31 +134,34 @@ And the WishlistCounter disappears.
 ## Tasks
 
 ### Task 1 — Ajouter les checkboxes dans `DestinationPanel`
+
 **Fichier** : `src/components/destination/DestinationPanel.tsx`
 
 Lire `wishlistItems` depuis le store et les actions `addToWishlist` / `removeFromWishlist` :
 
 ```typescript
-const wishlistItems = useAppStore((s) => s.wishlistItems)
-const addToWishlist = useAppStore((s) => s.addToWishlist)
-const removeFromWishlist = useAppStore((s) => s.removeFromWishlist)
+const wishlistItems = useAppStore((s) => s.wishlistItems);
+const addToWishlist = useAppStore((s) => s.addToWishlist);
+const removeFromWishlist = useAppStore((s) => s.removeFromWishlist);
 
 function togglePoi(poi: POI) {
-  const isChecked = wishlistItems.some((i) => i.poiId === poi.id)
+  const isChecked = wishlistItems.some((i) => i.poiId === poi.id);
   if (isChecked) {
-    removeFromWishlist(poi.id)
+    removeFromWishlist(poi.id);
   } else {
-    addToWishlist({ poiId: poi.id, countryCode, daysMin: poi.daysMin })
+    addToWishlist({ poiId: poi.id, countryCode, daysMin: poi.daysMin });
   }
 }
 ```
 
 Dans la liste POI, modifier chaque `<li>` pour :
+
 - Rendre la ligne cliquable (`onClick={() => togglePoi(poi)}`, `cursor-pointer`)
 - Ajouter une checkbox visuelle custom à gauche (carré arrondi, coché = vert)
 - État coché = `wishlistItems.some(i => i.poiId === poi.id)`
 
 Style checkbox :
+
 ```tsx
 // Non coché :
 <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded border border-white/20" />
@@ -166,6 +176,7 @@ Style checkbox :
 ---
 
 ### Task 2 — Créer `WishlistCounter`
+
 **Fichier** : `src/components/destination/WishlistCounter.tsx` (nouveau)
 
 Composant affiché dans `DestinationPanel` entre le contenu scrollable et le disclaimer.
@@ -205,6 +216,7 @@ export function WishlistCounter({ onClear }: Props) {
 ---
 
 ### Task 3 — Intégrer `WishlistCounter` dans `DestinationPanel`
+
 **Fichier** : `src/components/destination/DestinationPanel.tsx`
 
 Importer `WishlistCounter` et `clearWishlist` depuis le store.
@@ -234,6 +246,7 @@ Aucune modification du store (`appStore.ts`) — déjà prêt.
 ---
 
 ## Definition of Done
+
 - [ ] Chaque POI a une checkbox, clic sur la ligne toggle l'état
 - [ ] POI coché = visually distinct (border + bg verts)
 - [ ] WishlistCounter visible avec format "N POIs · ~Xj" dès qu'un POI est coché

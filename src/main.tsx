@@ -26,6 +26,7 @@ function App() {
       .then((data) => {
         setStaticData(data);
         setLoaded(true);
+        return;
       })
       .catch((err: Error) => {
         console.error("[App] Failed to load static data:", err);

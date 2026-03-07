@@ -29,11 +29,11 @@ La wishlist n'est visible que quand elle contient des éléments.
 
 ## User Personas — Contexte UX
 
-| Persona | Env. d'utilisation | État émotionnel | Implications UX |
-|---------|-------------------|-----------------|-----------------|
-| A — Voyageur ouvert | Bureau, desktop, moment calme de planification | Curieux, indécis, ouvert à la surprise | La carte doit déclencher des "je ne savais pas que c'était possible" |
-| B — Budget-first | Mobile ou desktop, rapide, goal-oriented | Focalisé sur le chiffre, méfiant des prix cachés | Les estimations de coût doivent être immédiatement visibles et honnêtes |
-| C — Planificateur groupe | Desktop, partage d'écran ou lien partagé | Cherche un consensus | L'URL partageable doit restaurer fidèlement la vue |
+| Persona                  | Env. d'utilisation                             | État émotionnel                                  | Implications UX                                                         |
+| ------------------------ | ---------------------------------------------- | ------------------------------------------------ | ----------------------------------------------------------------------- |
+| A — Voyageur ouvert      | Bureau, desktop, moment calme de planification | Curieux, indécis, ouvert à la surprise           | La carte doit déclencher des "je ne savais pas que c'était possible"    |
+| B — Budget-first         | Mobile ou desktop, rapide, goal-oriented       | Focalisé sur le chiffre, méfiant des prix cachés | Les estimations de coût doivent être immédiatement visibles et honnêtes |
+| C — Planificateur groupe | Desktop, partage d'écran ou lien partagé       | Cherche un consensus                             | L'URL partageable doit restaurer fidèlement la vue                      |
 
 ---
 
@@ -67,6 +67,7 @@ La wishlist n'est visible que quand elle contient des éléments.
 ```
 
 **Comportement du panel contextuel :**
+
 - Fermé par défaut — carte 100% de la largeur
 - S'ouvre en slide-in depuis la droite au clic sur un pays (largeur ~380px)
 - La carte se redimensionne légèrement à gauche (pas d'overlay) — la destination reste
@@ -89,6 +90,7 @@ La wishlist n'est visible que quand elle contient des éléments.
 ```
 
 **États de la carte (couleurs de pays) :**
+
 - Aucun filtre actif → tous les pays en teinte neutre (gris foncé légèrement lumineux)
 - Filtres actifs → gradient vert/amber/rouge selon score de match
 - Pays sans data → gris très foncé, non-cliquable, tooltip "Données non disponibles"
@@ -100,6 +102,7 @@ La wishlist n'est visible que quand elle contient des éléments.
 **Objectif** : Voir la carte "s'allumer" selon les critères. C'est l'aha-moment.
 
 **Interaction filtres :**
+
 - Clic sur "Budget €/j" → dropdown avec slider range (ex: 0—200€/jour)
 - Clic sur "Durée" → dropdown avec slider simple (1—30 jours)
 - Clic sur "Mois" → dropdown grid de mois (12 cases cliquables, multi-select)
@@ -109,6 +112,7 @@ La wishlist n'est visible que quand elle contient des éléments.
 Le badge de résultats se met à jour : "34 destinations dans tes critères".
 
 **Score de match (coloring) :**
+
 - ✅ Vert intense → budget AND saison correspondent
 - 🟡 Amber → budget OK, saison sub-optimale (ou inversement)
 - 🔴 Rouge estompé → hors budget ou hors saison
@@ -151,6 +155,7 @@ Le badge de résultats se met à jour : "34 destinations dans tes critères".
 ```
 
 **États des POIs :**
+
 - Unchecked → affiche le nom + durée estimée
 - Checked → ✅ coloré, durée s'ajoute au compteur wishlist
 - Le compteur en bas se met à jour en temps réel
@@ -175,6 +180,7 @@ mêmes métriques pour 2-3 destinations sélectionnées.
 **Déclencheur** : Clic sur le WishlistCounter (🧳 badge) dans n'importe quel DestinationPanel.
 
 **Layout** :
+
 ```
 ┌─────────────────────────────────────┐
 │  ✕  Mon Voyage                      │
@@ -201,18 +207,18 @@ mêmes métriques pour 2-3 destinations sélectionnées.
 
 ## Composants Critiques
 
-| Composant | Rôle | États |
-|-----------|------|-------|
-| **FilterBar** | Top bar avec les 3 filtres principaux | default, filter-active, loading, expanded (un dropdown ouvert) |
-| **MapLayer** | Carte MapLibre avec coloring de pays | no-filter, filtered, hover-country, selected-country, loading |
-| **CountryTooltip** | Mini tooltip au hover sur un pays | default (nom + score), no-data (grisé) |
-| **DestinationPanel** | Panel slide-in droite — fiche pays | closed, open, loading, error, no-data |
-| **POICheckbox** | Item sélectionnable dans la fiche | unchecked, checked, disabled |
-| **WishlistCounter** | Badge récapitulatif wishlist MULTI-PAYS dans le panel — total tous pays confondus. Clic → ouvre vue récapitulative. | empty (masqué), 1+ item (visible + count), max-days-warning |
-| **ScoreBadge** | Indicateur de match coloré | great-match (vert), good (amber), poor (rouge) |
-| **MatchBadge** | Badge global "X destinations dans tes critères" | zero (message différent), 1-10, 11-50, 50+ |
-| **ComparisonDrawer** | Drawer fixé en bas — comparaison 1-3 destinations côte à côte | hidden (0 pays), 1-3 pays (visible), max-3 (replace oldest + toast) |
-| **TripSummaryPanel** | Panel récapitulatif voyage multi-pays | empty (masqué), 1-N pays avec POIs sélectionnés |
+| Composant            | Rôle                                                                                                                | États                                                               |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| **FilterBar**        | Top bar avec les 3 filtres principaux                                                                               | default, filter-active, loading, expanded (un dropdown ouvert)      |
+| **MapLayer**         | Carte MapLibre avec coloring de pays                                                                                | no-filter, filtered, hover-country, selected-country, loading       |
+| **CountryTooltip**   | Mini tooltip au hover sur un pays                                                                                   | default (nom + score), no-data (grisé)                              |
+| **DestinationPanel** | Panel slide-in droite — fiche pays                                                                                  | closed, open, loading, error, no-data                               |
+| **POICheckbox**      | Item sélectionnable dans la fiche                                                                                   | unchecked, checked, disabled                                        |
+| **WishlistCounter**  | Badge récapitulatif wishlist MULTI-PAYS dans le panel — total tous pays confondus. Clic → ouvre vue récapitulative. | empty (masqué), 1+ item (visible + count), max-days-warning         |
+| **ScoreBadge**       | Indicateur de match coloré                                                                                          | great-match (vert), good (amber), poor (rouge)                      |
+| **MatchBadge**       | Badge global "X destinations dans tes critères"                                                                     | zero (message différent), 1-10, 11-50, 50+                          |
+| **ComparisonDrawer** | Drawer fixé en bas — comparaison 1-3 destinations côte à côte                                                       | hidden (0 pays), 1-3 pays (visible), max-3 (replace oldest + toast) |
+| **TripSummaryPanel** | Panel récapitulatif voyage multi-pays                                                                               | empty (masqué), 1-N pays avec POIs sélectionnés                     |
 
 ---
 
@@ -220,30 +226,30 @@ mêmes métriques pour 2-3 destinations sélectionnées.
 
 ### Palette — Dark / Atmosphérique
 
-| Rôle | Couleur | Usage |
-|------|---------|-------|
-| Background app | `#0F1117` | Fond global derrière la carte |
-| Surface panel | `#1A1D27` | Panel destination, dropdowns |
-| Surface elevated | `#22263A` | Cards, tooltips |
-| Border subtle | `#2E3349` | Séparateurs, bordures input |
-| Text primary | `#F0F2FF` | Titres, valeurs importantes |
-| Text secondary | `#8B91A8` | Labels, metadata |
-| Text muted | `#4A5068` | Disclaimers, placeholders |
-| Accent primary | `#5B7FFF` | CTA principaux, liens, focus rings |
-| Match great | `#22C55E` | Pays très bien matchants |
-| Match good | `#EAB308` | Pays partiellement matchants |
-| Match poor | `#EF4444` | Pays hors critères |
-| Match none | `#2A2D3E` | Pays sans données |
+| Rôle             | Couleur   | Usage                              |
+| ---------------- | --------- | ---------------------------------- |
+| Background app   | `#0F1117` | Fond global derrière la carte      |
+| Surface panel    | `#1A1D27` | Panel destination, dropdowns       |
+| Surface elevated | `#22263A` | Cards, tooltips                    |
+| Border subtle    | `#2E3349` | Séparateurs, bordures input        |
+| Text primary     | `#F0F2FF` | Titres, valeurs importantes        |
+| Text secondary   | `#8B91A8` | Labels, metadata                   |
+| Text muted       | `#4A5068` | Disclaimers, placeholders          |
+| Accent primary   | `#5B7FFF` | CTA principaux, liens, focus rings |
+| Match great      | `#22C55E` | Pays très bien matchants           |
+| Match good       | `#EAB308` | Pays partiellement matchants       |
+| Match poor       | `#EF4444` | Pays hors critères                 |
+| Match none       | `#2A2D3E` | Pays sans données                  |
 
 ### Typographie
 
-| Usage | Font | Taille | Poids |
-|-------|------|--------|-------|
-| App name / H1 | Inter | 20px | 700 |
-| H2 (nom pays) | Inter | 18px | 600 |
-| Body / labels | Inter | 14px | 400 |
-| Caption / meta | Inter | 12px | 400 |
-| Budget chiffre | Inter | 16px | 600 |
+| Usage          | Font  | Taille | Poids |
+| -------------- | ----- | ------ | ----- |
+| App name / H1  | Inter | 20px   | 700   |
+| H2 (nom pays)  | Inter | 18px   | 600   |
+| Body / labels  | Inter | 14px   | 400   |
+| Caption / meta | Inter | 12px   | 400   |
+| Budget chiffre | Inter | 16px   | 600   |
 
 ### Spacing
 
@@ -262,13 +268,14 @@ telles ("estimé", "indicatif") — pas de fausse précision.
 
 **Desktop-first** — breakpoints desktop prioritaires, mobile utilisable.
 
-| Breakpoint | Layout |
-|-----------|--------|
-| ≥ 1280px (desktop) | Top bar complète + carte + panel slide-in |
-| 768-1279px (tablet) | Top bar condensée (icônes + labels courts) + carte + panel slide-in |
-| < 768px (mobile) | Top bar mini (budget + durée seulement) + carte plein écran + bottom sheet pour la fiche destination |
+| Breakpoint          | Layout                                                                                               |
+| ------------------- | ---------------------------------------------------------------------------------------------------- |
+| ≥ 1280px (desktop)  | Top bar complète + carte + panel slide-in                                                            |
+| 768-1279px (tablet) | Top bar condensée (icônes + labels courts) + carte + panel slide-in                                  |
+| < 768px (mobile)    | Top bar mini (budget + durée seulement) + carte plein écran + bottom sheet pour la fiche destination |
 
 **Sur mobile :**
+
 - Les filtres "Mois" et "Filtres +" sont dans un bottom sheet dédié
 - La fiche destination s'ouvre en bottom sheet (80% de hauteur) plutôt qu'en panel latéral
 - La carte reste accessible derrière le bottom sheet (drag down pour fermer)

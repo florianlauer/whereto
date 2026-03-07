@@ -29,18 +29,18 @@ so that I can make a final decision without switching between panels.
 
 ```typescript
 // src/components/map/MapView.tsx
-const [comparisonList, setComparisonList] = useState<string[]>([])
+const [comparisonList, setComparisonList] = useState<string[]>([]);
 // Max 3 country codes. Pas persisté (session uniquement).
 
 function addToComparison(code: string) {
-  setComparisonList(prev => {
-    if (prev.includes(code)) return prev.filter(c => c !== code) // toggle off
+  setComparisonList((prev) => {
+    if (prev.includes(code)) return prev.filter((c) => c !== code); // toggle off
     if (prev.length >= 3) {
-      toast("Destination la plus ancienne retirée")
-      return [...prev.slice(1), code]
+      toast("Destination la plus ancienne retirée");
+      return [...prev.slice(1), code];
     }
-    return [...prev, code]
-  })
+    return [...prev, code];
+  });
 }
 ```
 
@@ -63,6 +63,7 @@ function addToComparison(code: string) {
 ## Acceptance Criteria
 
 ### AC-1 : Bouton "Comparer" dans DestinationPanel
+
 Given the destination panel is open,
 When the user looks at the bottom of the panel,
 Then a "Comparer" button is visible.
@@ -72,22 +73,26 @@ Then the destination is added to the comparison list (max 3)
 And a ComparisonDrawer slides up from the bottom of the screen.
 
 ### AC-2 : Format du ComparisonDrawer
+
 Given 2+ destinations are in the comparison list,
 When the ComparisonDrawer is open,
 Then each destination is shown in a column with:
-  - country name + region
-  - match badge (if filters active)
-  - budget range (low–high €/j)
-  - recommended duration (min–max j)
-  - safety score (dots 1–5)
+
+- country name + region
+- match badge (if filters active)
+- budget range (low–high €/j)
+- recommended duration (min–max j)
+- safety score (dots 1–5)
 
 ### AC-3 : Limite de 3 destinations
+
 Given 3 destinations are in the comparison,
 When the user adds a 4th via "Comparer",
 Then a toast reads "Destination la plus ancienne retirée"
 And the oldest is replaced.
 
 ### AC-4 : Retirer une destination
+
 Given the ComparisonDrawer is open with 2+ destinations,
 When the user clicks ✕ on a column,
 Then that destination is removed from the list.
@@ -96,6 +101,7 @@ Given only 1 destination remains and the user removes it,
 Then the ComparisonDrawer closes automatically.
 
 ### AC-5 : Toggle état dans DestinationPanel
+
 Given a destination is in the comparison list,
 When its panel is open,
 Then the button shows "Dans la comparaison" (état actif visuel)
@@ -106,6 +112,7 @@ And clicking it removes the destination from the comparison.
 ## Tasks
 
 ### Task 1 — Installer sonner et ajouter le Toaster
+
 **Fichiers** : `package.json`, `src/main.tsx`
 
 ```bash
@@ -113,13 +120,14 @@ bun add sonner
 ```
 
 Dans `main.tsx`, importer et placer `<Toaster>` :
+
 ```tsx
-import { Toaster } from 'sonner'
+import { Toaster } from "sonner";
 // Dans App() return :
 <>
   <RouterProvider router={router} />
   <Toaster position="bottom-center" theme="dark" />
-</>
+</>;
 ```
 
 **(AC: #3)**
@@ -127,16 +135,18 @@ import { Toaster } from 'sonner'
 ---
 
 ### Task 2 — Créer `ComparisonDrawer`
+
 **Fichier** : `src/components/destination/ComparisonDrawer.tsx` (nouveau)
 
 Props :
+
 ```typescript
 type Props = {
-  codes: string[]
-  filters: Filters
-  onRemove: (code: string) => void
-  onClearAll: () => void
-}
+  codes: string[];
+  filters: Filters;
+  onRemove: (code: string) => void;
+  onClearAll: () => void;
+};
 ```
 
 Slide-up depuis le bas avec transition CSS (même pattern que DestinationPanel).
@@ -147,15 +157,17 @@ Grille `grid-cols-{N}` dynamique selon le nombre de destinations.
 ---
 
 ### Task 3 — Modifier DestinationPanel
+
 **Fichier** : `src/components/destination/DestinationPanel.tsx`
 
 Ajouter props :
+
 ```typescript
 type Props = {
   // ... existant ...
-  isInComparison?: boolean
-  onCompare?: () => void
-}
+  isInComparison?: boolean;
+  onCompare?: () => void;
+};
 ```
 
 Ajouter bouton "Comparer" / "Dans la comparaison" après la section Google Flights.
@@ -165,6 +177,7 @@ Ajouter bouton "Comparer" / "Dans la comparaison" après la section Google Fligh
 ---
 
 ### Task 4 — Câbler dans MapView
+
 **Fichier** : `src/components/map/MapView.tsx`
 
 - `comparisonList` state (useState)
@@ -190,6 +203,7 @@ Aucune modification du store (`appStore.ts`) — état local MapView.
 ---
 
 ## Definition of Done
+
 - [ ] Bouton "Comparer" visible dans DestinationPanel
 - [ ] Clic → destination ajoutée + drawer slide-up
 - [ ] Max 3 : toast + remplacement de l'ancienne

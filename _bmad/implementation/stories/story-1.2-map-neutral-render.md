@@ -28,6 +28,7 @@ Story 1.1 a posé les bases : Vite + React 19, Zustand store avec `countries` et
 chargés, `routeTree.gen.ts` généré. Cette story rend la carte visible pour la première fois.
 
 **Bibliothèques disponibles** (installées en 1.1, à utiliser ici) :
+
 - `maplibre-gl` + `react-map-gl@^8` — rendu de la carte de fond (tuiles vectorielles)
 - `deck.gl` — couche GeoJSON pour la colorisation des pays
 
@@ -125,9 +126,9 @@ src/
 
 ```tsx
 // src/components/map/MapView.tsx
-import { DeckGL } from '@deck.gl/react'
-import { Map } from 'react-map-gl/maplibre'
-import { useCountriesLayer } from './useCountriesLayer'
+import { DeckGL } from "@deck.gl/react";
+import { Map } from "react-map-gl/maplibre";
+import { useCountriesLayer } from "./useCountriesLayer";
 
 const INITIAL_VIEW_STATE = {
   longitude: 15,
@@ -135,24 +136,20 @@ const INITIAL_VIEW_STATE = {
   zoom: 1.8,
   pitch: 0,
   bearing: 0,
-}
+};
 
-const MAP_STYLE = 'https://tiles.openfreemap.org/styles/dark'
+const MAP_STYLE = "https://tiles.openfreemap.org/styles/dark";
 
 export function MapView() {
-  const layers = useCountriesLayer()
+  const layers = useCountriesLayer();
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      <DeckGL
-        initialViewState={INITIAL_VIEW_STATE}
-        controller={true}
-        layers={layers}
-      >
+    <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+      <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={layers}>
         <Map mapStyle={MAP_STYLE} />
       </DeckGL>
     </div>
-  )
+  );
 }
 ```
 
@@ -160,22 +157,26 @@ export function MapView() {
 
 ```typescript
 // src/components/map/useCountriesLayer.ts
-import { GeoJsonLayer } from '@deck.gl/layers'
-import { useAppStore } from '@/stores/appStore'
-import { useState } from 'react'
+import { GeoJsonLayer } from "@deck.gl/layers";
+import { useAppStore } from "@/stores/appStore";
+import { useState } from "react";
 
-const COLOR_DATA_NEUTRAL: [number, number, number, number] = [99, 102, 120, 178]  // neutral muted
-const COLOR_NO_DATA: [number, number, number, number] = [42, 45, 62, 255]          // #2A2D3E
-const COLOR_HOVER: [number, number, number, number] = [140, 145, 170, 220]         // brightened
+const COLOR_DATA_NEUTRAL: [number, number, number, number] = [99, 102, 120, 178]; // neutral muted
+const COLOR_NO_DATA: [number, number, number, number] = [42, 45, 62, 255]; // #2A2D3E
+const COLOR_HOVER: [number, number, number, number] = [140, 145, 170, 220]; // brightened
 
 export function useCountriesLayer() {
-  const { countries, geojson } = useAppStore()
-  const [hoverInfo, setHoverInfo] = useState<{ object: GeoJSON.Feature | null; x: number; y: number } | null>(null)
+  const { countries, geojson } = useAppStore();
+  const [hoverInfo, setHoverInfo] = useState<{
+    object: GeoJSON.Feature | null;
+    x: number;
+    y: number;
+  } | null>(null);
 
-  if (!geojson) return []
+  if (!geojson) return [];
 
   const layer = new GeoJsonLayer({
-    id: 'countries-layer',
+    id: "countries-layer",
     data: geojson,
     pickable: true,
     stroked: true,
@@ -184,30 +185,30 @@ export function useCountriesLayer() {
     getLineColor: [60, 60, 80, 180],
     getLineWidth: 1,
     getFillColor: (feature: GeoJSON.Feature) => {
-      const iso = feature.properties?.iso_a2
-      if (!iso || !countries[iso]) return COLOR_NO_DATA
-      if (hoverInfo?.object === feature) return COLOR_HOVER
-      return COLOR_DATA_NEUTRAL
+      const iso = feature.properties?.iso_a2;
+      if (!iso || !countries[iso]) return COLOR_NO_DATA;
+      if (hoverInfo?.object === feature) return COLOR_HOVER;
+      return COLOR_DATA_NEUTRAL;
     },
     updateTriggers: {
       getFillColor: [hoverInfo?.object],
     },
     onHover: (info) => {
-      const iso = info.object?.properties?.iso_a2
+      const iso = info.object?.properties?.iso_a2;
       if (info.object && iso && countries[iso]) {
-        setHoverInfo({ object: info.object, x: info.x, y: info.y })
+        setHoverInfo({ object: info.object, x: info.x, y: info.y });
       } else {
-        setHoverInfo(null)
+        setHoverInfo(null);
       }
     },
     getCursor: ({ isHovered }) => {
-      if (!isHovered) return 'grab'
+      if (!isHovered) return "grab";
       // pickable est toujours true mais on bloque visuellement via couleur
-      return 'pointer'
+      return "pointer";
     },
-  })
+  });
 
-  return [layer, hoverInfo] as const  // hoverInfo exposé pour le tooltip
+  return [layer, hoverInfo] as const; // hoverInfo exposé pour le tooltip
 }
 ```
 
@@ -224,20 +225,20 @@ Si un comportement non-pickable strict est requis, séparer en deux GeoJsonLayer
 ```tsx
 // src/components/map/CountryTooltip.tsx
 type Props = {
-  x: number
-  y: number
-  name: string
-}
+  x: number;
+  y: number;
+  name: string;
+};
 
 export function CountryTooltip({ x, y, name }: Props) {
   return (
     <div
-      style={{ position: 'absolute', left: x + 12, top: y - 28, pointerEvents: 'none' }}
+      style={{ position: "absolute", left: x + 12, top: y - 28, pointerEvents: "none" }}
       className="rounded bg-gray-900/90 px-2 py-1 text-xs text-white shadow"
     >
       {name}
     </div>
-  )
+  );
 }
 ```
 
@@ -256,7 +257,7 @@ MapLibre GL JS requiert son CSS pour le rendu correct des contrôles et de la ca
 
 ```css
 /* src/index.css — ajouter après @import tailwindcss */
-@import 'maplibre-gl/dist/maplibre-gl.css';
+@import "maplibre-gl/dist/maplibre-gl.css";
 ```
 
 ---
@@ -275,6 +276,7 @@ And the toggle button reflects the current active style.
 ```
 
 **Sources de tuiles satellite (voir technical-mapping-stack-2026-03-01.md)** :
+
 - MVP : ESRI World Imagery (gratuit, sans clé API)
   → XYZ raster : `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}`
 - Production : Stadia Maps Alidade Satellite ($80/mois) avec vraie clé API
@@ -307,4 +309,3 @@ And the toggle button reflects the current active style.
 - AC mobile FilterBar compact → **déplacé story 1.3**
 - Curseur par-feature strict (pays sans data non-pointable) → deux layers séparées
   si feedback utilisateur le requiert, sinon MVP acceptable
-

@@ -27,7 +27,6 @@ createdAt: "2026-03-01"
 
 ### Apps de découverte (phase pré-destination)
 
-
 | Outil                      | Positionnement                      | Forces                                  | Faiblesses                                             | Gap                                 |
 | -------------------------- | ----------------------------------- | --------------------------------------- | ------------------------------------------------------ | ----------------------------------- |
 | **Google Maps**            | Navigation + découverte locale      | 1.9B MAU, Explore tab, IA Gemini        | Assume destination déjà choisie, 0 filtre budget/durée | Découverte mondiale pré-destination |
@@ -35,16 +34,13 @@ createdAt: "2026-03-01"
 | **TripAdvisor**            | Avis + booking                      | 1M+ hôtels, 50M+ reviews                | Réactif (basé avis), aucun filtre destination          | Outil de découverte proactif        |
 | **Google Flights / Kayak** | Comparaison vols                    | Explore map avec prix de vols           | Vols uniquement, pas coût total voyage                 | Budget voyage complet               |
 
-
 ### Apps de planification (post-destination)
-
 
 | Outil            | Positionnement           | Prix                   | Faiblesses                       |
 | ---------------- | ------------------------ | ---------------------- | -------------------------------- |
 | **Wanderlog**    | Planificateur tout-en-un | Free + Pro $39.99/an   | Assume destination connue        |
 | **Roadtrippers** | Road trip planner        | Free + Pro $49.99/an   | USA only, 7 waypoints max (free) |
 | **PolarSteps**   | Documentation voyage     | Free + livres imprimés | Post-voyage, pas de découverte   |
-
 
 ### IA émergente (2024–2026)
 
@@ -88,7 +84,6 @@ createdAt: "2026-03-01"
 
 ### Ce qui manque dans le marché
 
-
 | Gap                                              | Raison                                                                              | Impact                              |
 | ------------------------------------------------ | ----------------------------------------------------------------------------------- | ----------------------------------- |
 | **Découverte carte mondiale par budget + durée** | Les apps existantes sont soit post-destination (Wanderlog), soit niche (Nomad List) | FORT — besoin universel non adressé |
@@ -96,7 +91,6 @@ createdAt: "2026-03-01"
 | **Budget comme filtre principal**                | Kayak/Google Flights filtrent les vols, pas le coût total du voyage                 | FORT                                |
 | **Filtre par durée de séjour**                   | Aucun outil ne distingue "weekend" vs "2 semaines" pour suggérer une destination    | MOYEN                               |
 | **Positionnement grand public**                  | Nomad List = nomades, Roadtrippers = road trip, reste = post-booking                | FORT                                |
-
 
 ### Pourquoi les acteurs existants ne combleront pas ce gap
 
@@ -118,4 +112,3 @@ createdAt: "2026-03-01"
 - SNS Insider — AI-Driven Travel Personalization Market
 - Google Blog — Gemini Maps Features
 - Wanderlog, PolarSteps, Nomad List — sites officiels
-

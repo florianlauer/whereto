@@ -1,10 +1,15 @@
 {
   "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "jsx-a11y", "import", "vitest", "promise"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
   "rules": {
     "no-unused-vars": "warn",
-    "no-fallthrough": "error"
-  },
-  "categories": {
-    "correctness": "error"
+    "no-fallthrough": "error",
+    "react/react-in-jsx-scope": "off",
+    "import/no-unassigned-import": "off"
   }
 }

@@ -29,6 +29,7 @@ Cette story ajoute les filtres et le scoring : quand un filtre est actif, les co
 neutres laissent place aux couleurs de match (vert/ambre/rouge).
 
 **Intégration clé avec story 1.2** :
+
 - `useCountriesLayer` doit accepter `filters` en plus de `mapStyle`
 - `getFillColor` remplace la logique neutre par `MATCH_COLORS[calculateMatch(...)]`
   quand au moins un filtre est actif
@@ -139,6 +140,7 @@ src/
 ```
 
 Fichiers **modifiés** :
+
 - `src/components/map/useCountriesLayer.ts` — accepte `filters: Filters`
 - `src/routes/index.tsx` — intègre FilterBar + badge compteur
 - `src/components/map/MapView.tsx` — passe les filtres à `useCountriesLayer`
@@ -146,62 +148,67 @@ Fichiers **modifiés** :
 ### `src/lib/scoring.ts` — spec exacte (ADR-003)
 
 ```typescript
-import type { Country } from './data'
+import type { Country } from "./data";
 
-export type MatchLevel = 'great' | 'good' | 'poor' | 'no-data'
+export type MatchLevel = "great" | "good" | "poor" | "no-data";
 
 export type Filters = {
-  budget?: number   // €/jour
-  days?: number     // durée séjour
-  month?: number    // 1–12
-}
+  budget?: number; // €/jour
+  days?: number; // durée séjour
+  month?: number; // 1–12
+};
 
 export const MATCH_COLORS: Record<MatchLevel, [number, number, number, number]> = {
-  great:     [34,  197, 94,  220],  // #22C55E
-  good:      [234, 179, 8,   220],  // #EAB308
-  poor:      [239, 68,  68,  100],  // #EF4444 @ 40%
-  'no-data': [42,  45,  62,  255],  // #2A2D3E
-}
+  great: [34, 197, 94, 220], // #22C55E
+  good: [234, 179, 8, 220], // #EAB308
+  poor: [239, 68, 68, 100], // #EF4444 @ 40%
+  "no-data": [42, 45, 62, 255], // #2A2D3E
+};
 
 export function hasActiveFilters(filters: Filters): boolean {
-  return filters.budget !== undefined || filters.days !== undefined || filters.month !== undefined
+  return filters.budget !== undefined || filters.days !== undefined || filters.month !== undefined;
 }
 
 export function countMatches(countries: Record<string, Country>, filters: Filters): number {
-  if (!hasActiveFilters(filters)) return 0
+  if (!hasActiveFilters(filters)) return 0;
   return Object.values(countries).filter((c) => {
-    const level = calculateMatch(c, filters)
-    return level === 'great' || level === 'good'
-  }).length
+    const level = calculateMatch(c, filters);
+    return level === "great" || level === "good";
+  }).length;
 }
 
 export function calculateMatch(country: Country, filters: Filters): MatchLevel {
-  if (!country.dailyBudgetMid) return 'no-data'
+  if (!country.dailyBudgetMid) return "no-data";
 
-  const budgetMatch = filters.budget === undefined || country.dailyBudgetMid <= filters.budget
-  const seasonMatch = filters.month === undefined || country.bestMonths.includes(filters.month)
+  const budgetMatch = filters.budget === undefined || country.dailyBudgetMid <= filters.budget;
+  const seasonMatch = filters.month === undefined || country.bestMonths.includes(filters.month);
   const durationMatch =
     filters.days === undefined ||
-    (filters.days >= country.recommendedDaysMin && filters.days <= country.recommendedDaysMax)
+    (filters.days >= country.recommendedDaysMin && filters.days <= country.recommendedDaysMax);
 
-  const score = [budgetMatch, seasonMatch, durationMatch].filter(Boolean).length
-  if (score === 3) return 'great'
-  if (score === 2) return 'good'
-  return 'poor'
+  const score = [budgetMatch, seasonMatch, durationMatch].filter(Boolean).length;
+  if (score === 3) return "great";
+  if (score === 2) return "good";
+  return "poor";
 }
 ```
 
 ### Mise à jour `useCountriesLayer`
 
 Signature étendue :
+
 ```typescript
-export function useCountriesLayer(mapStyle: MapStyle = 'dark', filters: Filters = {}): {
-  layer: GeoJsonLayer | null
-  hoverInfo: HoverInfo
-}
+export function useCountriesLayer(
+  mapStyle: MapStyle = "dark",
+  filters: Filters = {},
+): {
+  layer: GeoJsonLayer | null;
+  hoverInfo: HoverInfo;
+};
 ```
 
 Logique `getFillColor` mise à jour :
+
 ```typescript
 getFillColor: (feature: Feature) => {
   const iso = feature.properties?.iso_a2 as string | undefined
@@ -263,8 +270,8 @@ Styles : `rounded-full bg-gray-900/90 px-3 py-1.5 text-sm text-white backdrop-bl
 
 ```tsx
 function MapPage() {
-  const { budget, days, month } = Route.useSearch()
-  const filters: Filters = { budget, days, month }
+  const { budget, days, month } = Route.useSearch();
+  const filters: Filters = { budget, days, month };
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
@@ -272,7 +279,7 @@ function MapPage() {
       <MapView filters={filters} />
       <MatchBadge filters={filters} />
     </div>
-  )
+  );
 }
 ```
 

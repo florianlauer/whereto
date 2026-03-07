@@ -171,7 +171,7 @@ export function DestinationPanel({
                 >
                   {Array.from({ length: 5 }, (_, i) => (
                     <span
-                      key={i}
+                      key={`star-${i}`}
                       aria-hidden="true"
                       className={`text-sm leading-none ${i < country.safetyScore ? "text-amber-400" : "text-white/10"}`}
                     >
@@ -189,10 +189,10 @@ export function DestinationPanel({
               Meilleure saison
             </p>
             <div className="grid grid-cols-12 gap-0.5">
-              {MONTHS_LETTER.map((m, i) => {
+              {MONTHS_FULL.map((month, i) => {
                 const isBest = country.bestMonths.includes(i + 1);
                 return (
-                  <div key={i} className="flex flex-col items-center gap-1">
+                  <div key={month} className="flex flex-col items-center gap-1">
                     <div
                       className={[
                         "h-7 w-full rounded-sm transition-colors",
@@ -202,7 +202,7 @@ export function DestinationPanel({
                     <span
                       className={`text-[9px] leading-none ${isBest ? "text-green-400" : "text-gray-600"}`}
                     >
-                      {m}
+                      {MONTHS_LETTER[i]}
                     </span>
                   </div>
                 );
@@ -220,48 +220,43 @@ export function DestinationPanel({
                 {countryPois.map((poi) => {
                   const isChecked = wishlistItems.some((i) => i.poiId === poi.id);
                   return (
-                    <li
-                      key={poi.id}
-                      role="checkbox"
-                      aria-checked={isChecked}
-                      tabIndex={0}
-                      onClick={() => togglePoi(poi)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          togglePoi(poi);
-                        }
-                      }}
-                      className="group flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/5 focus:outline-none focus:ring-1 focus:ring-green-500/50"
-                    >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        {isChecked ? (
-                          <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded border border-green-500 bg-green-500/20">
-                            <svg width="10" height="10" viewBox="0 0 10 10">
-                              <path
-                                d="M2 5l2.5 2.5L8 3"
-                                stroke="#4ade80"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                fill="none"
-                              />
-                            </svg>
+                    <li key={poi.id}>
+                      <label className="group flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/5 focus-within:ring-1 focus-within:ring-green-500/50">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => togglePoi(poi)}
+                            className="sr-only"
+                          />
+                          {isChecked ? (
+                            <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded border border-green-500 bg-green-500/20">
+                              <svg width="10" height="10" viewBox="0 0 10 10">
+                                <path
+                                  d="M2 5l2.5 2.5L8 3"
+                                  stroke="#4ade80"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  fill="none"
+                                />
+                              </svg>
+                            </span>
+                          ) : (
+                            <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded border border-white/20" />
+                          )}
+                          <span
+                            className={`truncate text-sm transition-colors ${isChecked ? "text-white" : "text-gray-300 group-hover:text-white"}`}
+                          >
+                            {poi.name}
                           </span>
-                        ) : (
-                          <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded border border-white/20" />
-                        )}
-                        <span
-                          className={`truncate text-sm transition-colors ${isChecked ? "text-white" : "text-gray-300 group-hover:text-white"}`}
-                        >
-                          {poi.name}
+                        </div>
+                        <span className="shrink-0 text-xs tabular-nums text-gray-600">
+                          {poi.daysMin === poi.daysMax
+                            ? `${poi.daysMin}j`
+                            : `${poi.daysMin}–${poi.daysMax}j`}
                         </span>
-                      </div>
-                      <span className="shrink-0 text-xs tabular-nums text-gray-600">
-                        {poi.daysMin === poi.daysMax
-                          ? `${poi.daysMin}j`
-                          : `${poi.daysMin}–${poi.daysMax}j`}
-                      </span>
+                      </label>
                     </li>
                   );
                 })}

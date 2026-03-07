@@ -13,35 +13,35 @@ validatedWith: user (interactive session)
 
 ## Requirements Inventory
 
-| ID | Requirement | Priority | Epic |
-|----|-------------|----------|------|
-| FR-001 | Carte mondiale interactive colorée par score de match | Must Have | Epic 1 |
-| FR-002 | Filtre par budget journalier (coût de vie, hors vol) | Must Have | Epic 1 |
-| FR-003 | Filtre par durée de séjour | Must Have | Epic 1 |
-| FR-004 | Filtre par mois/saison | Must Have | Epic 1 |
-| FR-005 | Score de match calculé et affiché visuellement | Must Have | Epic 1 |
-| FR-008 | URL partageable avec filtres en query params | Must Have | Epic 1 |
-| FR-006 | Fiche destination (budget, saison, durée, POIs, sécurité) | Must Have | Epic 2 |
-| FR-007 | Wishlist — sélection POIs + temps estimé cumulé | Must Have | Epic 2 |
-| FR-009 | Lien vols (Google Flights) depuis la fiche | Should Have | Epic 2 |
-| FR-010 | Comparaison 2-3 destinations côte à côte | Should Have | Epic 3 |
-| FR-011 | Compte utilisateur optionnel (magic link / OAuth) | Should Have | Epic 4 |
-| FR-012 | Sauvegarde wishlist persistante (auth) | Should Have | Epic 4 |
+| ID     | Requirement                                               | Priority    | Epic   |
+| ------ | --------------------------------------------------------- | ----------- | ------ |
+| FR-001 | Carte mondiale interactive colorée par score de match     | Must Have   | Epic 1 |
+| FR-002 | Filtre par budget journalier (coût de vie, hors vol)      | Must Have   | Epic 1 |
+| FR-003 | Filtre par durée de séjour                                | Must Have   | Epic 1 |
+| FR-004 | Filtre par mois/saison                                    | Must Have   | Epic 1 |
+| FR-005 | Score de match calculé et affiché visuellement            | Must Have   | Epic 1 |
+| FR-008 | URL partageable avec filtres en query params              | Must Have   | Epic 1 |
+| FR-006 | Fiche destination (budget, saison, durée, POIs, sécurité) | Must Have   | Epic 2 |
+| FR-007 | Wishlist — sélection POIs + temps estimé cumulé           | Must Have   | Epic 2 |
+| FR-009 | Lien vols (Google Flights) depuis la fiche                | Should Have | Epic 2 |
+| FR-010 | Comparaison 2-3 destinations côte à côte                  | Should Have | Epic 3 |
+| FR-011 | Compte utilisateur optionnel (magic link / OAuth)         | Should Have | Epic 4 |
+| FR-012 | Sauvegarde wishlist persistante (auth)                    | Should Have | Epic 4 |
 
 ### NFR Coverage
 
-| ID | Métrique | Couvert par |
-|----|----------|-------------|
-| NFR-001 | Carte < 2s P90 | Story 1.1 (chargement parallèle + CDN Vercel) |
-| NFR-002 | Filtres < 300ms | Story 1.3 (scoring client-side sur données en mémoire) |
-| NFR-003 | Fiche < 500ms | Story 2.1 (données POIs en mémoire, pas de fetch) |
-| NFR-004 | Lighthouse > 80 | Story 1.1 (Vite config) — vérification post-Epic 1 |
-| NFR-007 | Supabase RLS | Story 4.1 (migration DB + policies) |
-| NFR-008 | Auth JWT | Story 4.2 (Supabase Auth) |
-| NFR-009 | WCAG 2.1 AA | Notes dans chaque story UI |
-| NFR-010 | Mobile responsive | Notes dans stories 1.2, 2.1 |
-| NFR-011 | Disclaimer 2022 | Story 2.1 (fiche destination) |
-| NFR-005/006 | Uptime + scalabilité | Couverts par architecture (Vercel + SPA statique) |
+| ID          | Métrique             | Couvert par                                            |
+| ----------- | -------------------- | ------------------------------------------------------ |
+| NFR-001     | Carte < 2s P90       | Story 1.1 (chargement parallèle + CDN Vercel)          |
+| NFR-002     | Filtres < 300ms      | Story 1.3 (scoring client-side sur données en mémoire) |
+| NFR-003     | Fiche < 500ms        | Story 2.1 (données POIs en mémoire, pas de fetch)      |
+| NFR-004     | Lighthouse > 80      | Story 1.1 (Vite config) — vérification post-Epic 1     |
+| NFR-007     | Supabase RLS         | Story 4.1 (migration DB + policies)                    |
+| NFR-008     | Auth JWT             | Story 4.2 (Supabase Auth)                              |
+| NFR-009     | WCAG 2.1 AA          | Notes dans chaque story UI                             |
+| NFR-010     | Mobile responsive    | Notes dans stories 1.2, 2.1                            |
+| NFR-011     | Disclaimer 2022      | Story 2.1 (fiche destination)                          |
+| NFR-005/006 | Uptime + scalabilité | Couverts par architecture (Vercel + SPA statique)      |
 
 ---
 
@@ -95,6 +95,7 @@ so that filtering and scoring work instantly with zero network requests after in
    And the vercel.json routes SPA fallback and `/api/*` correctly.
 
 **Notes d'implémentation** (voir `architecture.md`) :
+
 - Vite + React 19 + TanStack Router + Tailwind + shadcn/ui
 - `src/lib/data.ts` → `loadStaticData()` avec `Promise.all`
 - `src/stores/appStore.ts` → Zustand + persist middleware (partialize: wishlistItems seulement)
@@ -132,6 +133,7 @@ so that I immediately understand this is a map-first discovery experience.
    And the FilterBar is compact (icons only, labels on tap/expand).
 
 **Notes d'implémentation** :
+
 - `src/components/map/MapView.tsx` : `<DeckGL controller={true}><Map mapStyle={...}/></DeckGL>`
 - `src/components/map/CountriesLayer.ts` : `useCountriesLayer()` hook → GeoJsonLayer
 - `src/components/map/CountryTooltip.tsx` : tooltip hover
@@ -181,6 +183,7 @@ so that the world map immediately shows which destinations match my criteria.
    And it updates in real time as filters change.
 
 **Notes d'implémentation** :
+
 - `src/lib/scoring.ts` : `calculateMatch()` + `MATCH_COLORS` (voir ADR-003)
 - `src/routes/index.tsx` : `validateSearch` avec schema Zod `{ budget, days, month }`
 - Mise à jour couleurs : `updateTriggers: { getFillColor: [budget, days, month] }` dans GeoJsonLayer
@@ -235,6 +238,7 @@ so that I can evaluate the destination without leaving the map view.
    And it can be dismissed by dragging down.
 
 **Notes d'implémentation** :
+
 - `src/components/destination/DestinationPanel.tsx` : slide-in (CSS transform translateX)
 - Données depuis `useAppStore().countries[code]` et `useAppStore().pois[code]` — zéro fetch
 - Google Flights URL : `https://www.google.com/flights#search;f=CDG;t={iata_or_country}`
@@ -279,6 +283,7 @@ so that I can quickly judge if the destination fits my available time.
    And previously checked POIs appear checked in their respective country panels.
 
 **Notes d'implémentation** :
+
 - Zustand `addToWishlist` / `removeFromWishlist` (voir ADR-005)
 - `partialize` dans persist : seuls `wishlistItems` sont en localStorage
 - `WishlistItem` type : `{ poiId: string, countryCode: string, daysMin: number }`
@@ -310,6 +315,7 @@ so that I can evaluate the full trip at a glance and plan next steps.
    Then the POI is removed from the wishlist and the totals update immediately.
 
 **Notes d'implémentation** :
+
 - `src/components/destination/TripSummaryPanel.tsx` — panel slide-in gauche ou bottom sheet
 - Données depuis `useAppStore().wishlistItems` + `useAppStore().pois[countryCode]`
 - Regroupement par `countryCode` côté client
@@ -354,6 +360,7 @@ so that I can choose between destinations for the same trip without switching be
    And the drawer closes automatically when 0 destinations remain.
 
 **Notes d'implémentation** :
+
 - `comparisonList: string[]` (max 3 country codes) dans appStore ou état local MapPage
 - `src/components/destination/ComparisonDrawer.tsx` (bottom drawer, grid colonnes)
 - Toast : shadcn/ui Sonner
@@ -394,6 +401,7 @@ so that the auth and wishlist features can build on a secure and typed foundatio
    Then it returns a `UNAUTHORIZED` tRPC error.
 
 **Notes d'implémentation** :
+
 - Migration SQL complète dans `architecture.md` (profiles, wishlists, wishlist_items, RLS, trigger)
 - `api/index.ts` : Hono + `@hono/trpc-server` adapter
 - `src/server/context.ts` : `createContext` extrait le user depuis le cookie Supabase
@@ -430,6 +438,7 @@ so that my wishlist persists across devices.
    And the localStorage wishlist is cleared after successful sync.
 
 **Notes d'implémentation** :
+
 - `src/components/auth/AuthModal.tsx` : shadcn/ui Dialog, email input + Google OAuth button
 - `src/routes/auth/callback.tsx` : route de callback Supabase → sync → redirect à `/`
 - Préserver les query params lors du redirect OAuth (encoder dans le `state` OAuth)
@@ -466,6 +475,7 @@ so that I can continue trip planning from any device.
    And the Zustand wishlist and localStorage are both cleared.
 
 **Notes d'implémentation** :
+
 - TanStack Query `useQuery` pour `trpc.wishlist.get` (déclenché quand `user !== null`)
 - Mutations optimistes : update store Zustand avant confirmation tRPC
 - Merge login : union localStorage + Supabase (upsert avec `UNIQUE(wishlist_id, poi_id)`)

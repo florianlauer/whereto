@@ -31,6 +31,7 @@ public/
 ```
 
 ## Where to Add New Code
+
 - **New component:** `src/components/<domain>/NewComponent.tsx`
 - **New filter:** Component in `src/components/filters/`, Zod field + logic in `src/routes/index.tsx`, matching in `src/lib/scoring.ts`
 - **New data type:** Type in `src/lib/data.ts`, JSON in `public/data/`, fetch in `loadStaticData()`, add to store

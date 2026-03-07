@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(devenv shell:*)",
+      "Bash(bun:*)",
+      "Bash(git:*)",
+      "Bash(gh repo:*)",
+      "Bash(bunx vite:*)",
+      "Bash(bunx:*)",
+      "Bash(python3:*)",
+      "Bash(curl:*)",
+      "Bash(grep:*)",
+      "mcp__browser-tools__takeScreenshot",
+      "mcp__browser-tools__getConsoleErrors",
+      "Bash(ls:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx oxfmt --write $CLAUDE_FILE_PATH"
+          }
+        ]
+      }
+    ]
+  }
+}

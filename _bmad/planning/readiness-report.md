@@ -18,6 +18,7 @@ stratégie décidée (Kaggle CC0 + complément Wikidata) et traitée dans la Sto
 ## Checklist
 
 ### PRD ✅
+
 - [x] PRD existe et est complet
 - [x] Tous les FRs Must Have présents (FR-001 à FR-008)
 - [x] NFRs avec métriques chiffrées (< 2s, < 300ms, < 500ms, > 99.5%, > 80 Lighthouse)
@@ -25,6 +26,7 @@ stratégie décidée (Kaggle CC0 + complément Wikidata) et traitée dans la Sto
 - [x] Aucune décision d'architecture dans le PRD
 
 ### Architecture ✅
+
 - [x] 10 ADRs documentés, tous validés interactivement avec l'utilisateur
 - [x] Aucun "à décider plus tard" sur des points structurants
 - [x] Schéma DB complet (profiles, wishlists, wishlist_items + RLS + trigger)
@@ -34,6 +36,7 @@ stratégie décidée (Kaggle CC0 + complément Wikidata) et traitée dans la Sto
 - [x] Un dev peut implémenter n'importe quelle story sans décision archi supplémentaire
 
 ### Epics & Stories ✅
+
 - [x] 12 FRs couverts (Must Have + Should Have)
 - [x] 9 stories, toutes avec ≥ 4 ACs Given/When/Then
 - [x] Séquençage correct (infra → data → UI, lecture → écriture)
@@ -41,6 +44,7 @@ stratégie décidée (Kaggle CC0 + complément Wikidata) et traitée dans la Sto
 - [x] MVP minimum défini : Epic 1 + Story 2.1
 
 ### UX ✅
+
 - [x] Journeys principaux couverts (découverte, comparaison, partage URL)
 - [x] 8 composants critiques identifiés avec leurs états
 - [x] États vides, d'erreur et de chargement mentionnés
@@ -48,6 +52,7 @@ stratégie décidée (Kaggle CC0 + complément Wikidata) et traitée dans la Sto
 - [x] Responsive strategy documentée
 
 ### Cohérence Globale ✅
+
 - [x] Architecture compatible avec les NFRs (client-side scoring → NFR-002 garanti)
 - [x] UX Spec réalisable avec la stack (MapLibre dark tiles, shadcn/ui Sheet pour bottom sheet)
 - [x] Epics ordonnés pour livrer de la valeur rapidement (Epic 1 = valeur core autonome)
@@ -77,6 +82,7 @@ dégradée mais pas bloquante (afficher "Données POIs bientôt disponibles" en 
 **Démarrer l'implémentation — Epic 1 en priorité. ✅**
 
 **Ordre recommandé :**
+
 1. **Story 1.1** — Setup + dataset (inclut spike Kaggle + Wikidata)
 2. **Story 1.2** — Carte neutre (peut démarrer en parallèle du dataset)
 3. **Story 1.3** — Filtres + scoring (dès 1.2 terminé)

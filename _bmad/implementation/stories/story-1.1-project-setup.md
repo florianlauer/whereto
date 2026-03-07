@@ -31,6 +31,7 @@ les stories suivantes s'appuient.
 **Package manager** : bun (déjà dans devenv, préféré à pnpm pour ce projet)
 
 **Stack à installer** (voir `architecture.md`) :
+
 - Vite 6 + React 19 + TypeScript
 - TanStack Router v1 (file-based routing)
 - Zustand 5 + middleware persist
@@ -154,70 +155,74 @@ whereto/
 
 ```typescript
 export type Country = {
-  code: string
-  name: string
-  region?: string
-  dailyBudgetLow: number
-  dailyBudgetMid: number
-  dailyBudgetHigh: number
-  bestMonths: number[]
-  recommendedDaysMin: number
-  recommendedDaysMax: number
-  safetyScore: number
-  dataYear: number
-}
+  code: string;
+  name: string;
+  region?: string;
+  dailyBudgetLow: number;
+  dailyBudgetMid: number;
+  dailyBudgetHigh: number;
+  bestMonths: number[];
+  recommendedDaysMin: number;
+  recommendedDaysMax: number;
+  safetyScore: number;
+  dataYear: number;
+};
 
 export type POI = {
-  id: string
-  name: string
-  daysMin: number
-  daysMax: number
-  type: 'city' | 'nature' | 'culture' | 'beach' | 'other'
-}
+  id: string;
+  name: string;
+  daysMin: number;
+  daysMax: number;
+  type: "city" | "nature" | "culture" | "beach" | "other";
+};
 
-export type CountriesMap = Record<string, Country>
-export type PoisMap = Record<string, POI[]>
+export type CountriesMap = Record<string, Country>;
+export type PoisMap = Record<string, POI[]>;
 
 export async function loadStaticData(): Promise<{
-  countries: CountriesMap
-  pois: PoisMap
-  geojson: GeoJSON.FeatureCollection
+  countries: CountriesMap;
+  pois: PoisMap;
+  geojson: GeoJSON.FeatureCollection;
 }> {
   const [countries, pois, geojson] = await Promise.all([
-    fetch('/data/countries.json').then(r => r.json()),
-    fetch('/data/pois.json').then(r => r.json()),
-    fetch('/geo/countries.geojson').then(r => r.json()),
-  ])
-  return { countries, pois, geojson }
+    fetch("/data/countries.json").then((r) => r.json()),
+    fetch("/data/pois.json").then((r) => r.json()),
+    fetch("/geo/countries.geojson").then((r) => r.json()),
+  ]);
+  return { countries, pois, geojson };
 }
 ```
 
 ### `src/stores/appStore.ts` — structure attendue
 
 ```typescript
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-import type { CountriesMap, PoisMap } from '@/lib/data'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { CountriesMap, PoisMap } from "@/lib/data";
 
 type WishlistItem = {
-  poiId: string
-  countryCode: string
-  daysMin: number
-}
+  poiId: string;
+  countryCode: string;
+  daysMin: number;
+};
 
 type AppStore = {
   // Données statiques (read-only après chargement)
-  countries: CountriesMap
-  pois: PoisMap
-  geojson: GeoJSON.FeatureCollection | null
-  setStaticData: (data: { countries: CountriesMap; pois: PoisMap; geojson: GeoJSON.FeatureCollection }) => void
+  countries: CountriesMap;
+  pois: PoisMap;
+  geojson: GeoJSON.FeatureCollection | null;
+  setStaticData: (data: {
+    countries: CountriesMap;
+    pois: PoisMap;
+    geojson: GeoJSON.FeatureCollection;
+  }) => void;
 
   // Wishlist anonyme (persistée dans localStorage)
-  wishlistItems: WishlistItem[]
-  addToWishlist: (item: WishlistItem) => void
-  removeFromWishlist: (poiId: string) => void
-  clearWishlist: () => void
-}
+  wishlistItems: WishlistItem[];
+  addToWishlist: (item: WishlistItem) => void;
+  removeFromWishlist: (poiId: string) => void;
+  clearWishlist: () => void;
+};
 
 export const useAppStore = create<AppStore>()(
   persist(
@@ -228,29 +233,30 @@ export const useAppStore = create<AppStore>()(
       setStaticData: (data) => set(data),
 
       wishlistItems: [],
-      addToWishlist: (item) =>
-        set((s) => ({ wishlistItems: [...s.wishlistItems, item] })),
+      addToWishlist: (item) => set((s) => ({ wishlistItems: [...s.wishlistItems, item] })),
       removeFromWishlist: (poiId) =>
-        set((s) => ({ wishlistItems: s.wishlistItems.filter(i => i.poiId !== poiId) })),
+        set((s) => ({ wishlistItems: s.wishlistItems.filter((i) => i.poiId !== poiId) })),
       clearWishlist: () => set({ wishlistItems: [] }),
     }),
     {
-      name: 'whereto-store',
+      name: "whereto-store",
       partialize: (state) => ({ wishlistItems: state.wishlistItems }),
-    }
-  )
-)
+    },
+  ),
+);
 ```
 
 ### Données statiques — sources recommandées
 
 **countries.geojson** — Natural Earth 110m countries :
+
 - URL de téléchargement directe : `https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson`
 - OU Natural Earth 110m depuis `naturalearthdata.com/downloads/110m-cultural-vectors/`
 - Vérifier que les features ont `properties.iso_a2` (code ISO-2 à 2 lettres)
 - Si `iso_a2 = "-99"` pour certains territoires → non-cliquables, normal
 
 **countries.json + pois.json** — Dataset à créer manuellement (MVP) :
+
 - Commencer avec ~30 destinations populaires couvrant toutes les régions
 - Exemples inclus dans `architecture.md` (Géorgie : GE)
 - Priorités géographiques : Europe de l'Est/Balkans, Asie du Sud-Est, Amérique Latine, Afrique du Nord — zones budget voyageur
@@ -300,5 +306,6 @@ Bun est déjà présent. Node n'est pas nécessaire séparément (bun inclut un 
 **Scope** : Setup complet + données — prévoir une session substantielle
 
 Points d'attention :
+
 - La création manuelle de `countries.json` (30+ pays) est la partie la plus longue
 - Valider que `iso_a2` dans le GeoJSON correspond aux codes de `countries.json` avant de commit

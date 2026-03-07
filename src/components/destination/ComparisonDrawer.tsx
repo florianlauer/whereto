@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAppStore } from "@/stores/appStore";
 import { calculateMatch, hasActiveFilters } from "@/lib/scoring";
 import type { Filters } from "@/lib/scoring";
-import { MONTHS_LETTER, MONTHS_FULL, MATCH_CONFIG } from "@/lib/constants";
+import { MONTHS_FULL, MATCH_CONFIG } from "@/lib/constants";
 
 type Props = {
   codes: string[];
@@ -172,12 +172,12 @@ export function ComparisonDrawer({ codes, filters, onRemove, onClearAll }: Props
                 </div>
                 {/* Best months — compact bar */}
                 <div className="flex gap-px pt-0.5">
-                  {MONTHS_LETTER.map((m, i) => {
+                  {MONTHS_FULL.map((month, i) => {
                     const isBest = country.bestMonths.includes(i + 1);
                     return (
                       <div
-                        key={i}
-                        title={MONTHS_FULL[i]}
+                        key={month}
+                        title={month}
                         className={`h-1.5 flex-1 rounded-full ${isBest ? "bg-green-500/60" : "bg-white/5"}`}
                       />
                     );

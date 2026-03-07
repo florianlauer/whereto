@@ -24,9 +24,10 @@ budgétée en quelques minutes.**
 
 ### La douleur
 
-Chaque voyageur fait face à la même question paralysante : *"Où est-ce que je vais aller
-avec mes X jours et Y€ ?"* La réponse n'est nulle part en un seul endroit. Il faut
+Chaque voyageur fait face à la même question paralysante : _"Où est-ce que je vais aller
+avec mes X jours et Y€ ?"_ La réponse n'est nulle part en un seul endroit. Il faut
 aujourd'hui :
+
 - Regarder des vlogs YouTube pour s'inspirer
 - Lire des blogs pour estimer les coûts
 - Ouvrir Google Maps pour localiser les POIs
@@ -38,13 +39,13 @@ destination en tête — ce qui n'est pas le point de départ de la majorité de
 
 ### Pourquoi les solutions existantes ne répondent pas
 
-| Solution | Problème fondamental |
-|----------|---------------------|
-| Google Maps | Outil de navigation, assume que tu sais déjà où aller |
-| TripAdvisor | Outil d'avis post-décision, pas de découverte pré-choix |
-| Wanderlog | Planificateur d'itinéraire — nécessite une destination déjà choisie |
-| Nomad List | Niche digital nomades, données remote-work centrées, $299/an |
-| Google Flights | Filtre les vols, pas les destinations ni le coût total du voyage |
+| Solution       | Problème fondamental                                                |
+| -------------- | ------------------------------------------------------------------- |
+| Google Maps    | Outil de navigation, assume que tu sais déjà où aller               |
+| TripAdvisor    | Outil d'avis post-décision, pas de découverte pré-choix             |
+| Wanderlog      | Planificateur d'itinéraire — nécessite une destination déjà choisie |
+| Nomad List     | Niche digital nomades, données remote-work centrées, $299/an        |
+| Google Flights | Filtre les vols, pas les destinations ni le coût total du voyage    |
 
 **Le gap** : Aucun outil mainstream ne permet de partir d'une carte du monde et de
 filtrer les destinations accessibles par budget total + durée disponible + centres
@@ -157,28 +158,28 @@ de booking intégré en v1.
 
 ### Adoption (6 mois post-lancement)
 
-| Métrique | Cible |
-|----------|-------|
-| Utilisateurs actifs mensuels | 5 000 MAU |
-| Rétention J30 | > 25% |
-| Sessions par utilisateur actif | > 2/mois |
-| Taux de complétion du flow (filtre → fiche pays) | > 60% |
+| Métrique                                         | Cible     |
+| ------------------------------------------------ | --------- |
+| Utilisateurs actifs mensuels                     | 5 000 MAU |
+| Rétention J30                                    | > 25%     |
+| Sessions par utilisateur actif                   | > 2/mois  |
+| Taux de complétion du flow (filtre → fiche pays) | > 60%     |
 
 ### Valeur
 
-| Métrique | Cible |
-|----------|-------|
-| Temps moyen sur app par session | > 4 min |
+| Métrique                                     | Cible              |
+| -------------------------------------------- | ------------------ |
+| Temps moyen sur app par session              | > 4 min            |
 | Taux de clic vers vols (lien Google Flights) | > 15% des sessions |
-| NPS utilisateurs actifs | > 40 |
+| NPS utilisateurs actifs                      | > 40               |
 
 ### Technique
 
-| Métrique | Cible |
-|----------|-------|
+| Métrique                          | Cible      |
+| --------------------------------- | ---------- |
 | Temps de chargement initial carte | < 2s (P90) |
-| Disponibilité | > 99.5% |
-| Score Lighthouse Performance | > 80 |
+| Disponibilité                     | > 99.5%    |
+| Score Lighthouse Performance      | > 80       |
 
 ---
 

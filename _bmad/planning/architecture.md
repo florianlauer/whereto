@@ -92,12 +92,14 @@ wishlist persistante).
 **Choix** : Vite + React 19 + TanStack Router en mode SPA pur. Pas de SSR.
 
 **Rationale** :
+
 - MapLibre GL JS et Deck.gl sont des libs WebGL client-only. Le SSR ne peut pas hydrater
   une carte — il faudrait `dynamic({ ssr: false })` partout, pour zéro bénéfice.
 - Le SEO n'est pas un objectif de v1 (pas de pages de destinations indexables).
 - TanStack Start (RC) et Next.js ajoutent de la complexité sans ROI pour ce cas d'usage.
 
 **Alternatives écartées** :
+
 - TanStack Start RC : instable en mars 2026, gotcha tRPC dans le scaffold.
 - Next.js : bon outil, mais surcharge pour une SPA carte-first.
 
@@ -113,12 +115,14 @@ statiques commités dans le repo, servis depuis le CDN Vercel. Chargés une fois
 démarrage, stockés en mémoire dans Zustand. Filtrage et scoring 100% client-side.
 
 **Rationale** :
+
 - ~150 pays = ~50KB de données. Négligeable en mémoire.
 - Filtrage client-side sur 150 objets : < 1ms. NFR-002 (< 300ms) garanti sans effort.
 - Dataset Kaggle CC0 statique (MAJ max 1x/an) — aucune raison d'avoir une DB pour ça.
 - Zero latence réseau post-chargement pour le flow principal de l'app.
 
 **Alternatives écartées** :
+
 - Supabase Postgres + requête par filtre : latence réseau 100-300ms à chaque interaction,
   incompatible avec NFR-002.
 - Hybride (statique pour la carte, Supabase pour les fiches) : deux sources à synchroniser,
@@ -128,6 +132,7 @@ démarrage, stockés en mémoire dans Zustand. Filtrage et scoring 100% client-s
 Bundle initial +~450KB (GeoJSON + JSON) — compensé par gzip CDN.
 
 **Structure `countries.json` :**
+
 ```json
 {
   "GE": {
@@ -147,6 +152,7 @@ Bundle initial +~450KB (GeoJSON + JSON) — compensé par gzip CDN.
 ```
 
 **Structure `pois.json` :**
+
 ```json
 {
   "GE": [
@@ -164,38 +170,41 @@ Bundle initial +~450KB (GeoJSON + JSON) — compensé par gzip CDN.
 
 ```typescript
 // src/lib/scoring.ts
-export type MatchLevel = 'great' | 'good' | 'poor' | 'no-data'
+export type MatchLevel = "great" | "good" | "poor" | "no-data";
 
 export const MATCH_COLORS: Record<MatchLevel, [number, number, number, number]> = {
-  great:   [34,  197, 94,  220],  // #22C55E
-  good:    [234, 179, 8,   220],  // #EAB308
-  poor:    [239, 68,  68,  100],  // #EF4444 @ 40%
-  'no-data': [42, 45,  62,  255],  // #2A2D3E
-}
+  great: [34, 197, 94, 220], // #22C55E
+  good: [234, 179, 8, 220], // #EAB308
+  poor: [239, 68, 68, 100], // #EF4444 @ 40%
+  "no-data": [42, 45, 62, 255], // #2A2D3E
+};
 
 export type Filters = {
-  budgetMin?: number   // €/jour
-  budgetMax?: number
-  daysMin?: number
-  daysMax?: number
-  monthFrom?: number   // 1-12
-  monthTo?: number     // 1-12
-}
+  budgetMin?: number; // €/jour
+  budgetMax?: number;
+  daysMin?: number;
+  daysMax?: number;
+  monthFrom?: number; // 1-12
+  monthTo?: number; // 1-12
+};
 
 export function calculateMatch(country: Country, filters: Filters): MatchLevel {
-  if (!country.dailyBudgetMid) return 'no-data'
+  if (!country.dailyBudgetMid) return "no-data";
 
-  const budgetMatch = (filters.budgetMin === undefined || country.dailyBudgetMid >= filters.budgetMin)
-                   && (filters.budgetMax === undefined || country.dailyBudgetMid <= filters.budgetMax)
-  const seasonMatch = filters.monthFrom === undefined
-    || country.bestMonths.some(m => m >= (filters.monthFrom ?? 1) && m <= (filters.monthTo ?? 12))
-  const durationMatch = (filters.daysMin === undefined || country.recommendedDaysMax >= filters.daysMin)
-                     && (filters.daysMax === undefined || country.recommendedDaysMin <= filters.daysMax)
+  const budgetMatch =
+    (filters.budgetMin === undefined || country.dailyBudgetMid >= filters.budgetMin) &&
+    (filters.budgetMax === undefined || country.dailyBudgetMid <= filters.budgetMax);
+  const seasonMatch =
+    filters.monthFrom === undefined ||
+    country.bestMonths.some((m) => m >= (filters.monthFrom ?? 1) && m <= (filters.monthTo ?? 12));
+  const durationMatch =
+    (filters.daysMin === undefined || country.recommendedDaysMax >= filters.daysMin) &&
+    (filters.daysMax === undefined || country.recommendedDaysMin <= filters.daysMax);
 
-  const score = [budgetMatch, seasonMatch, durationMatch].filter(Boolean).length
-  if (score === 3) return 'great'
-  if (score === 2) return 'good'
-  return 'poor'
+  const score = [budgetMatch, seasonMatch, durationMatch].filter(Boolean).length;
+  if (score === 3) return "great";
+  if (score === 2) return "good";
+  return "poor";
 }
 ```
 
@@ -216,34 +225,35 @@ Les query params sont la solution canonique — pas besoin de store global pour 
 Le bouton "retour" navigateur restore les filtres précédents gratuitement.
 
 **Format URL** :
+
 - Mode simple : `/?budgetMin=20&budgetMax=80&daysMin=7&daysMax=14&monthFrom=4&monthTo=9`
 - Mode voyage (multi-pays) : `/?tripBudget=2000&tripDaysMin=10&tripDaysMax=14&monthFrom=6&monthTo=8`
 
 ```typescript
 // src/routes/index.tsx
-import { z } from 'zod'
+import { z } from "zod";
 
 const filterSchema = z.object({
-  budgetMin:    z.coerce.number().optional(),
-  budgetMax:    z.coerce.number().optional(),
-  daysMin:      z.coerce.number().optional(),
-  daysMax:      z.coerce.number().optional(),
-  tripBudget:   z.coerce.number().optional(),
-  tripDaysMin:  z.coerce.number().optional(),
-  tripDaysMax:  z.coerce.number().optional(),
-  monthFrom:    z.coerce.number().min(1).max(12).optional(),
-  monthTo:      z.coerce.number().min(1).max(12).optional(),
-})
+  budgetMin: z.coerce.number().optional(),
+  budgetMax: z.coerce.number().optional(),
+  daysMin: z.coerce.number().optional(),
+  daysMax: z.coerce.number().optional(),
+  tripBudget: z.coerce.number().optional(),
+  tripDaysMin: z.coerce.number().optional(),
+  tripDaysMax: z.coerce.number().optional(),
+  monthFrom: z.coerce.number().min(1).max(12).optional(),
+  monthTo: z.coerce.number().min(1).max(12).optional(),
+});
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   validateSearch: filterSchema,
   component: MapPage,
-})
+});
 
 // Mise à jour sans rechargement :
-const navigate = useNavigate()
+const navigate = useNavigate();
 const updateFilter = (key: string, value: number) =>
-  navigate({ search: prev => ({ ...prev, [key]: value }), replace: true })
+  navigate({ search: (prev) => ({ ...prev, [key]: value }), replace: true });
 ```
 
 ---
@@ -252,19 +262,19 @@ const updateFilter = (key: string, value: number) =>
 
 **Choix** : Trois niveaux de state, chacun avec sa responsabilité.
 
-| State | Stockage | Outil | Scope |
-|-------|----------|-------|-------|
-| Filtres carte | URL query params | TanStack Router `useSearch` | Partageable |
-| Données statiques (pays, POIs) | Mémoire | Zustand (read-only) | Global, chargé 1x |
-| Wishlist session multi-pays (anonyme) | localStorage | Zustand + persist middleware | Survit rechargement |
-| Wishlist persistante (auth) | Supabase | TanStack Query + tRPC | Synchronisée au login |
-| Comparaison (liste de pays) | Mémoire React | useState local | Éphémère — non persisté |
-| UI state (panel ouvert, pays sélectionné) | Mémoire React | useState local | Éphémère |
+| State                                     | Stockage         | Outil                        | Scope                   |
+| ----------------------------------------- | ---------------- | ---------------------------- | ----------------------- |
+| Filtres carte                             | URL query params | TanStack Router `useSearch`  | Partageable             |
+| Données statiques (pays, POIs)            | Mémoire          | Zustand (read-only)          | Global, chargé 1x       |
+| Wishlist session multi-pays (anonyme)     | localStorage     | Zustand + persist middleware | Survit rechargement     |
+| Wishlist persistante (auth)               | Supabase         | TanStack Query + tRPC        | Synchronisée au login   |
+| Comparaison (liste de pays)               | Mémoire React    | useState local               | Éphémère — non persisté |
+| UI state (panel ouvert, pays sélectionné) | Mémoire React    | useState local               | Éphémère                |
 
 ```typescript
 // src/stores/appStore.ts
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export const useAppStore = create<AppStore>()(
   persist(
@@ -276,19 +286,18 @@ export const useAppStore = create<AppStore>()(
 
       // Wishlist session anonyme
       wishlistItems: [] as WishlistItem[],
-      addToWishlist: (item) =>
-        set((s) => ({ wishlistItems: [...s.wishlistItems, item] })),
+      addToWishlist: (item) => set((s) => ({ wishlistItems: [...s.wishlistItems, item] })),
       removeFromWishlist: (poiId) =>
-        set((s) => ({ wishlistItems: s.wishlistItems.filter(i => i.poiId !== poiId) })),
+        set((s) => ({ wishlistItems: s.wishlistItems.filter((i) => i.poiId !== poiId) })),
       clearWishlist: () => set({ wishlistItems: [] }),
     }),
     {
-      name: 'whereto-store',
+      name: "whereto-store",
       // Seule la wishlist est persistée en localStorage
       partialize: (s) => ({ wishlistItems: s.wishlistItems }),
-    }
-  )
-)
+    },
+  ),
+);
 ```
 
 ---
@@ -303,51 +312,52 @@ sans génération de code. Objectif double : apprentissage de la stack + archite
 production préparée pour la v2 (itinéraires, recommandations server-side).
 
 **Pourquoi tRPC n'est pas du REST :**
+
 - REST : URLs sémantiques (`GET /wishlist/items`), contrat lisible par tout client HTTP.
 - tRPC : appels de fonctions TypeScript (`wishlist.get.useQuery()`), type-safety totale
   mais couplage TypeScript obligatoire. Pas interopérable avec des clients non-TS.
 - Pour Whereto (fullstack TypeScript solo) : tRPC est justifié.
 
 **Procédures v1 :**
+
 ```typescript
 // src/server/routers/wishlist.ts
 export const wishlistRouter = router({
-  get: protectedProcedure
-    .query(({ ctx }) =>
-      ctx.supabase.from('wishlist_items').select('*').eq('user_id', ctx.user.id)
-    ),
+  get: protectedProcedure.query(({ ctx }) =>
+    ctx.supabase.from("wishlist_items").select("*").eq("user_id", ctx.user.id),
+  ),
 
-  sync: protectedProcedure
-    .input(z.array(wishlistItemSchema))
-    .mutation(({ ctx, input }) =>
-      // Merge localStorage items → Supabase (upsert, ignore doublons)
-      ctx.supabase.from('wishlist_items').upsert(
-        input.map(i => ({ ...i, user_id: ctx.user.id })),
-        { onConflict: 'wishlist_id,poi_id' }
-      )
+  sync: protectedProcedure.input(z.array(wishlistItemSchema)).mutation(({ ctx, input }) =>
+    // Merge localStorage items → Supabase (upsert, ignore doublons)
+    ctx.supabase.from("wishlist_items").upsert(
+      input.map((i) => ({ ...i, user_id: ctx.user.id })),
+      { onConflict: "wishlist_id,poi_id" },
     ),
+  ),
 
   remove: protectedProcedure
     .input(z.object({ poiId: z.string() }))
     .mutation(({ ctx, input }) =>
-      ctx.supabase.from('wishlist_items')
+      ctx.supabase
+        .from("wishlist_items")
         .delete()
-        .eq('user_id', ctx.user.id)
-        .eq('poi_id', input.poiId)
+        .eq("user_id", ctx.user.id)
+        .eq("poi_id", input.poiId),
     ),
-})
+});
 ```
 
 **Setup Hono :**
+
 ```typescript
 // api/index.ts (Vercel Function)
-import { Hono } from 'hono'
-import { trpcServer } from '@hono/trpc-server'
-import { appRouter } from '../src/server/routers'
+import { Hono } from "hono";
+import { trpcServer } from "@hono/trpc-server";
+import { appRouter } from "../src/server/routers";
 
-const app = new Hono()
-app.use('/trpc/*', trpcServer({ router: appRouter, createContext }))
-export default app
+const app = new Hono();
+app.use("/trpc/*", trpcServer({ router: appRouter, createContext }));
+export default app;
 ```
 
 ---
@@ -377,26 +387,28 @@ function MapView() {
 ```
 
 **Pourquoi Deck.gl plutôt que MapLibre natif seul :**
+
 - Deck.gl prépare la v2 (clusters de POIs, heatmaps, animations de transition).
 - En v1, le coloring des 150 pays reste simple mais le pattern `updateTriggers` de Deck.gl
   est plus explicite et maintenable que `setPaintProperty` MapLibre pour React.
 - Overhead bundle +~500KB (gzip : ~150KB) — accepté.
 
 **Coloring des pays :**
+
 ```tsx
 // src/components/map/CountriesLayer.tsx
-import { GeoJsonLayer } from '@deck.gl/layers'
-import { calculateMatch, MATCH_COLORS } from '@/lib/scoring'
+import { GeoJsonLayer } from "@deck.gl/layers";
+import { calculateMatch, MATCH_COLORS } from "@/lib/scoring";
 
 export function useCountriesLayer(filters: Filters) {
-  const { countries, geo } = useAppStore()
+  const { countries, geo } = useAppStore();
 
   return new GeoJsonLayer({
-    id: 'countries-fill',
+    id: "countries-fill",
     data: geo,
     getFillColor: (f) => {
-      const country = countries[f.properties.iso_a2]
-      return MATCH_COLORS[calculateMatch(country, filters)]
+      const country = countries[f.properties.iso_a2];
+      return MATCH_COLORS[calculateMatch(country, filters)];
     },
     getLineColor: [255, 255, 255, 20],
     lineWidthMinPixels: 0.5,
@@ -404,11 +416,12 @@ export function useCountriesLayer(filters: Filters) {
     updateTriggers: {
       getFillColor: [filters.budget, filters.days, filters.month],
     },
-  })
+  });
 }
 ```
 
 **Tiles :**
+
 - MVP : OpenFreeMap (gratuit, vector tiles, style dark compatible)
 - Production : Stadia Maps ($20/mois) dès dépassement du fair use OSM
 
@@ -421,6 +434,7 @@ L'app fonctionne complètement sans compte — auth déclenchée uniquement par 
 de persister la wishlist.
 
 **Flux wishlist anonyme → authentifiée :**
+
 ```
 1. Utilisateur anon sélectionne des POIs → localStorage (Zustand persist)
 2. Clic "Sauvegarder" → auth modal (non bloquante)
@@ -430,10 +444,11 @@ de persister la wishlist.
 ```
 
 **Logout :**
+
 ```typescript
 async function logout() {
-  await supabase.auth.signOut()
-  useAppStore.getState().clearWishlist()  // vide mémoire + localStorage
+  await supabase.auth.signOut();
+  useAppStore.getState().clearWishlist(); // vide mémoire + localStorage
 }
 ```
 
@@ -444,6 +459,7 @@ async function logout() {
 **Choix** : Vercel pour frontend (SPA statique) + backend (Serverless Functions).
 
 **Configuration :**
+
 ```json
 // vercel.json
 {
@@ -451,7 +467,7 @@ async function logout() {
   "outputDirectory": "dist",
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/index.ts" },
-    { "src": "/(.*)",     "dest": "/index.html"   }
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
 ```
@@ -607,38 +623,46 @@ Toute dépendance à un provider spécifique est isolée derrière une interface
 
 ### Providers concernés et points de changement anticipés
 
-| Provider actuel | Remplacement potentiel | Raison de changer |
-|----------------|------------------------|------------------|
-| OpenFreeMap (tiles) | Stadia Maps, Mapbox | Volume, qualité styling |
-| Kaggle CC0 (coût de vie) | Numbeo API, Expatistan | Fraîcheur des données |
-| Wikidata (POIs) | Google Places, Foursquare | Couverture, qualité |
-| MapLibre GL JS | Mapbox GL JS | Features premium, 3D |
-| Supabase | PostgreSQL self-hosted, PlanetScale | Coût, contrôle |
+| Provider actuel          | Remplacement potentiel              | Raison de changer       |
+| ------------------------ | ----------------------------------- | ----------------------- |
+| OpenFreeMap (tiles)      | Stadia Maps, Mapbox                 | Volume, qualité styling |
+| Kaggle CC0 (coût de vie) | Numbeo API, Expatistan              | Fraîcheur des données   |
+| Wikidata (POIs)          | Google Places, Foursquare           | Couverture, qualité     |
+| MapLibre GL JS           | Mapbox GL JS                        | Features premium, 3D    |
+| Supabase                 | PostgreSQL self-hosted, PlanetScale | Coût, contrôle          |
 
 ### Règle d'implémentation : toujours passer par un adapter
 
 **Tiles cartographiques** — isoler la config du style dans un seul fichier :
+
 ```typescript
 // src/lib/map-provider.ts  ← LE seul endroit qui connaît OpenFreeMap
-export const MAP_STYLE_URL = 'https://tiles.openfreemap.org/styles/dark'
+export const MAP_STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 // Pour passer à Stadia Maps : changer cette ligne uniquement
 // export const MAP_STYLE_URL = 'https://tiles.stadiamaps.com/styles/alidade_dark.json'
 ```
 
 **Dataset destinations** — interface DataProvider, pas d'import direct :
+
 ```typescript
 // src/lib/data-provider.ts
 export interface DestinationDataProvider {
-  loadCountries(): Promise<CountriesMap>
-  loadPOIs(): Promise<PoisMap>
-  loadGeoJSON(): Promise<GeoJSON.FeatureCollection>
+  loadCountries(): Promise<CountriesMap>;
+  loadPOIs(): Promise<PoisMap>;
+  loadGeoJSON(): Promise<GeoJSON.FeatureCollection>;
 }
 
 // Implémentation v1 : fichiers statiques JSON
 export class StaticJsonProvider implements DestinationDataProvider {
-  async loadCountries() { return fetch('/data/countries.json').then(r => r.json()) }
-  async loadPOIs()      { return fetch('/data/pois.json').then(r => r.json()) }
-  async loadGeoJSON()   { return fetch('/geo/countries.geojson').then(r => r.json()) }
+  async loadCountries() {
+    return fetch("/data/countries.json").then((r) => r.json());
+  }
+  async loadPOIs() {
+    return fetch("/data/pois.json").then((r) => r.json());
+  }
+  async loadGeoJSON() {
+    return fetch("/geo/countries.geojson").then((r) => r.json());
+  }
 }
 
 // Demain, remplacer par une API sans toucher à loadStaticData() ni aux composants :
@@ -646,6 +670,7 @@ export class StaticJsonProvider implements DestinationDataProvider {
 ```
 
 **Auth** — ne jamais appeler `supabase.auth.*` directement dans les composants :
+
 ```typescript
 // src/lib/auth-provider.ts
 export interface AuthProvider {
