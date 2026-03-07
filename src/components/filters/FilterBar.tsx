@@ -4,9 +4,8 @@ import { BudgetFilter } from './BudgetFilter'
 import { DurationFilter } from './DurationFilter'
 import { MonthFilter } from './MonthFilter'
 import { VoyageFilter } from './VoyageFilter'
+import { MONTHS_SHORT } from '@/lib/constants'
 import type { AppSearch } from '@/routes/index'
-
-const MONTHS_SHORT = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']
 
 // Defaults when entering voyage mode
 const TRIP_BUDGET_DEFAULT = 2000
@@ -45,8 +44,15 @@ export function FilterBar({ search }: Props) {
         setOpenPanel(null)
       }
     }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpenPanel(null)
+    }
     document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', handleClick)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
   }, [openPanel])
 
   function updateSearch(updates: Partial<AppSearch>) {
@@ -92,9 +98,11 @@ export function FilterBar({ search }: Props) {
     setOpenPanel((prev) => (prev === panel ? null : panel))
   }
 
-  function panelLeft(ref: React.RefObject<HTMLButtonElement | null>) {
+  function panelLeft(ref: React.RefObject<HTMLButtonElement | null>, panelWidth = 256) {
     if (!ref.current || !barRef.current) return 0
-    return ref.current.offsetLeft
+    const left = ref.current.offsetLeft
+    const maxLeft = window.innerWidth - panelWidth - 16
+    return Math.max(8, Math.min(left, maxLeft))
   }
 
   // --- Label helpers ---
@@ -138,7 +146,7 @@ export function FilterBar({ search }: Props) {
 
   function btnClass(active: boolean, open: boolean) {
     return [
-      'flex items-center gap-1.5 rounded border px-2.5 py-1.5 text-xs transition',
+      'flex shrink-0 items-center gap-1.5 rounded border px-2.5 py-1.5 text-xs transition',
       active || open
         ? 'border-green-500/50 text-green-400'
         : 'border-white/10 text-gray-400 hover:border-white/20 hover:text-white',
@@ -150,10 +158,10 @@ export function FilterBar({ search }: Props) {
       ref={barRef}
       className="absolute left-0 right-0 top-0 z-10 border-b border-white/5 bg-gray-950/70 backdrop-blur-xl"
     >
-      <div className="flex items-center gap-4 px-5 py-3.5">
-        <img src="/logo.png" alt="whereto" className="h-10 w-auto shrink-0" />
+      <div className="flex items-center gap-2 px-3 py-2.5 sm:gap-4 sm:px-5 sm:py-3.5">
+        <img src="/logo.png" alt="whereto" className="hidden h-10 w-auto shrink-0 sm:block" />
 
-        <div className="flex flex-1 items-center gap-3">
+        <div className="flex flex-1 items-center gap-2 overflow-x-auto scrollbar-none sm:gap-3">
           {isVoyageMode ? (
             <>
               {/* Mode voyage : bouton unique Mon voyage */}
@@ -278,7 +286,7 @@ export function FilterBar({ search }: Props) {
       )}
       {isVoyageMode && openPanel === 'voyage' && (
         <VoyageFilter
-          style={{ left: panelLeft(voyageBtnRef) }}
+          style={{ left: panelLeft(voyageBtnRef, 288) }}
           tripBudget={search.tripBudget!}
           tripDaysMin={search.tripDaysMin ?? TRIP_DAYS_MIN_DEFAULT}
           tripDaysMax={search.tripDaysMax ?? TRIP_DAYS_MAX_DEFAULT}

@@ -1,19 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAppStore } from '@/stores/appStore'
 import { calculateMatch, hasActiveFilters } from '@/lib/scoring'
-import type { Filters, MatchLevel } from '@/lib/scoring'
+import type { Filters } from '@/lib/scoring'
 import type { POI } from '@/lib/data'
+import { MONTHS_LETTER, MONTHS_FULL, MATCH_CONFIG } from '@/lib/constants'
 import { WishlistCounter } from './WishlistCounter'
-
-const MONTHS_SHORT = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
-
-
-const MATCH_CONFIG: Record<MatchLevel, { label: string; dot: string; border: string; text: string }> = {
-  great:    { label: 'Idéal',      dot: 'bg-green-400',  border: 'border-green-500/40',  text: 'text-green-400' },
-  good:     { label: 'Compatible', dot: 'bg-yellow-400', border: 'border-yellow-500/40', text: 'text-yellow-400' },
-  poor:     { label: 'Difficile',  dot: 'bg-red-400',    border: 'border-red-500/40',    text: 'text-red-400' },
-  'no-data':{ label: '',           dot: '',              border: '',                     text: '' },
-}
 
 type Props = {
   countryCode: string
@@ -35,16 +26,19 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
 
   const country = countries[countryCode]
   const countryPois = pois[countryCode] ?? []
+  const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const id = requestAnimationFrame(() => setVisible(true))
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setVisible(true))
+    })
     return () => cancelAnimationFrame(id)
   }, [])
 
-  function handleClose() {
+  const handleClose = useCallback(() => {
     setVisible(false)
     setTimeout(onClose, 300)
-  }
+  }, [onClose])
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -52,6 +46,11 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
+  }, [handleClose])
+
+  // Focus the panel on mount for keyboard accessibility
+  useEffect(() => {
+    panelRef.current?.focus()
   }, [])
 
   function togglePoi(poi: POI) {
@@ -73,13 +72,19 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
 
   return (
     <div
+      ref={panelRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={country ? `Détails de ${country.name}` : 'Détails destination'}
+      tabIndex={-1}
       className={[
-        'fixed right-0 top-0 bottom-0 z-20 flex w-[380px] flex-col',
-        'border-l border-white/8 bg-[#0a0b0f]/96 shadow-[−8px_0_40px_rgba(0,0,0,0.6)]',
+        'fixed right-0 top-0 bottom-0 z-20 flex w-[380px] max-w-full flex-col',
+        'border-l border-white/10 bg-[#0a0b0f]/96 shadow-[−8px_0_40px_rgba(0,0,0,0.6)]',
+        'backdrop-blur-xl backdrop-saturate-[180%]',
         'transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]',
+        'focus:outline-none',
         visible ? 'translate-x-0' : 'translate-x-full',
       ].join(' ')}
-      style={{ backdropFilter: 'blur(20px) saturate(180%)' }}
     >
       {/* Match accent bar — couleur dynamique en haut du panel */}
       {match && (
@@ -113,7 +118,7 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
         </div>
         <button
           onClick={handleClose}
-          className="ml-4 shrink-0 flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition hover:bg-white/8 hover:text-white"
+          className="ml-4 shrink-0 flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition hover:bg-white/10 hover:text-white"
           aria-label="Fermer"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -127,7 +132,7 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
         <div className="h-full overflow-y-auto px-6 pb-4 scrollbar-none">
 
           {/* Stats — rangées horizontales */}
-          <div className="mb-5 divide-y divide-white/5 rounded-xl border border-white/8 overflow-hidden">
+          <div className="mb-5 divide-y divide-white/5 rounded-xl border border-white/10 overflow-hidden">
             <StatRow
               label="Budget / jour"
               value={`${country.dailyBudgetLow}€`}
@@ -143,10 +148,11 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
             <StatRow
               label="Sécurité"
               value={
-                <span className="flex gap-0.5">
+                <span className="flex gap-0.5" role="img" aria-label={`Sécurité ${country.safetyScore} sur 5`}>
                   {Array.from({ length: 5 }, (_, i) => (
                     <span
                       key={i}
+                      aria-hidden="true"
                       className={`text-sm leading-none ${i < country.safetyScore ? 'text-amber-400' : 'text-white/10'}`}
                     >
                       ●
@@ -163,7 +169,7 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
               Meilleure saison
             </p>
             <div className="grid grid-cols-12 gap-0.5">
-              {MONTHS_SHORT.map((m, i) => {
+              {MONTHS_LETTER.map((m, i) => {
                 const isBest = country.bestMonths.includes(i + 1)
                 return (
                   <div key={i} className="flex flex-col items-center gap-1">
@@ -194,8 +200,12 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
                   return (
                     <li
                       key={poi.id}
+                      role="checkbox"
+                      aria-checked={isChecked}
+                      tabIndex={0}
                       onClick={() => togglePoi(poi)}
-                      className="group flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/5"
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePoi(poi) } }}
+                      className="group flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/5 focus:outline-none focus:ring-1 focus:ring-green-500/50"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
                         {isChecked ? (
@@ -230,13 +240,13 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
                 'border transition-all',
                 isInComparison
                   ? 'border-blue-500/40 bg-blue-500/10 hover:bg-blue-500/15'
-                  : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/8',
+                  : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10',
               ].join(' ')}
             >
               <div className="flex items-center gap-3">
                 <span className={[
                   'flex h-8 w-8 items-center justify-center rounded-lg text-sm',
-                  isInComparison ? 'bg-blue-500/20' : 'bg-white/8',
+                  isInComparison ? 'bg-blue-500/20' : 'bg-white/10',
                 ].join(' ')}>
                   ⚖️
                 </span>
@@ -263,11 +273,11 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
             className={[
               'group mb-2 flex w-full items-center justify-between rounded-xl px-4 py-3.5',
               'border border-white/10 bg-white/5',
-              'transition-all hover:border-white/20 hover:bg-white/8',
+              'transition-all hover:border-white/20 hover:bg-white/10',
             ].join(' ')}
           >
             <div className="flex items-center gap-3">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/8 text-base">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-base">
                 ✈
               </span>
               <div>
@@ -282,7 +292,7 @@ export function DestinationPanel({ countryCode, filters, onClose, isInComparison
         </div>
 
         {/* Fade-out bas */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#0a0b0f]/96 to-transparent" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-linear-to-t from-[#0a0b0f]/96 to-transparent" />
       </div>
 
       <WishlistCounter
@@ -312,7 +322,7 @@ function StatRow({
   hint?: string
 }) {
   return (
-    <div className="flex items-center justify-between bg-white/[0.02] px-4 py-3">
+    <div className="flex items-center justify-between bg-white/2 px-4 py-3">
       <span className="text-xs text-gray-500">{label}</span>
       <div className="flex items-baseline gap-1.5">
         <span className="text-sm font-medium text-white tabular-nums">{value}</span>

@@ -29,8 +29,8 @@ export function RangeSlider({ min, max, step, value, onValueChange, labelMin, la
         <Slider.Track className="relative h-1.5 grow rounded-full bg-gray-700">
           <Slider.Range className="absolute h-full rounded-full bg-green-500" />
         </Slider.Track>
-        <Slider.Thumb className="block h-4 w-4 cursor-grab rounded-full bg-white shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 active:cursor-grabbing" />
-        <Slider.Thumb className="block h-4 w-4 cursor-grab rounded-full bg-white shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 active:cursor-grabbing" />
+        <Slider.Thumb aria-label="Minimum" className="block h-4 w-4 cursor-grab rounded-full bg-white shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 active:cursor-grabbing" />
+        <Slider.Thumb aria-label="Maximum" className="block h-4 w-4 cursor-grab rounded-full bg-white shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 active:cursor-grabbing" />
       </Slider.Root>
     </div>
   )

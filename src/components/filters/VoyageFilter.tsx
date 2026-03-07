@@ -50,7 +50,7 @@ export function VoyageFilter({ tripBudget, tripDaysMin, tripDaysMax, onChange, s
           <Slider.Track className="relative h-1.5 grow rounded-full bg-gray-700">
             <Slider.Range className="absolute h-full rounded-full bg-green-500" />
           </Slider.Track>
-          <Slider.Thumb className={thumbClass} />
+          <Slider.Thumb aria-label="Budget total" className={thumbClass} />
         </Slider.Root>
       </div>
 
@@ -72,8 +72,8 @@ export function VoyageFilter({ tripBudget, tripDaysMin, tripDaysMax, onChange, s
           <Slider.Track className="relative h-1.5 grow rounded-full bg-gray-700">
             <Slider.Range className="absolute h-full rounded-full bg-green-500" />
           </Slider.Track>
-          <Slider.Thumb className={thumbClass} />
-          <Slider.Thumb className={thumbClass} />
+          <Slider.Thumb aria-label="Durée minimum" className={thumbClass} />
+          <Slider.Thumb aria-label="Durée maximum" className={thumbClass} />
         </Slider.Root>
       </div>
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAppStore } from '@/stores/appStore'
 import type { WishlistItem } from '@/stores/appStore'
 
@@ -14,15 +14,19 @@ export function TripSummaryPanel({ onClose }: Props) {
   const removeFromWishlist = useAppStore((s) => s.removeFromWishlist)
   const clearWishlist      = useAppStore((s) => s.clearWishlist)
 
+  const panelRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    const id = requestAnimationFrame(() => setVisible(true))
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setVisible(true))
+    })
     return () => cancelAnimationFrame(id)
   }, [])
 
-  function handleClose() {
+  const handleClose = useCallback(() => {
     setVisible(false)
     setTimeout(onClose, 300)
-  }
+  }, [onClose])
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -30,6 +34,10 @@ export function TripSummaryPanel({ onClose }: Props) {
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
+  }, [handleClose])
+
+  useEffect(() => {
+    panelRef.current?.focus()
   }, [])
 
   // Fermer automatiquement quand la wishlist se vide
@@ -61,13 +69,19 @@ export function TripSummaryPanel({ onClose }: Props) {
 
   return (
     <div
+      ref={panelRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Récapitulatif de voyage"
+      tabIndex={-1}
       className={[
-        'fixed left-0 top-0 bottom-0 z-20 flex w-[360px] flex-col',
-        'border-r border-white/8 bg-[#0a0b0f]/96 shadow-[8px_0_40px_rgba(0,0,0,0.6)]',
+        'fixed left-0 top-0 bottom-0 z-20 flex w-[360px] max-w-full flex-col',
+        'border-r border-white/10 bg-[#0a0b0f]/96 shadow-[8px_0_40px_rgba(0,0,0,0.6)]',
+        'backdrop-blur-xl backdrop-saturate-[180%]',
         'transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]',
+        'focus:outline-none',
         visible ? 'translate-x-0' : '-translate-x-full',
       ].join(' ')}
-      style={{ backdropFilter: 'blur(20px) saturate(180%)' }}
     >
       {/* Accent bar */}
       <div className="h-[2px] w-full" style={{ background: 'linear-gradient(90deg, #f97316, #f59e0b, transparent)' }} />
@@ -82,7 +96,7 @@ export function TripSummaryPanel({ onClose }: Props) {
         </div>
         <button
           onClick={handleClose}
-          className="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition hover:bg-white/8 hover:text-white"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition hover:bg-white/10 hover:text-white"
           aria-label="Fermer"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -105,7 +119,7 @@ export function TripSummaryPanel({ onClose }: Props) {
               const flightsUrl = `https://www.google.com/flights#search;t=${code}`
 
               return (
-                <div key={code} className={index > 0 ? 'border-t border-white/8 pt-5 mt-5' : ''}>
+                <div key={code} className={index > 0 ? 'border-t border-white/10 pt-5 mt-5' : ''}>
 
                   {/* Entête pays */}
                   <div className="mb-3">
@@ -139,7 +153,7 @@ export function TripSummaryPanel({ onClose }: Props) {
                             </span>
                             <button
                               onClick={() => removeFromWishlist(item.poiId)}
-                              className="flex h-4 w-4 items-center justify-center text-gray-700 transition hover:text-red-400"
+                              className="flex h-6 w-6 items-center justify-center text-gray-700 transition hover:text-red-400"
                               aria-label={`Retirer ${poi.name}`}
                             >
                               <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
@@ -153,7 +167,7 @@ export function TripSummaryPanel({ onClose }: Props) {
                   </ul>
 
                   {/* Sous-total + budget estimé */}
-                  <div className="mb-3 rounded-lg border border-white/8 bg-white/[0.04] px-3 py-2.5">
+                  <div className="mb-3 rounded-lg border border-white/10 bg-white/4 px-3 py-2.5">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] uppercase tracking-[0.12em] text-gray-600">~{countryDays} jours</span>
                       <span className="text-sm font-semibold tabular-nums text-white">{budgetMin}€ – {budgetMax}€</span>
@@ -165,7 +179,7 @@ export function TripSummaryPanel({ onClose }: Props) {
                     href={flightsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-2.5 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2.5 transition-all hover:border-white/20 hover:bg-white/[0.07]"
+                    className="group flex items-center gap-2.5 rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 transition-all hover:border-white/20 hover:bg-white/5"
                   >
                     <span className="text-sm transition group-hover:scale-110 inline-block">✈</span>
                     <span className="text-xs font-medium text-gray-300 transition group-hover:text-white">
@@ -182,11 +196,11 @@ export function TripSummaryPanel({ onClose }: Props) {
         </div>
 
         {/* Fade-out bas */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#0a0b0f]/96 to-transparent" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-8 bg-linear-to-t from-[#0a0b0f]/96 to-transparent" />
       </div>
 
       {/* Footer sticky — totaux globaux */}
-      <div className="flex items-center justify-between border-t border-white/8 px-6 py-4">
+      <div className="flex items-center justify-between border-t border-white/10 px-6 py-4">
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="text-base">🧳</span>
           <div>

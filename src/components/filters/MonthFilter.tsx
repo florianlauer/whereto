@@ -1,6 +1,5 @@
 import { RangeSlider } from './RangeSlider'
-
-const MONTHS_SHORT = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']
+import { MONTHS_SHORT } from '@/lib/constants'
 const MONTH_MIN = 1
 const MONTH_MAX = 12
 
