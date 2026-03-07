@@ -35,8 +35,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 
-- [ ] 01-01-PLAN.md -- Supabase setup, DB schema migration, RLS, triggers, seed data, type generation
-- [ ] 01-02-PLAN.md -- tRPC + Hono API server, tRPC client in React, env var security
+- [x] 01-01-PLAN.md -- Supabase setup, DB schema migration, RLS, triggers, seed data, type generation
+- [x] 01-02-PLAN.md -- tRPC + Hono API server, tRPC client in React, env var security
 
 ### Phase 2: Authentication
 
@@ -50,12 +50,12 @@ Plans:
 3. Auth modal appears only when user tries to save to wishlist, never gates the map or filters -- "Continue without account" is always visible
 4. After Google OAuth redirect, the user lands back on the same map view with filters preserved in the URL
 5. User can sign out from the UI and the app returns to anonymous mode
-   **Plans**: TBD
+   **Plans**: 2 plans
 
 Plans:
 
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md -- Auth core: client Supabase instance, Zustand auth store, tRPC auth context + protected procedure
+- [ ] 02-02-PLAN.md -- Auth UI: modal with 3 sign-in methods, auth-gated action hook, user menu with sign-out
 
 ### Phase 3: Wishlist Persistence
 
@@ -100,6 +100,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase                   | Plans Complete | Status      | Completed  |
 | ----------------------- | -------------- | ----------- | ---------- |
 | 1. Backend Foundation   | 2/2            | Complete    | 2026-03-07 |
-| 2. Authentication       | 0/?            | Not started | -          |
+| 2. Authentication       | 0/2            | Not started | -          |
 | 3. Wishlist Persistence | 0/?            | Not started | -          |
 | 4. Wishlist Sync        | 0/?            | Not started | -          |
