@@ -24,6 +24,10 @@ dist-ssr
 *.sw?
 
 .env
+.env.local
+
+# Supabase temp files
+supabase/.temp/
 
 # devenv
 .devenv.flake.nix
