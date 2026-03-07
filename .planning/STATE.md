@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-03-07T20:08:21.822Z"
-last_activity: 2026-03-07 -- Completed plan 01-02 (API skeleton with tRPC + Hono)
+status: in-progress
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-03-07T20:44:08Z"
+last_activity: 2026-03-07 -- Completed plan 02-01 (Auth core infrastructure)
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
-  percent: 100
+  total_plans: 4
+  completed_plans: 3
+  percent: 75
 ---
 
 # Project State
@@ -21,39 +21,41 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-07)
 
 **Core value:** L'utilisateur transforme "ou est-ce que je vais ?" en un choix eclaire en quelques minutes, grace a une carte mondiale qui s'allume selon ses contraintes budget/duree/saison.
-**Current focus:** Phase 1 - Backend Foundation
+**Current focus:** Phase 2 - Authentication
 
 ## Current Position
 
-Phase: 1 of 4 (Backend Foundation)
-Plan: 2 of 2 in current phase
-Status: Phase 1 Complete
-Last activity: 2026-03-07 -- Completed plan 01-02 (API skeleton with tRPC + Hono)
+Phase: 2 of 4 (Authentication)
+Plan: 1 of 2 in current phase
+Status: Plan 02-01 Complete
+Last activity: 2026-03-07 -- Completed plan 02-01 (Auth core infrastructure)
 
-Progress: [██████████] 100%
+Progress: [███████░░░] 75%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 2
-- Average duration: 10min
-- Total execution time: 0.32 hours
+- Total plans completed: 3
+- Average duration: 8min
+- Total execution time: 0.40 hours
 
 **By Phase:**
 
 | Phase                 | Plans | Total | Avg/Plan |
 | --------------------- | ----- | ----- | -------- |
 | 01-backend-foundation | 2/2   | 19min | 10min    |
+| 02-authentication     | 1/2   | 5min  | 5min     |
 
 **Recent Trend:**
 
-- Last 5 plans: -
-- Trend: -
+- Last 5 plans: 15min, 4min, 5min
+- Trend: stable
 
 _Updated after each plan completion_
 | Phase 01 P01 | 15min | 3 tasks | 6 files |
 | Phase 01 P02 | 4min | 2 tasks | 15 files |
+| Phase 02 P01 | 5min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -71,6 +73,10 @@ Recent decisions affecting current work:
 - [Phase 01-02]: Hono with basePath('/api') as Vercel serverless entry -- aligns with existing vercel.json rewrite
 - [Phase 01-02]: tRPC v11 createTRPCContext pattern with type-only AppRouter import prevents server code leaking to client
 - [Phase 01-02]: Excluded src/server from tsconfig.app.json to prevent DOM/JSX conflicts with server code
+- [02-01]: createContext accepts opts?.req from fetchRequestHandler -- compatible with @hono/trpc-server adapter
+- [02-01]: protectedProcedure uses getUser() not getSession() for server-side token validation
+- [02-01]: onAuthStateChange callback is strictly synchronous to avoid Supabase deadlock pitfall
+- [02-01]: Auth header injection uses getState() (not hook) since it runs outside React render
 
 ### Pending Todos
 
@@ -84,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-07T20:04:27.152Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-03-07T20:44:08Z
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None

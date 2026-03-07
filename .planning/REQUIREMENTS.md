@@ -16,13 +16,13 @@ Requirements for Epic 4 (Auth + Persistence). Maps to roadmap phases.
 
 ### Authentication
 
-- [ ] **AUTH-01**: User peut creer un compte avec email et password
-- [ ] **AUTH-02**: User peut se connecter via magic link email
-- [ ] **AUTH-03**: User peut se connecter via Google OAuth
-- [ ] **AUTH-04**: Session persistante via refresh token (survit au refresh browser)
+- [x] **AUTH-01**: User peut creer un compte avec email et password
+- [x] **AUTH-02**: User peut se connecter via magic link email
+- [x] **AUTH-03**: User peut se connecter via Google OAuth
+- [x] **AUTH-04**: Session persistante via refresh token (survit au refresh browser)
 - [ ] **AUTH-05**: Auth proposee au moment du "Save", jamais en gate sur la carte
 - [ ] **AUTH-06**: Option "Continuer sans compte" toujours visible dans la modale auth
-- [ ] **AUTH-07**: Apres OAuth redirect, les filtres URL sont preserves (meme vue carte)
+- [x] **AUTH-07**: Apres OAuth redirect, les filtres URL sont preserves (meme vue carte)
 
 ### Wishlist Persistante
 
@@ -70,13 +70,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-02    | Phase 1 | Complete |
 | INFRA-03    | Phase 1 | Complete |
 | INFRA-04    | Phase 1 | Complete |
-| AUTH-01     | Phase 2 | Pending  |
-| AUTH-02     | Phase 2 | Pending  |
-| AUTH-03     | Phase 2 | Pending  |
-| AUTH-04     | Phase 2 | Pending  |
+| AUTH-01     | Phase 2 | Complete |
+| AUTH-02     | Phase 2 | Complete |
+| AUTH-03     | Phase 2 | Complete |
+| AUTH-04     | Phase 2 | Complete |
 | AUTH-05     | Phase 2 | Pending  |
 | AUTH-06     | Phase 2 | Pending  |
-| AUTH-07     | Phase 2 | Pending  |
+| AUTH-07     | Phase 2 | Complete |
 | WISH-01     | Phase 3 | Pending  |
 | WISH-02     | Phase 4 | Pending  |
 | WISH-03     | Phase 4 | Pending  |
