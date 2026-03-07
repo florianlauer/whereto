@@ -10,9 +10,9 @@ Requirements for Epic 4 (Auth + Persistence). Maps to roadmap phases.
 ### Infrastructure
 
 - [x] **INFRA-01**: Tables `profiles`, `wishlists`, `wishlist_items` creees avec RLS active dans Supabase
-- [ ] **INFRA-02**: API tRPC + Hono deployee en Vercel Function sur `/api/trpc/*`
+- [x] **INFRA-02**: API tRPC + Hono deployee en Vercel Function sur `/api/trpc/*`
 - [x] **INFRA-03**: Trigger DB auto-creation profile + wishlist au signup
-- [ ] **INFRA-04**: Variables d'env securisees (`service_role` jamais expose cote client via `VITE_` prefix)
+- [x] **INFRA-04**: Variables d'env securisees (`service_role` jamais expose cote client via `VITE_` prefix)
 
 ### Authentication
 
@@ -64,26 +64,26 @@ Requirements for Epic 4 (Auth + Persistence). Maps to roadmap phases.
 
 Which phases cover which requirements. Updated during roadmap creation.
 
-| Requirement | Phase   | Status  |
-| ----------- | ------- | ------- |
+| Requirement | Phase   | Status   |
+| ----------- | ------- | -------- |
 | INFRA-01    | Phase 1 | Complete |
-| INFRA-02    | Phase 1 | Pending |
+| INFRA-02    | Phase 1 | Complete |
 | INFRA-03    | Phase 1 | Complete |
-| INFRA-04    | Phase 1 | Pending |
-| AUTH-01     | Phase 2 | Pending |
-| AUTH-02     | Phase 2 | Pending |
-| AUTH-03     | Phase 2 | Pending |
-| AUTH-04     | Phase 2 | Pending |
-| AUTH-05     | Phase 2 | Pending |
-| AUTH-06     | Phase 2 | Pending |
-| AUTH-07     | Phase 2 | Pending |
-| WISH-01     | Phase 3 | Pending |
-| WISH-02     | Phase 4 | Pending |
-| WISH-03     | Phase 4 | Pending |
-| WISH-04     | Phase 4 | Pending |
-| WISH-05     | Phase 3 | Pending |
-| WISH-06     | Phase 3 | Pending |
-| WISH-07     | Phase 4 | Pending |
+| INFRA-04    | Phase 1 | Complete |
+| AUTH-01     | Phase 2 | Pending  |
+| AUTH-02     | Phase 2 | Pending  |
+| AUTH-03     | Phase 2 | Pending  |
+| AUTH-04     | Phase 2 | Pending  |
+| AUTH-05     | Phase 2 | Pending  |
+| AUTH-06     | Phase 2 | Pending  |
+| AUTH-07     | Phase 2 | Pending  |
+| WISH-01     | Phase 3 | Pending  |
+| WISH-02     | Phase 4 | Pending  |
+| WISH-03     | Phase 4 | Pending  |
+| WISH-04     | Phase 4 | Pending  |
+| WISH-05     | Phase 3 | Pending  |
+| WISH-06     | Phase 3 | Pending  |
+| WISH-07     | Phase 4 | Pending  |
 
 **Coverage:**
 
