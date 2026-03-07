@@ -7,5 +7,6 @@
     yamllint
     docker
     colima
+    supabase-cli
   ];
 }
