@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAuthModalStore } from "@/stores/authModalStore";
 import { useAuthStore } from "@/stores/authStore";
+import { OAuthButton } from "@/components/auth/OAuthButton";
+import { EmailPasswordForm } from "@/components/auth/EmailPasswordForm";
+import { MagicLinkForm } from "@/components/auth/MagicLinkForm";
 
 export function AuthModal() {
   const isOpen = useAuthModalStore((s) => s.isOpen);
@@ -39,13 +42,8 @@ export function AuthModal() {
       <div className="mx-4 w-full max-w-md rounded-xl bg-gray-900 p-6">
         <h2 className="mb-6 text-center text-xl font-semibold text-white">Se connecter</h2>
 
-        {/* Google OAuth */}
-        <button
-          type="button"
-          className="mb-4 flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 font-medium text-gray-900 transition hover:bg-gray-100"
-        >
-          Continuer avec Google
-        </button>
+        {/* Google OAuth -- most prominent */}
+        <OAuthButton />
 
         {/* Divider */}
         <div className="my-4 flex items-center gap-3">
@@ -77,61 +75,9 @@ export function AuthModal() {
         </div>
 
         {/* Form content */}
-        {tab === "email" ? (
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-            <div>
-              <label htmlFor="auth-email" className="mb-1 block text-sm text-gray-300">
-                Email
-              </label>
-              <input
-                id="auth-email"
-                type="email"
-                required
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-            <div>
-              <label htmlFor="auth-password" className="mb-1 block text-sm text-gray-300">
-                Mot de passe
-              </label>
-              <input
-                id="auth-password"
-                type="password"
-                required
-                minLength={6}
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-blue-600 px-4 py-2.5 font-medium text-white transition hover:bg-blue-700"
-            >
-              Se connecter
-            </button>
-          </form>
-        ) : (
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-            <div>
-              <label htmlFor="magic-email" className="mb-1 block text-sm text-gray-300">
-                Email
-              </label>
-              <input
-                id="magic-email"
-                type="email"
-                required
-                className="w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-blue-600 px-4 py-2.5 font-medium text-white transition hover:bg-blue-700"
-            >
-              Envoyer le lien magique
-            </button>
-          </form>
-        )}
+        {tab === "email" ? <EmailPasswordForm /> : <MagicLinkForm />}
 
-        {/* Continue without account */}
+        {/* Continue without account (AUTH-06) */}
         <button
           type="button"
           onClick={close}

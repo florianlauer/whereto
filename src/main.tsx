@@ -10,6 +10,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { loadStaticData } from "@/lib/data";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { TRPCProvider } from "@/lib/trpc";
+import { AuthModal } from "@/components/auth/AuthModal";
 import type { AppRouter } from "@/server/router";
 import "./index.css";
 
@@ -80,6 +81,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
         <RouterProvider router={router} />
+        <AuthModal />
         <Toaster position="bottom-center" theme="dark" />
       </TRPCProvider>
     </QueryClientProvider>
