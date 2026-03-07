@@ -78,13 +78,15 @@ export function AuthModal() {
         {tab === "email" ? <EmailPasswordForm /> : <MagicLinkForm />}
 
         {/* Continue without account (AUTH-06) */}
-        <button
-          type="button"
-          onClick={close}
-          className="mt-4 w-full text-center text-sm text-gray-400 underline transition hover:text-gray-300"
-        >
-          Continuer sans compte
-        </button>
+        <div className="mt-4 text-center">
+          <button
+            type="button"
+            onClick={close}
+            className="text-sm text-gray-400 underline transition hover:text-gray-300"
+          >
+            Continuer sans compte
+          </button>
+        </div>
       </div>
     </div>
   );
