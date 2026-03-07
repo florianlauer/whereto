@@ -1,11 +1,15 @@
 import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { Toaster } from "sonner";
 import { routeTree } from "./routeTree.gen";
 import { useAppStore } from "@/stores/appStore";
 import { loadStaticData } from "@/lib/data";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { TRPCProvider } from "@/lib/trpc";
+import type { AppRouter } from "@/server/router";
 import "./index.css";
 
 const router = createRouter({ routeTree });
@@ -15,6 +19,22 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 30_000,
+    },
+  },
+});
+
+const trpcClient = createTRPCClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: "/api/trpc",
+    }),
+  ],
+});
 
 function App() {
   const setStaticData = useAppStore((s) => s.setStaticData);
@@ -39,16 +59,18 @@ function App() {
   if (!loaded) {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-gray-950 text-white">
-        <p className="animate-pulse text-lg">Chargement des destinations…</p>
+        <p className="animate-pulse text-lg">Chargement des destinations...</p>
       </div>
     );
   }
 
   return (
-    <>
-      <RouterProvider router={router} />
-      <Toaster position="bottom-center" theme="dark" />
-    </>
+    <QueryClientProvider client={queryClient}>
+      <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+        <RouterProvider router={router} />
+        <Toaster position="bottom-center" theme="dark" />
+      </TRPCProvider>
+    </QueryClientProvider>
   );
 }
 
