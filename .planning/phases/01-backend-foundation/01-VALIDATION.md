@@ -15,20 +15,20 @@ created: 2026-03-07
 
 ## Test Infrastructure
 
-| Property               | Value                                |
-| ---------------------- | ------------------------------------ |
-| **Framework**          | vitest                               |
-| **Config file**        | none — Wave 0 installs               |
-| **Quick run command**  | `pnpm vitest run --reporter=verbose` |
-| **Full suite command** | `pnpm vitest run --reporter=verbose` |
-| **Estimated runtime**  | ~10 seconds                          |
+| Property               | Value                               |
+| ---------------------- | ----------------------------------- |
+| **Framework**          | vitest                              |
+| **Config file**        | none — Wave 0 installs              |
+| **Quick run command**  | `bun vitest run --reporter=verbose` |
+| **Full suite command** | `bun vitest run --reporter=verbose` |
+| **Estimated runtime**  | ~10 seconds                         |
 
 ---
 
 ## Sampling Rate
 
-- **After every task commit:** Run `pnpm vitest run --reporter=verbose`
-- **After every plan wave:** Run `pnpm vitest run --reporter=verbose`
+- **After every task commit:** Run `bun vitest run --reporter=verbose`
+- **After every plan wave:** Run `bun vitest run --reporter=verbose`
 - **Before `/gsd:verify-work`:** Full suite must be green
 - **Max feedback latency:** 10 seconds
 
@@ -38,11 +38,11 @@ created: 2026-03-07
 
 | Task ID  | Plan | Wave | Requirement | Test Type   | Automated Command | File Exists | Status     |
 | -------- | ---- | ---- | ----------- | ----------- | ----------------- | ----------- | ---------- |
-| 01-01-01 | 01   | 1    | INFRA-01    | integration | `pnpm vitest run` | ❌ W0       | ⬜ pending |
-| 01-01-02 | 01   | 1    | INFRA-01    | integration | `pnpm vitest run` | ❌ W0       | ⬜ pending |
-| 01-02-01 | 02   | 1    | INFRA-02    | integration | `pnpm vitest run` | ❌ W0       | ⬜ pending |
-| 01-02-02 | 02   | 1    | INFRA-03    | integration | `pnpm vitest run` | ❌ W0       | ⬜ pending |
-| 01-02-03 | 02   | 1    | INFRA-04    | unit        | `pnpm vitest run` | ❌ W0       | ⬜ pending |
+| 01-01-01 | 01   | 1    | INFRA-01    | integration | `bun vitest run`  | ❌ W0       | ⬜ pending |
+| 01-01-02 | 01   | 1    | INFRA-01    | integration | `bun vitest run`  | ❌ W0       | ⬜ pending |
+| 01-02-01 | 02   | 1    | INFRA-02    | integration | `bun vitest run`  | ❌ W0       | ⬜ pending |
+| 01-02-02 | 02   | 1    | INFRA-03    | integration | `bun vitest run`  | ❌ W0       | ⬜ pending |
+| 01-02-03 | 02   | 1    | INFRA-04    | unit        | `bun vitest run`  | ❌ W0       | ⬜ pending |
 
 _Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky_
 
@@ -65,7 +65,7 @@ _If none: "Existing infrastructure covers all phase requirements."_
 | -------------------------------------- | ----------- | -------------------------------- | ----------------------------------------------------------------- |
 | RLS policies block unauthorized access | INFRA-01    | Requires Supabase auth context   | Test via Supabase dashboard SQL editor with different auth tokens |
 | Vercel deployment serves tRPC          | INFRA-02    | Requires live deployment         | Deploy and curl `/api/trpc/health`                                |
-| Service role key not in bundle         | INFRA-04    | Requires build output inspection | Run `pnpm build && grep -r SUPABASE_SERVICE_ROLE dist/`           |
+| Service role key not in bundle         | INFRA-04    | Requires build output inspection | Run `bun run build && grep -r SUPABASE_SERVICE_ROLE dist/`        |
 
 ---
 
