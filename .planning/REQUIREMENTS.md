@@ -64,34 +64,34 @@ Requirements for Epic 4 (Auth + Persistence). Maps to roadmap phases.
 
 Which phases cover which requirements. Updated during roadmap creation.
 
-| Requirement | Phase | Status  |
-| ----------- | ----- | ------- |
-| INFRA-01    | —     | Pending |
-| INFRA-02    | —     | Pending |
-| INFRA-03    | —     | Pending |
-| INFRA-04    | —     | Pending |
-| AUTH-01     | —     | Pending |
-| AUTH-02     | —     | Pending |
-| AUTH-03     | —     | Pending |
-| AUTH-04     | —     | Pending |
-| AUTH-05     | —     | Pending |
-| AUTH-06     | —     | Pending |
-| AUTH-07     | —     | Pending |
-| WISH-01     | —     | Pending |
-| WISH-02     | —     | Pending |
-| WISH-03     | —     | Pending |
-| WISH-04     | —     | Pending |
-| WISH-05     | —     | Pending |
-| WISH-06     | —     | Pending |
-| WISH-07     | —     | Pending |
+| Requirement | Phase   | Status  |
+| ----------- | ------- | ------- |
+| INFRA-01    | Phase 1 | Pending |
+| INFRA-02    | Phase 1 | Pending |
+| INFRA-03    | Phase 1 | Pending |
+| INFRA-04    | Phase 1 | Pending |
+| AUTH-01     | Phase 2 | Pending |
+| AUTH-02     | Phase 2 | Pending |
+| AUTH-03     | Phase 2 | Pending |
+| AUTH-04     | Phase 2 | Pending |
+| AUTH-05     | Phase 2 | Pending |
+| AUTH-06     | Phase 2 | Pending |
+| AUTH-07     | Phase 2 | Pending |
+| WISH-01     | Phase 3 | Pending |
+| WISH-02     | Phase 4 | Pending |
+| WISH-03     | Phase 4 | Pending |
+| WISH-04     | Phase 4 | Pending |
+| WISH-05     | Phase 3 | Pending |
+| WISH-06     | Phase 3 | Pending |
+| WISH-07     | Phase 4 | Pending |
 
 **Coverage:**
 
 - v1 requirements: 18 total
-- Mapped to phases: 0
-- Unmapped: 18
+- Mapped to phases: 18
+- Unmapped: 0
 
 ---
 
 _Requirements defined: 2026-03-07_
-_Last updated: 2026-03-07 after initial definition_
+_Last updated: 2026-03-07 after roadmap creation_
