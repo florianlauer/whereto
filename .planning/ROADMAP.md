@@ -31,12 +31,12 @@ Decimal phases appear between their surrounding integers in numeric order.
 2. A tRPC call to `/api/trpc/*` on Vercel returns a valid response (not SPA HTML)
 3. Creating a user via Supabase Auth automatically creates a `profiles` row and a default `wishlists` row (trigger works through RLS)
 4. The `SUPABASE_SERVICE_ROLE_KEY` is not present in the Vite client bundle (`dist/`)
-   **Plans**: TBD
+   **Plans**: 2 plans
 
 Plans:
 
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md -- Supabase setup, DB schema migration, RLS, triggers, seed data, type generation
+- [ ] 01-02-PLAN.md -- tRPC + Hono API server, tRPC client in React, env var security
 
 ### Phase 2: Authentication
 
@@ -99,7 +99,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase                   | Plans Complete | Status      | Completed |
 | ----------------------- | -------------- | ----------- | --------- |
-| 1. Backend Foundation   | 0/?            | Not started | -         |
+| 1. Backend Foundation   | 0/2            | Planning    | -         |
 | 2. Authentication       | 0/?            | Not started | -         |
 | 3. Wishlist Persistence | 0/?            | Not started | -         |
 | 4. Wishlist Sync        | 0/?            | Not started | -         |
