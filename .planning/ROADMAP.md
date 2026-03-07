@@ -99,7 +99,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase                   | Plans Complete | Status      | Completed |
 | ----------------------- | -------------- | ----------- | --------- |
-| 1. Backend Foundation   | 0/2            | Planning    | -         |
+| 1. Backend Foundation   | 1/2 | In Progress|  |
 | 2. Authentication       | 0/?            | Not started | -         |
 | 3. Wishlist Persistence | 0/?            | Not started | -         |
 | 4. Wishlist Sync        | 0/?            | Not started | -         |

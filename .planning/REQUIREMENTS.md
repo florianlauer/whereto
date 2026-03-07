@@ -9,9 +9,9 @@ Requirements for Epic 4 (Auth + Persistence). Maps to roadmap phases.
 
 ### Infrastructure
 
-- [ ] **INFRA-01**: Tables `profiles`, `wishlists`, `wishlist_items` creees avec RLS active dans Supabase
+- [x] **INFRA-01**: Tables `profiles`, `wishlists`, `wishlist_items` creees avec RLS active dans Supabase
 - [ ] **INFRA-02**: API tRPC + Hono deployee en Vercel Function sur `/api/trpc/*`
-- [ ] **INFRA-03**: Trigger DB auto-creation profile + wishlist au signup
+- [x] **INFRA-03**: Trigger DB auto-creation profile + wishlist au signup
 - [ ] **INFRA-04**: Variables d'env securisees (`service_role` jamais expose cote client via `VITE_` prefix)
 
 ### Authentication
@@ -66,9 +66,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase   | Status  |
 | ----------- | ------- | ------- |
-| INFRA-01    | Phase 1 | Pending |
+| INFRA-01    | Phase 1 | Complete |
 | INFRA-02    | Phase 1 | Pending |
-| INFRA-03    | Phase 1 | Pending |
+| INFRA-03    | Phase 1 | Complete |
 | INFRA-04    | Phase 1 | Pending |
 | AUTH-01     | Phase 2 | Pending |
 | AUTH-02     | Phase 2 | Pending |

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-03-07T18:46:38.232Z"
-last_activity: 2026-03-07 -- Roadmap created with 4 phases, 18 requirements mapped
+status: executing
+stopped_at: Completed 01-01-PLAN.md
+last_updated: "2026-03-07T19:58:28.797Z"
+last_activity: 2026-03-07 -- Completed plan 01-01 (Supabase schema + types)
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_plans: 2
+  completed_plans: 1
+  percent: 50
 ---
 
 # Project State
@@ -26,25 +26,25 @@ See: .planning/PROJECT.md (updated 2026-03-07)
 ## Current Position
 
 Phase: 1 of 4 (Backend Foundation)
-Plan: 0 of ? in current phase
-Status: Ready to plan
-Last activity: 2026-03-07 -- Roadmap created with 4 phases, 18 requirements mapped
+Plan: 1 of 2 in current phase
+Status: Executing
+Last activity: 2026-03-07 -- Completed plan 01-01 (Supabase schema + types)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: 15min
+- Total execution time: 0.25 hours
 
 **By Phase:**
 
-| Phase | Plans | Total | Avg/Plan |
-| ----- | ----- | ----- | -------- |
-| -     | -     | -     | -        |
+| Phase                 | Plans | Total | Avg/Plan |
+| --------------------- | ----- | ----- | -------- |
+| 01-backend-foundation | 1/2   | 15min | 15min    |
 
 **Recent Trend:**
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 _Updated after each plan completion_
+| Phase 01 P01 | 15min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -62,6 +63,10 @@ Recent decisions affecting current work:
 
 - [Roadmap]: 4 phases strictly linear (INFRA -> AUTH -> WISH-CRUD -> WISH-SYNC)
 - [Roadmap]: WISH split into two phases -- basic CRUD (Phase 3) vs merge/sync complexity (Phase 4)
+- [01-01]: Supabase CLI installed via devenv.nix (not npm) for system-level tool management
+- [01-01]: Single migration file for initial schema (profiles + wishlists + wishlist_items + RLS + triggers)
+- [01-01]: SECURITY DEFINER trigger for handle_new_user to bypass RLS during auto-creation
+- [Phase 01]: Supabase CLI via devenv.nix, single migration file, SECURITY DEFINER trigger
 
 ### Pending Todos
 
@@ -75,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-07T18:46:38.229Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-backend-foundation/01-CONTEXT.md
+Last session: 2026-03-07T19:58:24.865Z
+Stopped at: Completed 01-01-PLAN.md
+Resume file: None
