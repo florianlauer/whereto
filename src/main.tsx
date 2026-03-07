@@ -6,6 +6,7 @@ import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import { Toaster } from "sonner";
 import { routeTree } from "./routeTree.gen";
 import { useAppStore } from "@/stores/appStore";
+import { useAuthStore } from "@/stores/authStore";
 import { loadStaticData } from "@/lib/data";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { TRPCProvider } from "@/lib/trpc";
@@ -32,6 +33,10 @@ const trpcClient = createTRPCClient<AppRouter>({
   links: [
     httpBatchLink({
       url: "/api/trpc",
+      headers() {
+        const token = useAuthStore.getState().session?.access_token;
+        return token ? { authorization: `Bearer ${token}` } : {};
+      },
     }),
   ],
 });
@@ -40,6 +45,13 @@ function App() {
   const setStaticData = useAppStore((s) => s.setStaticData);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = useAuthStore.getState().initialize();
+    return () => {
+      unsubscribe.then((unsub) => unsub());
+    };
+  }, []);
 
   useEffect(() => {
     loadStaticData()

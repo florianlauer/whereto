@@ -1,8 +1,9 @@
-import { router, publicProcedure } from "../trpc";
+import { router } from "../trpc";
+import { protectedProcedure } from "../middleware";
 
 export const profileRouter = router({
-  /** Placeholder -- Phase 2 fills this in with authenticated user profile */
-  me: publicProcedure.query(() => {
-    return null;
+  /** Returns the authenticated user's profile info */
+  me: protectedProcedure.query(({ ctx }) => {
+    return { id: ctx.user.id, email: ctx.user.email };
   }),
 });
