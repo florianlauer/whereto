@@ -14,7 +14,7 @@ This milestone adds a backend layer to the existing client-only SPA. The journey
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Backend Foundation** - Supabase DB schema with RLS, tRPC + Hono API on Vercel Functions, env var security (completed 2026-03-07)
-- [ ] **Phase 2: Authentication** - Email/password, magic link, Google OAuth with non-blocking UX and session persistence
+- [x] **Phase 2: Authentication** - Email/password, magic link, Google OAuth with non-blocking UX and session persistence (completed 2026-03-07)
 - [ ] **Phase 3: Wishlist Persistence** - Authenticated wishlist CRUD via tRPC with unified useWishlist() hook
 - [ ] **Phase 4: Wishlist Sync** - localStorage-to-server merge on login, optimistic updates, logout cleanup
 
@@ -100,6 +100,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase                   | Plans Complete | Status      | Completed  |
 | ----------------------- | -------------- | ----------- | ---------- |
 | 1. Backend Foundation   | 2/2            | Complete    | 2026-03-07 |
-| 2. Authentication       | 0/2            | Not started | -          |
+| 2. Authentication       | 2/2 | Complete   | 2026-03-07 |
 | 3. Wishlist Persistence | 0/?            | Not started | -          |
 | 4. Wishlist Sync        | 0/?            | Not started | -          |
