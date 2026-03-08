@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-03-07T21:10:00Z"
-last_activity: 2026-03-07 -- Completed plan 02-02 (Auth UI components)
+status: completed
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-03-08T19:20:41.057Z"
+last_activity: 2026-03-08 -- Completed plan 02-03 (Gap closure: UserMenu wiring)
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 5
+  completed_plans: 5
   percent: 100
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-07)
 ## Current Position
 
 Phase: 2 of 4 (Authentication) -- COMPLETE
-Plan: 2 of 2 in current phase
+Plan: 3 of 3 in current phase
 Status: Phase 02 Complete
-Last activity: 2026-03-07 -- Completed plan 02-02 (Auth UI components)
+Last activity: 2026-03-08 -- Completed plan 02-03 (Gap closure: UserMenu wiring)
 
 Progress: [██████████] 100%
 
@@ -36,16 +36,16 @@ Progress: [██████████] 100%
 
 **Velocity:**
 
-- Total plans completed: 4
-- Average duration: 9min
-- Total execution time: 0.60 hours
+- Total plans completed: 5
+- Average duration: 8min
+- Total execution time: 0.62 hours
 
 **By Phase:**
 
 | Phase                 | Plans | Total | Avg/Plan |
 | --------------------- | ----- | ----- | -------- |
 | 01-backend-foundation | 2/2   | 19min | 10min    |
-| 02-authentication     | 2/2   | 17min | 9min     |
+| 02-authentication     | 3/3   | 18min | 6min     |
 
 **Recent Trend:**
 
@@ -57,6 +57,7 @@ _Updated after each plan completion_
 | Phase 01 P02 | 4min | 2 tasks | 15 files |
 | Phase 02 P01 | 5min | 2 tasks | 9 files |
 | Phase 02 P02 | 12min | 3 tasks | 10 files |
+| Phase 02 P03 | 1min | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,7 @@ Recent decisions affecting current work:
 - [02-02]: Auth modal uses tabbed UI (email/password vs magic link) with Google OAuth always visible above
 - [02-02]: useAuthGatedAction gates actions at hook level -- components call gateAction() and never know about auth
 - [02-02]: Modal auto-closes via useEffect watching user state transition from null to authenticated
+- [Phase 02]: UserMenu placed after Tout effacer button as last flex child in FilterBar header
 
 ### Pending Todos
 
@@ -94,6 +96,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-07T21:10:00Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-03-08T19:20:41.055Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None
