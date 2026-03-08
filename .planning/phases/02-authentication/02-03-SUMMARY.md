@@ -60,7 +60,7 @@ Each task was committed atomically:
 
 1. **Task 1: Wire UserMenu into FilterBar** - `4426eea` (feat)
 
-**Plan metadata:** [pending] (docs: complete plan)
+**Plan metadata:** `2358a31` (docs: complete plan)
 
 ## Files Created/Modified
 

@@ -20,7 +20,10 @@ insert into auth.users (
   created_at,
   updated_at,
   confirmation_token,
-  recovery_token
+  recovery_token,
+  email_change,
+  email_change_token_new,
+  email_change_token_current
 ) values (
   'a1111111-1111-1111-1111-111111111111',
   '00000000-0000-0000-0000-000000000000',
@@ -33,6 +36,9 @@ insert into auth.users (
   '{"name": "Alice"}',
   now(),
   now(),
+  '',
+  '',
+  '',
   '',
   ''
 );
@@ -51,7 +57,10 @@ insert into auth.users (
   created_at,
   updated_at,
   confirmation_token,
-  recovery_token
+  recovery_token,
+  email_change,
+  email_change_token_new,
+  email_change_token_current
 ) values (
   'b2222222-2222-2222-2222-222222222222',
   '00000000-0000-0000-0000-000000000000',
@@ -64,6 +73,9 @@ insert into auth.users (
   '{"name": "Bob"}',
   now(),
   now(),
+  '',
+  '',
+  '',
   '',
   ''
 );
