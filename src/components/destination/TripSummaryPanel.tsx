@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppStore } from "@/stores/appStore";
+import { useWishlist } from "@/hooks/useWishlist";
 import type { WishlistItem } from "@/stores/appStore";
 
 type Props = {
@@ -8,10 +9,9 @@ type Props = {
 
 export function TripSummaryPanel({ onClose }: Props) {
   const [visible, setVisible] = useState(false);
-  const wishlistItems = useAppStore((s) => s.wishlistItems);
+  const { wishlistItems, removeFromWishlist } = useWishlist();
   const countries = useAppStore((s) => s.countries);
   const pois = useAppStore((s) => s.pois);
-  const removeFromWishlist = useAppStore((s) => s.removeFromWishlist);
   const clearWishlist = useAppStore((s) => s.clearWishlist);
 
   const panelRef = useRef<HTMLDivElement>(null);

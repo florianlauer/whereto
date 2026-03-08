@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppStore } from "@/stores/appStore";
+import { useWishlist } from "@/hooks/useWishlist";
 import { calculateMatch, hasActiveFilters } from "@/lib/scoring";
 import type { Filters } from "@/lib/scoring";
 import { MONTHS_FULL, MATCH_CONFIG } from "@/lib/constants";
@@ -20,7 +21,7 @@ export function ComparisonDrawer({ codes, filters, onRemove, onClearAll }: Props
   const displayCodes = lastCodesRef.current;
 
   const countries = useAppStore((s) => s.countries);
-  const wishlistItems = useAppStore((s) => s.wishlistItems);
+  const { wishlistItems } = useWishlist();
   const hasItems = codes.length > 0;
 
   useEffect(() => {

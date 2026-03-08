@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppStore } from "@/stores/appStore";
+import { useWishlist } from "@/hooks/useWishlist";
 import { calculateMatch, hasActiveFilters } from "@/lib/scoring";
 import type { Filters } from "@/lib/scoring";
 import type { POI } from "@/lib/data";
@@ -26,10 +27,8 @@ export function DestinationPanel({
   const [visible, setVisible] = useState(false);
   const countries = useAppStore((s) => s.countries);
   const pois = useAppStore((s) => s.pois);
-  const wishlistItems = useAppStore((s) => s.wishlistItems);
-  const addToWishlist = useAppStore((s) => s.addToWishlist);
-  const removeFromWishlist = useAppStore((s) => s.removeFromWishlist);
   const clearWishlist = useAppStore((s) => s.clearWishlist);
+  const { wishlistItems, addToWishlist, removeFromWishlist } = useWishlist();
 
   const country = countries[countryCode];
   const countryPois = pois[countryCode] ?? [];

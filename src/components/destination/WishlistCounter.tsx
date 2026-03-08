@@ -1,4 +1,4 @@
-import { useAppStore } from "@/stores/appStore";
+import { useWishlist } from "@/hooks/useWishlist";
 
 type Props = {
   onClear: () => void;
@@ -6,7 +6,7 @@ type Props = {
 };
 
 export function WishlistCounter({ onClear, onOpen }: Props) {
-  const wishlistItems = useAppStore((s) => s.wishlistItems);
+  const { wishlistItems } = useWishlist();
   if (wishlistItems.length === 0) return null;
 
   const totalDays = wishlistItems.reduce((acc, i) => acc + i.daysMin, 0);
