@@ -51,16 +51,21 @@ export function useWishlist() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const invalidateList = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: trpc.wishlist.list.queryOptions().queryKey });
+  }, [queryClient, trpc]);
+
   const addToWishlist = useCallback(
     (item: WishlistItem) => {
       addLocal(item);
       if (user) {
         client.wishlist.add
           .mutate({ poiId: item.poiId, countryCode: item.countryCode, daysMin: item.daysMin })
+          .then(invalidateList)
           .catch((err: unknown) => console.error("Failed to sync add:", err));
       }
     },
-    [addLocal, user, client],
+    [addLocal, user, client, invalidateList],
   );
 
   const removeFromWishlist = useCallback(
@@ -69,10 +74,11 @@ export function useWishlist() {
       if (user) {
         client.wishlist.remove
           .mutate({ poiId })
+          .then(invalidateList)
           .catch((err: unknown) => console.error("Failed to sync remove:", err));
       }
     },
-    [removeLocal, user, client],
+    [removeLocal, user, client, invalidateList],
   );
 
   return { wishlistItems, addToWishlist, removeFromWishlist };
