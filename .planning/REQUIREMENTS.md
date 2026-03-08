@@ -26,12 +26,12 @@ Requirements for Epic 4 (Auth + Persistence). Maps to roadmap phases.
 
 ### Wishlist Persistante
 
-- [ ] **WISH-01**: User authentifie peut sauvegarder sa wishlist en DB via tRPC
+- [x] **WISH-01**: User authentifie peut sauvegarder sa wishlist en DB via tRPC
 - [ ] **WISH-02**: Au premier login, les POIs localStorage sont merges en DB (union, dedup par poi_id)
 - [ ] **WISH-03**: localStorage cleare seulement apres confirmation de sync reussie
 - [ ] **WISH-04**: Updates optimistes — Zustand mis a jour immediatement, tRPC sync en background
 - [ ] **WISH-05**: Hook `useWishlist()` unifie — composants ignorent le mode anonyme/authentifie
-- [ ] **WISH-06**: User peut retrouver sa wishlist en se connectant depuis un autre device
+- [x] **WISH-06**: User peut retrouver sa wishlist en se connectant depuis un autre device
 - [ ] **WISH-07**: Au logout, wishlist Zustand et localStorage sont vides
 
 ## v2 Requirements
@@ -77,12 +77,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-05     | Phase 2 | Complete |
 | AUTH-06     | Phase 2 | Complete |
 | AUTH-07     | Phase 2 | Complete |
-| WISH-01     | Phase 3 | Pending  |
+| WISH-01     | Phase 3 | Complete |
 | WISH-02     | Phase 4 | Pending  |
 | WISH-03     | Phase 4 | Pending  |
 | WISH-04     | Phase 4 | Pending  |
 | WISH-05     | Phase 3 | Pending  |
-| WISH-06     | Phase 3 | Pending  |
+| WISH-06     | Phase 3 | Complete |
 | WISH-07     | Phase 4 | Pending  |
 
 **Coverage:**
@@ -94,4 +94,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 ---
 
 _Requirements defined: 2026-03-07_
-_Last updated: 2026-03-07 after roadmap creation_
+_Last updated: 2026-03-08 after plan 03-01 completion_

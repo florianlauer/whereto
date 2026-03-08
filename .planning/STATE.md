@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 3 context gathered
-last_updated: "2026-03-08T20:20:59.533Z"
-last_activity: "2026-03-08 -- Completed plan 02-03 (Gap closure: UserMenu wiring)"
+status: in-progress
+stopped_at: Completed 03-01
+last_updated: "2026-03-08T20:38:39Z"
+last_activity: "2026-03-08 -- Completed plan 03-01 (Wishlist CRUD router)"
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
-  percent: 100
+  total_plans: 8
+  completed_plans: 6
+  percent: 75
 ---
 
 # Project State
@@ -21,24 +21,24 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-07)
 
 **Core value:** L'utilisateur transforme "ou est-ce que je vais ?" en un choix eclaire en quelques minutes, grace a une carte mondiale qui s'allume selon ses contraintes budget/duree/saison.
-**Current focus:** Phase 2 - Authentication (COMPLETE)
+**Current focus:** Phase 3 - Wishlist Persistence (IN PROGRESS)
 
 ## Current Position
 
-Phase: 2 of 4 (Authentication) -- COMPLETE
-Plan: 3 of 3 in current phase
-Status: Phase 02 Complete
-Last activity: 2026-03-08 -- Completed plan 02-03 (Gap closure: UserMenu wiring)
+Phase: 3 of 4 (Wishlist Persistence)
+Plan: 1 of 3 in current phase -- COMPLETE
+Status: Executing Phase 03
+Last activity: 2026-03-08 -- Completed plan 03-01 (Wishlist CRUD router)
 
-Progress: [██████████] 100%
+Progress: [███████▌ ] 75%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 5
-- Average duration: 8min
-- Total execution time: 0.62 hours
+- Total plans completed: 6
+- Average duration: 7min
+- Total execution time: 0.68 hours
 
 **By Phase:**
 
@@ -46,6 +46,7 @@ Progress: [██████████] 100%
 | --------------------- | ----- | ----- | -------- |
 | 01-backend-foundation | 2/2   | 19min | 10min    |
 | 02-authentication     | 3/3   | 18min | 6min     |
+| 03-wishlist-persist   | 1/3   | 4min  | 4min     |
 
 **Recent Trend:**
 
@@ -58,6 +59,7 @@ _Updated after each plan completion_
 | Phase 02 P01 | 5min | 2 tasks | 9 files |
 | Phase 02 P02 | 12min | 3 tasks | 10 files |
 | Phase 02 P03 | 1min | 1 tasks | 1 files |
+| Phase 03 P01 | 4min | 1 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -83,6 +85,9 @@ Recent decisions affecting current work:
 - [02-02]: useAuthGatedAction gates actions at hook level -- components call gateAction() and never know about auth
 - [02-02]: Modal auto-closes via useEffect watching user state transition from null to authenticated
 - [Phase 02]: UserMenu placed after Tout effacer button as last flex child in FilterBar header
+- [03-01]: list uses publicProcedure with accessToken guard -- returns [] for anonymous users instead of throwing
+- [03-01]: add uses upsert with onConflict to handle duplicate poi_id silently
+- [03-01]: reorder uses Promise.all for parallel position updates
 
 ### Pending Todos
 
@@ -96,6 +101,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-08T20:20:59.530Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-wishlist-persistence/03-CONTEXT.md
+Last session: 2026-03-08T20:38:39Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: .planning/phases/03-wishlist-persistence/03-01-SUMMARY.md

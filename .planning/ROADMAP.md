@@ -56,7 +56,7 @@ Plans:
 
 - [x] 02-01-PLAN.md -- Auth core: client Supabase instance, Zustand auth store, tRPC auth context + protected procedure
 - [x] 02-02-PLAN.md -- Auth UI: modal with 3 sign-in methods, auth-gated action hook, user menu with sign-out
-- [ ] 02-03-PLAN.md -- Gap closure: wire UserMenu into FilterBar (sign-out visibility)
+- [x] 02-03-PLAN.md -- Gap closure: wire UserMenu into FilterBar (sign-out visibility)
 
 ### Phase 3: Wishlist Persistence
 
@@ -72,7 +72,7 @@ Plans:
 
 Plans:
 
-- [ ] 03-01-PLAN.md -- DB migration (days_min), tRPC wishlist CRUD (5 endpoints), appStore setWishlistItems
+- [x] 03-01-PLAN.md -- DB migration (days_min), tRPC wishlist CRUD (5 endpoints), appStore setWishlistItems
 - [ ] 03-02-PLAN.md -- useWishlist() dual-mode hook, migrate 4 consumer components
 
 ### Phase 4: Wishlist Sync
@@ -101,6 +101,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase                   | Plans Complete | Status      | Completed  |
 | ----------------------- | -------------- | ----------- | ---------- |
 | 1. Backend Foundation   | 2/2            | Complete    | 2026-03-07 |
-| 2. Authentication       | 2/3            | In progress | -          |
-| 3. Wishlist Persistence | 0/2            | Not started | -          |
+| 2. Authentication       | 3/3            | Complete    | 2026-03-08 |
+| 3. Wishlist Persistence | 1/2            | In progress | -          |
 | 4. Wishlist Sync        | 0/?            | Not started | -          |
