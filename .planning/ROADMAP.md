@@ -68,12 +68,12 @@ Plans:
 1. Authenticated user adds/removes a POI and it persists in Supabase (visible via Supabase Studio)
 2. Components use `useWishlist()` hook and behave identically whether the user is anonymous (localStorage) or authenticated (tRPC) -- no component knows about the data source
 3. User logs in on a different browser/device and sees the same wishlist
-   **Plans**: TBD
+   **Plans**: 2 plans
 
 Plans:
 
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md -- DB migration (days_min), tRPC wishlist CRUD (5 endpoints), appStore setWishlistItems
+- [ ] 03-02-PLAN.md -- useWishlist() dual-mode hook, migrate 4 consumer components
 
 ### Phase 4: Wishlist Sync
 
@@ -102,5 +102,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | ----------------------- | -------------- | ----------- | ---------- |
 | 1. Backend Foundation   | 2/2            | Complete    | 2026-03-07 |
 | 2. Authentication       | 2/3            | In progress | -          |
-| 3. Wishlist Persistence | 0/?            | Not started | -          |
+| 3. Wishlist Persistence | 0/2            | Not started | -          |
 | 4. Wishlist Sync        | 0/?            | Not started | -          |
