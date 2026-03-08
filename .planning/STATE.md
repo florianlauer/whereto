@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in-progress
-stopped_at: Completed 03-01
-last_updated: "2026-03-08T20:38:39Z"
-last_activity: "2026-03-08 -- Completed plan 03-01 (Wishlist CRUD router)"
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-03-08T20:48:28Z"
+last_activity: "2026-03-08 -- Completed plan 03-02 (useWishlist hook + component migration)"
 progress:
   total_phases: 4
   completed_phases: 2
   total_plans: 8
-  completed_plans: 6
-  percent: 75
+  completed_plans: 7
+  percent: 88
 ---
 
 # Project State
@@ -26,19 +26,19 @@ See: .planning/PROJECT.md (updated 2026-03-07)
 ## Current Position
 
 Phase: 3 of 4 (Wishlist Persistence)
-Plan: 1 of 3 in current phase -- COMPLETE
+Plan: 2 of 3 in current phase -- COMPLETE
 Status: Executing Phase 03
-Last activity: 2026-03-08 -- Completed plan 03-01 (Wishlist CRUD router)
+Last activity: 2026-03-08 -- Completed plan 03-02 (useWishlist hook + component migration)
 
-Progress: [███████▌ ] 75%
+Progress: [████████▊ ] 88%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 6
+- Total plans completed: 7
 - Average duration: 7min
-- Total execution time: 0.68 hours
+- Total execution time: 0.77 hours
 
 **By Phase:**
 
@@ -46,11 +46,11 @@ Progress: [███████▌ ] 75%
 | --------------------- | ----- | ----- | -------- |
 | 01-backend-foundation | 2/2   | 19min | 10min    |
 | 02-authentication     | 3/3   | 18min | 6min     |
-| 03-wishlist-persist   | 1/3   | 4min  | 4min     |
+| 03-wishlist-persist   | 2/3   | 9min  | 5min     |
 
 **Recent Trend:**
 
-- Last 5 plans: 15min, 4min, 5min, 12min
+- Last 5 plans: 4min, 5min, 12min, 1min, 5min
 - Trend: stable
 
 _Updated after each plan completion_
@@ -60,6 +60,7 @@ _Updated after each plan completion_
 | Phase 02 P02 | 12min | 3 tasks | 10 files |
 | Phase 02 P03 | 1min | 1 tasks | 1 files |
 | Phase 03 P01 | 4min | 1 tasks | 5 files |
+| Phase 03 P02 | 5min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,9 @@ Recent decisions affecting current work:
 - [03-01]: list uses publicProcedure with accessToken guard -- returns [] for anonymous users instead of throwing
 - [03-01]: add uses upsert with onConflict to handle duplicate poi_id silently
 - [03-01]: reorder uses Promise.all for parallel position updates
+- [03-02]: clearWishlist stays as direct useAppStore import (Phase 4 scope per CONTEXT.md)
+- [03-02]: Fire-and-forget via useTRPCClient avoids React lifecycle for background mutations
+- [03-02]: Server fetch on login replaces local only if server returns non-empty array
 
 ### Pending Todos
 
@@ -101,6 +105,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-08T20:38:39Z
-Stopped at: Completed 03-01-PLAN.md
-Resume file: .planning/phases/03-wishlist-persistence/03-01-SUMMARY.md
+Last session: 2026-03-08T20:48:28Z
+Stopped at: Completed 03-02-PLAN.md
+Resume file: .planning/phases/03-wishlist-persistence/03-02-SUMMARY.md
