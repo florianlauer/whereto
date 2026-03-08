@@ -14,7 +14,7 @@ This milestone adds a backend layer to the existing client-only SPA. The journey
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Backend Foundation** - Supabase DB schema with RLS, tRPC + Hono API on Vercel Functions, env var security (completed 2026-03-07)
-- [x] **Phase 2: Authentication** - Email/password, magic link, Google OAuth with non-blocking UX and session persistence (completed 2026-03-07)
+- [ ] **Phase 2: Authentication** - Email/password, magic link, Google OAuth with non-blocking UX and session persistence
 - [ ] **Phase 3: Wishlist Persistence** - Authenticated wishlist CRUD via tRPC with unified useWishlist() hook
 - [ ] **Phase 4: Wishlist Sync** - localStorage-to-server merge on login, optimistic updates, logout cleanup
 
@@ -50,12 +50,13 @@ Plans:
 3. Auth modal appears only when user tries to save to wishlist, never gates the map or filters -- "Continue without account" is always visible
 4. After Google OAuth redirect, the user lands back on the same map view with filters preserved in the URL
 5. User can sign out from the UI and the app returns to anonymous mode
-   **Plans**: 2 plans
+   **Plans**: 3 plans
 
 Plans:
 
-- [ ] 02-01-PLAN.md -- Auth core: client Supabase instance, Zustand auth store, tRPC auth context + protected procedure
-- [ ] 02-02-PLAN.md -- Auth UI: modal with 3 sign-in methods, auth-gated action hook, user menu with sign-out
+- [x] 02-01-PLAN.md -- Auth core: client Supabase instance, Zustand auth store, tRPC auth context + protected procedure
+- [x] 02-02-PLAN.md -- Auth UI: modal with 3 sign-in methods, auth-gated action hook, user menu with sign-out
+- [ ] 02-03-PLAN.md -- Gap closure: wire UserMenu into FilterBar (sign-out visibility)
 
 ### Phase 3: Wishlist Persistence
 
@@ -100,6 +101,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase                   | Plans Complete | Status      | Completed  |
 | ----------------------- | -------------- | ----------- | ---------- |
 | 1. Backend Foundation   | 2/2            | Complete    | 2026-03-07 |
-| 2. Authentication       | 2/2 | Complete   | 2026-03-07 |
+| 2. Authentication       | 2/3            | In progress | -          |
 | 3. Wishlist Persistence | 0/?            | Not started | -          |
 | 4. Wishlist Sync        | 0/?            | Not started | -          |
