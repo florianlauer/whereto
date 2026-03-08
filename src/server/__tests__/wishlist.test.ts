@@ -15,18 +15,24 @@ vi.mock("@/server/db", () => {
 import { createSupabaseClient } from "@/server/db";
 
 // Helper to build a chainable Supabase mock
+// Every method call in the chain (.select(), .eq(), .single(), etc.) returns
+// another chainable proxy. Awaiting the chain resolves to resolvedValue.
 function createChainableMock(resolvedValue: { data: unknown; error: unknown }) {
-  const chain: Record<string, unknown> = {};
-  const handler = () =>
-    new Proxy(chain, {
+  const handler = (): unknown => {
+    const fn = (..._args: unknown[]) => handler();
+    return new Proxy(fn, {
       get: (_target, prop) => {
         if (prop === "then") {
-          // Make it thenable
           return (resolve: (v: unknown) => void) => resolve(resolvedValue);
         }
-        return handler();
+        // Any property access returns a callable that continues the chain
+        return (..._args: unknown[]) => handler();
+      },
+      apply: (_target, _thisArg, args) => {
+        return fn(...args);
       },
     });
+  };
 
   return handler;
 }

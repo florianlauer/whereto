@@ -25,6 +25,7 @@ type AppStore = {
   addToWishlist: (item: WishlistItem) => void;
   removeFromWishlist: (poiId: string) => void;
   clearWishlist: () => void;
+  setWishlistItems: (items: WishlistItem[]) => void;
 };
 
 export const useAppStore = create<AppStore>()(
@@ -40,6 +41,7 @@ export const useAppStore = create<AppStore>()(
       removeFromWishlist: (poiId) =>
         set((s) => ({ wishlistItems: s.wishlistItems.filter((i) => i.poiId !== poiId) })),
       clearWishlist: () => set({ wishlistItems: [] }),
+      setWishlistItems: (items) => set({ wishlistItems: items }),
     }),
     {
       name: "whereto-store",

@@ -50,6 +50,7 @@ export type Database = {
         Row: {
           country_code: string;
           created_at: string;
+          days_min: number;
           id: string;
           poi_id: string;
           position: number;
@@ -59,6 +60,7 @@ export type Database = {
         Insert: {
           country_code: string;
           created_at?: string;
+          days_min?: number;
           id?: string;
           poi_id: string;
           position?: number;
@@ -68,6 +70,7 @@ export type Database = {
         Update: {
           country_code?: string;
           created_at?: string;
+          days_min?: number;
           id?: string;
           poi_id?: string;
           position?: number;
