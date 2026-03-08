@@ -5,6 +5,7 @@ import { DurationFilter } from "./DurationFilter";
 import { MonthFilter } from "./MonthFilter";
 import { VoyageFilter } from "./VoyageFilter";
 import { MONTHS_SHORT } from "@/lib/constants";
+import { UserMenu } from "@/components/auth/UserMenu";
 import type { AppSearch } from "@/routes/index";
 
 // Defaults when entering voyage mode
@@ -332,6 +333,8 @@ export function FilterBar({ search }: Props) {
             Tout effacer
           </button>
         )}
+
+        <UserMenu />
       </div>
 
       {/* Panels — en dehors du container pour éviter le clipping overflow */}
