@@ -255,4 +255,122 @@ describe("useWishlist", () => {
       expect(useAppStore.getState().wishlistItems).toHaveLength(2);
     });
   });
+
+  // --- WISH-02 / WISH-03: mergeLocalToServer tests ---
+
+  it("(WISH-02) on null->User transition with local items, calls add.mutate for each item via Promise.all", async () => {
+    const localItems = [
+      { poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 },
+      { poiId: "jp-tokyo", countryCode: "JP", daysMin: 5 },
+    ];
+    useAppStore.setState({ wishlistItems: localItems });
+    mockFetchQuery.mockResolvedValue(localItems);
+    currentUser = null;
+
+    const useWishlist = await getHook();
+    const { rerender } = renderHook(() => useWishlist());
+
+    currentUser = mockUser;
+    rerender();
+
+    await vi.waitFor(() => {
+      expect(mockMutateAdd).toHaveBeenCalledTimes(2);
+    });
+
+    expect(mockMutateAdd).toHaveBeenCalledWith({
+      poiId: "ge-tbilisi",
+      countryCode: "GE",
+      daysMin: 2,
+    });
+    expect(mockMutateAdd).toHaveBeenCalledWith({
+      poiId: "jp-tokyo",
+      countryCode: "JP",
+      daysMin: 5,
+    });
+  });
+
+  it("(WISH-02) on null->User transition with empty local items, calls fetchServerWishlist (no add.mutate)", async () => {
+    useAppStore.setState({ wishlistItems: [] });
+    mockFetchQuery.mockResolvedValue([{ poiId: "jp-tokyo", countryCode: "JP", daysMin: 3 }]);
+    currentUser = null;
+
+    const useWishlist = await getHook();
+    const { rerender } = renderHook(() => useWishlist());
+
+    currentUser = mockUser;
+    rerender();
+
+    await vi.waitFor(() => {
+      expect(mockFetchQuery).toHaveBeenCalled();
+    });
+
+    expect(mockMutateAdd).not.toHaveBeenCalled();
+  });
+
+  it("(WISH-02) after successful merge, setWishlistItems called with server-returned items", async () => {
+    const localItems = [{ poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 }];
+    const serverItems = [
+      { poiId: "fr-paris", countryCode: "FR", daysMin: 5 },
+      { poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 },
+    ];
+    useAppStore.setState({ wishlistItems: localItems });
+    mockFetchQuery.mockResolvedValue(serverItems);
+    currentUser = null;
+
+    const useWishlist = await getHook();
+    const { rerender } = renderHook(() => useWishlist());
+
+    currentUser = mockUser;
+    rerender();
+
+    await vi.waitFor(() => {
+      expect(useAppStore.getState().wishlistItems).toEqual(serverItems);
+    });
+  });
+
+  it("(WISH-03) when Promise.all rejects, Zustand state is NOT modified (items remain)", async () => {
+    const localItems = [{ poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 }];
+    useAppStore.setState({ wishlistItems: localItems });
+    mockMutateAdd.mockRejectedValueOnce(new Error("Network error"));
+    currentUser = null;
+
+    const useWishlist = await getHook();
+    const { rerender } = renderHook(() => useWishlist());
+
+    currentUser = mockUser;
+    rerender();
+
+    // Let async operations settle
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // Local items must remain intact
+    expect(useAppStore.getState().wishlistItems).toEqual(localItems);
+    // fetchQuery should NOT have been called (error happened before it)
+    expect(mockFetchQuery).not.toHaveBeenCalled();
+  });
+
+  it("(WISH-03) when fetchQuery after merge fails, Zustand state is NOT modified", async () => {
+    const localItems = [{ poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 }];
+    useAppStore.setState({ wishlistItems: localItems });
+    mockMutateAdd.mockResolvedValue({ success: true });
+    mockFetchQuery.mockRejectedValueOnce(new Error("Fetch failed"));
+    currentUser = null;
+
+    const useWishlist = await getHook();
+    const { rerender } = renderHook(() => useWishlist());
+
+    currentUser = mockUser;
+    rerender();
+
+    // Wait for add calls
+    await vi.waitFor(() => {
+      expect(mockMutateAdd).toHaveBeenCalled();
+    });
+
+    // Let async operations settle
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // Local items must remain intact (fetch failed, no setWishlistItems called)
+    expect(useAppStore.getState().wishlistItems).toEqual(localItems);
+  });
 });
