@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import { useAppStore } from "@/stores/appStore";
 
 type AuthState = {
   user: User | null;
@@ -39,6 +40,10 @@ export const useAuthStore = create<AuthState & AuthActions>()((set) => ({
         session,
         user: session?.user ?? null,
       });
+      // WISH-07: clear wishlist on logout to prevent data leaks on shared computers
+      if (!session) {
+        useAppStore.getState().clearWishlist();
+      }
     });
 
     return () => subscription.unsubscribe();

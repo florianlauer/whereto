@@ -57,28 +57,38 @@ export function useWishlist() {
 
   const addToWishlist = useCallback(
     (item: WishlistItem) => {
+      // WISH-04: capture snapshot before optimistic update for rollback on failure
+      const snapshot = useAppStore.getState().wishlistItems;
       addLocal(item);
       if (user) {
         client.wishlist.add
           .mutate({ poiId: item.poiId, countryCode: item.countryCode, daysMin: item.daysMin })
           .then(invalidateList)
-          .catch((err: unknown) => console.error("Failed to sync add:", err));
+          .catch((err: unknown) => {
+            console.error("Failed to sync add:", err);
+            setWishlistItems(snapshot);
+          });
       }
     },
-    [addLocal, user, client, invalidateList],
+    [addLocal, user, client, invalidateList, setWishlistItems],
   );
 
   const removeFromWishlist = useCallback(
     (poiId: string) => {
+      // WISH-04: capture snapshot before optimistic update for rollback on failure
+      const snapshot = useAppStore.getState().wishlistItems;
       removeLocal(poiId);
       if (user) {
         client.wishlist.remove
           .mutate({ poiId })
           .then(invalidateList)
-          .catch((err: unknown) => console.error("Failed to sync remove:", err));
+          .catch((err: unknown) => {
+            console.error("Failed to sync remove:", err);
+            setWishlistItems(snapshot);
+          });
       }
     },
-    [removeLocal, user, client, invalidateList],
+    [removeLocal, user, client, invalidateList, setWishlistItems],
   );
 
   return { wishlistItems, addToWishlist, removeFromWishlist };
