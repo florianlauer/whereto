@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Backend Foundation** - Supabase DB schema with RLS, tRPC + Hono API on Vercel Functions, env var security (completed 2026-03-07)
 - [ ] **Phase 2: Authentication** - Email/password, magic link, Google OAuth with non-blocking UX and session persistence
 - [x] **Phase 3: Wishlist Persistence** - Authenticated wishlist CRUD via tRPC with unified useWishlist() hook (completed 2026-03-08)
-- [ ] **Phase 4: Wishlist Sync** - localStorage-to-server merge on login, optimistic updates, logout cleanup
+- [x] **Phase 4: Wishlist Sync** - localStorage-to-server merge on login, optimistic updates, logout cleanup (completed 2026-03-13)
 
 ## Phase Details
 
@@ -103,4 +103,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Backend Foundation   | 2/2            | Complete    | 2026-03-07 |
 | 2. Authentication       | 3/3            | Complete    | 2026-03-08 |
 | 3. Wishlist Persistence | 2/2            | Complete    | 2026-03-08 |
-| 4. Wishlist Sync        | 1/2 | In Progress|  |
+| 4. Wishlist Sync        | 2/2 | Complete   | 2026-03-13 |

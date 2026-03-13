@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-01-PLAN.md (logout cleanup + optimistic rollback)
-last_updated: "2026-03-13T17:02:50.240Z"
+stopped_at: "Completed 04-02-PLAN.md (login merge: localStorage to server)"
+last_updated: "2026-03-13T17:07:56.218Z"
 last_activity: 2026-03-08 -- Completed plan 03-02 (useWishlist hook + component migration)
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 9
-  completed_plans: 8
+  completed_plans: 9
   percent: 88
 ---
 
@@ -62,6 +62,7 @@ _Updated after each plan completion_
 | Phase 03 P01 | 4min | 1 tasks | 5 files |
 | Phase 03 P02 | 5min | 2 tasks | 6 files |
 | Phase 04-wishlist-sync P01 | 4min | 1 tasks | 4 files |
+| Phase 04-wishlist-sync P02 | 3min | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,8 @@ Recent decisions affecting current work:
 - [03-02]: Server fetch on login replaces local only if server returns non-empty array
 - [Phase 04-wishlist-sync]: useAppStore imported directly in authStore for cross-store getState() call — synchronous, no selector needed
 - [Phase 04-wishlist-sync]: Snapshot-before-mutation pattern: capture getState().wishlistItems before optimistic update, restore in .catch() for rollback
+- [Phase 04-wishlist-sync]: mergeLocalToServer uses Promise.all for parallel upserts, getState() at transition time to avoid stale closure, server is canonical after successful merge
+- [Phase 04-wishlist-sync]: On merge failure, catch block preserves local state intact — retry happens on next login via same auth-transition effect
 
 ### Pending Todos
 
@@ -108,6 +111,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T17:02:50.236Z
-Stopped at: Completed 04-01-PLAN.md (logout cleanup + optimistic rollback)
+Last session: 2026-03-13T17:07:56.215Z
+Stopped at: Completed 04-02-PLAN.md (login merge: localStorage to server)
 Resume file: None
