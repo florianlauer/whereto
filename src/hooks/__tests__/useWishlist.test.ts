@@ -179,4 +179,80 @@ describe("useWishlist", () => {
 
     expect(useAppStore.getState().wishlistItems).toEqual(serverItems);
   });
+
+  it("addToWishlist rollback (WISH-04): restores snapshot when server mutation fails", async () => {
+    currentUser = mockUser;
+    const initialItems = [{ poiId: "fr-paris", countryCode: "FR", daysMin: 5 }];
+    useAppStore.setState({ wishlistItems: initialItems });
+
+    // Make server add fail
+    mockMutateAdd.mockRejectedValueOnce(new Error("Network error"));
+
+    const useWishlist = await getHook();
+    const { result } = renderHook(() => useWishlist());
+
+    act(() => {
+      result.current.addToWishlist({ poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 });
+    });
+
+    // Optimistic update applied immediately
+    expect(useAppStore.getState().wishlistItems).toHaveLength(2);
+
+    // Wait for server failure + rollback
+    await vi.waitFor(() => {
+      expect(useAppStore.getState().wishlistItems).toEqual(initialItems);
+    });
+  });
+
+  it("removeFromWishlist rollback (WISH-04): restores snapshot when server mutation fails", async () => {
+    currentUser = mockUser;
+    const initialItems = [
+      { poiId: "fr-paris", countryCode: "FR", daysMin: 5 },
+      { poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 },
+    ];
+    useAppStore.setState({ wishlistItems: initialItems });
+
+    // Make server remove fail
+    mockMutateRemove.mockRejectedValueOnce(new Error("Network error"));
+
+    const useWishlist = await getHook();
+    const { result } = renderHook(() => useWishlist());
+
+    act(() => {
+      result.current.removeFromWishlist("fr-paris");
+    });
+
+    // Optimistic update applied immediately
+    expect(useAppStore.getState().wishlistItems).toHaveLength(1);
+
+    // Wait for server failure + rollback
+    await vi.waitFor(() => {
+      expect(useAppStore.getState().wishlistItems).toEqual(initialItems);
+    });
+  });
+
+  it("addToWishlist success (WISH-04): does NOT rollback when server mutation succeeds", async () => {
+    currentUser = mockUser;
+    const initialItems = [{ poiId: "fr-paris", countryCode: "FR", daysMin: 5 }];
+    useAppStore.setState({ wishlistItems: initialItems });
+
+    // Server add succeeds (default mock behavior)
+    mockMutateAdd.mockResolvedValueOnce({ success: true });
+
+    const useWishlist = await getHook();
+    const { result } = renderHook(() => useWishlist());
+
+    act(() => {
+      result.current.addToWishlist({ poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 });
+    });
+
+    // Optimistic update applied
+    expect(useAppStore.getState().wishlistItems).toHaveLength(2);
+
+    // Wait for async to settle
+    await vi.waitFor(() => {
+      // State should remain with 2 items (no rollback)
+      expect(useAppStore.getState().wishlistItems).toHaveLength(2);
+    });
+  });
 });

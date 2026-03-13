@@ -206,4 +206,59 @@ describe("authStore", () => {
     expect(useAuthStore.getState().session).toEqual(mockSession);
     expect(useAuthStore.getState().user).toEqual(mockUser);
   });
+
+  it("logout cleanup (WISH-07): onAuthStateChange with session=null clears wishlistItems", async () => {
+    const { useAppStore } = await import("@/stores/appStore");
+    const { useAuthStore } = await import("@/stores/authStore");
+
+    // Pre-populate wishlist
+    useAppStore.setState({
+      wishlistItems: [{ poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 }],
+    });
+
+    let authChangeCallback: (event: string, session: Session | null) => void = () => {};
+    vi.mocked(supabase.auth.onAuthStateChange).mockImplementation((cb) => {
+      authChangeCallback = cb as never;
+      return { data: { subscription: { unsubscribe: vi.fn() } } } as never;
+    });
+    vi.mocked(supabase.auth.getSession).mockResolvedValue({
+      data: { session: mockSession },
+      error: null,
+    });
+
+    await useAuthStore.getState().initialize();
+
+    // Simulate logout: session becomes null
+    authChangeCallback("SIGNED_OUT", null);
+
+    expect(useAppStore.getState().wishlistItems).toEqual([]);
+  });
+
+  it("logout cleanup: wishlistItems NOT cleared when session is non-null (login event)", async () => {
+    const { useAppStore } = await import("@/stores/appStore");
+    const { useAuthStore } = await import("@/stores/authStore");
+
+    // Pre-populate wishlist
+    useAppStore.setState({
+      wishlistItems: [{ poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 }],
+    });
+
+    let authChangeCallback: (event: string, session: Session | null) => void = () => {};
+    vi.mocked(supabase.auth.onAuthStateChange).mockImplementation((cb) => {
+      authChangeCallback = cb as never;
+      return { data: { subscription: { unsubscribe: vi.fn() } } } as never;
+    });
+    vi.mocked(supabase.auth.getSession).mockResolvedValue({
+      data: { session: null },
+      error: null,
+    });
+
+    await useAuthStore.getState().initialize();
+
+    // Simulate login: session is non-null
+    authChangeCallback("SIGNED_IN", mockSession);
+
+    // Wishlist should NOT have been cleared
+    expect(useAppStore.getState().wishlistItems).toHaveLength(1);
+  });
 });
