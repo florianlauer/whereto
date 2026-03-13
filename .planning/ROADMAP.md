@@ -86,12 +86,12 @@ Plans:
 2. localStorage is cleared only after the server confirms sync success -- a network failure during sync does not lose data
 3. Adding/removing a POI while authenticated updates the UI instantly (optimistic update), with rollback on server error
 4. After logout, both Zustand store and localStorage are empty -- no wishlist data leaks on shared computers
-   **Plans**: TBD
+   **Plans**: 2 plans
 
 Plans:
 
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md -- Logout cleanup (WISH-07) + optimistic update rollback (WISH-04)
+- [ ] 04-02-PLAN.md -- localStorage-to-server merge on login (WISH-02) + safe clear (WISH-03)
 
 ## Progress
 
@@ -103,4 +103,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Backend Foundation   | 2/2            | Complete    | 2026-03-07 |
 | 2. Authentication       | 3/3            | Complete    | 2026-03-08 |
 | 3. Wishlist Persistence | 2/2            | Complete    | 2026-03-08 |
-| 4. Wishlist Sync        | 0/?            | Not started | -          |
+| 4. Wishlist Sync        | 1/2 | In Progress|  |

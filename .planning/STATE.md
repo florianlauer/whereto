@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-13T16:47:09.613Z"
+stopped_at: Completed 04-01-PLAN.md (logout cleanup + optimistic rollback)
+last_updated: "2026-03-13T17:02:50.240Z"
 last_activity: 2026-03-08 -- Completed plan 03-02 (useWishlist hook + component migration)
 progress:
   total_phases: 4
   completed_phases: 3
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 9
+  completed_plans: 8
   percent: 88
 ---
 
@@ -61,6 +61,7 @@ _Updated after each plan completion_
 | Phase 02 P03 | 1min | 1 tasks | 1 files |
 | Phase 03 P01 | 4min | 1 tasks | 5 files |
 | Phase 03 P02 | 5min | 2 tasks | 6 files |
+| Phase 04-wishlist-sync P01 | 4min | 1 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,8 @@ Recent decisions affecting current work:
 - [03-02]: clearWishlist stays as direct useAppStore import (Phase 4 scope per CONTEXT.md)
 - [03-02]: Fire-and-forget via useTRPCClient avoids React lifecycle for background mutations
 - [03-02]: Server fetch on login replaces local only if server returns non-empty array
+- [Phase 04-wishlist-sync]: useAppStore imported directly in authStore for cross-store getState() call — synchronous, no selector needed
+- [Phase 04-wishlist-sync]: Snapshot-before-mutation pattern: capture getState().wishlistItems before optimistic update, restore in .catch() for rollback
 
 ### Pending Todos
 
@@ -105,6 +108,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-13T16:47:09.610Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-wishlist-sync/04-CONTEXT.md
+Last session: 2026-03-13T17:02:50.236Z
+Stopped at: Completed 04-01-PLAN.md (logout cleanup + optimistic rollback)
+Resume file: None
