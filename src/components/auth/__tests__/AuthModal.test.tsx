@@ -75,24 +75,10 @@ describe("useAuthGatedAction", () => {
   beforeEach(() => {
     useAuthStore.setState({ user: null, session: null, loading: false });
     useAuthModalStore.setState({ isOpen: false, pendingAction: null });
+    sessionStorage.clear();
   });
 
-  it("opens modal when user is anonymous", async () => {
-    const { useAuthGatedAction } = await import("@/hooks/useAuthGatedAction");
-
-    function TestComponent() {
-      const gateAction = useAuthGatedAction();
-      return <button onClick={() => gateAction(() => {})}>Save</button>;
-    }
-
-    render(<TestComponent />);
-    fireEvent.click(screen.getByText("Save"));
-
-    expect(useAuthModalStore.getState().isOpen).toBe(true);
-  });
-
-  it("executes action directly when user is authenticated", async () => {
-    useAuthStore.setState({ user: mockUser, session: null, loading: false });
+  it("always executes the action even when anonymous", async () => {
     const { useAuthGatedAction } = await import("@/hooks/useAuthGatedAction");
     const action = vi.fn();
 
@@ -105,6 +91,59 @@ describe("useAuthGatedAction", () => {
     fireEvent.click(screen.getByText("Save"));
 
     expect(action).toHaveBeenCalledOnce();
+  });
+
+  it("opens modal after 3rd anonymous add", async () => {
+    const { useAuthGatedAction } = await import("@/hooks/useAuthGatedAction");
+    const action = vi.fn();
+
+    function TestComponent() {
+      const gateAction = useAuthGatedAction();
+      return <button onClick={() => gateAction(action)}>Save</button>;
+    }
+
+    render(<TestComponent />);
+
+    fireEvent.click(screen.getByText("Save"));
+    expect(useAuthModalStore.getState().isOpen).toBe(false);
+
+    fireEvent.click(screen.getByText("Save"));
+    expect(useAuthModalStore.getState().isOpen).toBe(false);
+
+    fireEvent.click(screen.getByText("Save"));
+    expect(useAuthModalStore.getState().isOpen).toBe(true);
+    expect(action).toHaveBeenCalledTimes(3);
+  });
+
+  it("does not re-prompt after modal was already shown this session", async () => {
+    sessionStorage.setItem("auth_prompt_shown", "1");
+    const { useAuthGatedAction } = await import("@/hooks/useAuthGatedAction");
+
+    function TestComponent() {
+      const gateAction = useAuthGatedAction();
+      return <button onClick={() => gateAction(() => {})}>Save</button>;
+    }
+
+    render(<TestComponent />);
+    fireEvent.click(screen.getByText("Save"));
+
+    expect(useAuthModalStore.getState().isOpen).toBe(false);
+  });
+
+  it("never shows modal for authenticated users", async () => {
+    useAuthStore.setState({ user: mockUser, session: null, loading: false });
+    const { useAuthGatedAction } = await import("@/hooks/useAuthGatedAction");
+    const action = vi.fn();
+
+    function TestComponent() {
+      const gateAction = useAuthGatedAction();
+      return <button onClick={() => gateAction(action)}>Save</button>;
+    }
+
+    render(<TestComponent />);
+    for (let i = 0; i < 5; i++) fireEvent.click(screen.getByText("Save"));
+
+    expect(action).toHaveBeenCalledTimes(5);
     expect(useAuthModalStore.getState().isOpen).toBe(false);
   });
 });

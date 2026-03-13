@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppStore } from "@/stores/appStore";
 import { useWishlist } from "@/hooks/useWishlist";
+import { useAuthGatedAction } from "@/hooks/useAuthGatedAction";
 import { calculateMatch, hasActiveFilters } from "@/lib/scoring";
 import type { Filters } from "@/lib/scoring";
 import type { POI } from "@/lib/data";
@@ -29,6 +30,7 @@ export function DestinationPanel({
   const pois = useAppStore((s) => s.pois);
   const clearWishlist = useAppStore((s) => s.clearWishlist);
   const { wishlistItems, addToWishlist, removeFromWishlist } = useWishlist();
+  const gateAction = useAuthGatedAction();
 
   const country = countries[countryCode];
   const countryPois = pois[countryCode] ?? [];
@@ -64,7 +66,7 @@ export function DestinationPanel({
     if (isChecked) {
       removeFromWishlist(poi.id);
     } else {
-      addToWishlist({ poiId: poi.id, countryCode, daysMin: poi.daysMin });
+      gateAction(() => addToWishlist({ poiId: poi.id, countryCode, daysMin: poi.daysMin }));
     }
   }
 

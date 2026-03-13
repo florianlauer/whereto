@@ -1,116 +1,69 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.0
-milestone_name: milestone
-status: executing
-stopped_at: "Completed 04-02-PLAN.md (login merge: localStorage to server)"
-last_updated: "2026-03-13T17:10:34.845Z"
-last_activity: 2026-03-08 -- Completed plan 03-02 (useWishlist hook + component migration)
+milestone_name: Auth + Persistence
+status: complete
+stopped_at: "Milestone v1.0 completed and archived"
+last_updated: "2026-03-13"
+last_activity: 2026-03-13 -- Milestone v1.0 completed
 progress:
   total_phases: 4
   completed_phases: 4
   total_plans: 9
   completed_plans: 9
-  percent: 88
+  percent: 100
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-07)
+See: .planning/PROJECT.md (updated 2026-03-13)
 
 **Core value:** L'utilisateur transforme "ou est-ce que je vais ?" en un choix eclaire en quelques minutes, grace a une carte mondiale qui s'allume selon ses contraintes budget/duree/saison.
-**Current focus:** Phase 3 - Wishlist Persistence (IN PROGRESS)
+**Current focus:** Planning next milestone
 
 ## Current Position
 
-Phase: 3 of 4 (Wishlist Persistence)
-Plan: 2 of 3 in current phase -- COMPLETE
-Status: Executing Phase 03
-Last activity: 2026-03-08 -- Completed plan 03-02 (useWishlist hook + component migration)
+Milestone: v1.0 Auth + Persistence — SHIPPED 2026-03-13
+Status: Complete
+Next: `/gsd:new-milestone` to define v1.1
 
-Progress: [████████▊ ] 88%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 7
-- Average duration: 7min
-- Total execution time: 0.77 hours
+- Total plans completed: 9
+- Average duration: 6min
+- Total execution time: ~53min
 
 **By Phase:**
 
-| Phase                 | Plans | Total | Avg/Plan |
-| --------------------- | ----- | ----- | -------- |
-| 01-backend-foundation | 2/2   | 19min | 10min    |
-| 02-authentication     | 3/3   | 18min | 6min     |
-| 03-wishlist-persist   | 2/3   | 9min  | 5min     |
-
-**Recent Trend:**
-
-- Last 5 plans: 4min, 5min, 12min, 1min, 5min
-- Trend: stable
-
-_Updated after each plan completion_
-| Phase 01 P01 | 15min | 3 tasks | 6 files |
-| Phase 01 P02 | 4min | 2 tasks | 15 files |
-| Phase 02 P01 | 5min | 2 tasks | 9 files |
-| Phase 02 P02 | 12min | 3 tasks | 10 files |
-| Phase 02 P03 | 1min | 1 tasks | 1 files |
-| Phase 03 P01 | 4min | 1 tasks | 5 files |
-| Phase 03 P02 | 5min | 2 tasks | 6 files |
-| Phase 04-wishlist-sync P01 | 4min | 1 tasks | 4 files |
-| Phase 04-wishlist-sync P02 | 3min | 1 tasks | 2 files |
+| Phase                   | Plans | Total | Avg/Plan |
+| ----------------------- | ----- | ----- | -------- |
+| 01-backend-foundation   | 2/2   | 19min | 10min    |
+| 02-authentication       | 3/3   | 18min | 6min     |
+| 03-wishlist-persistence | 2/2   | 9min  | 5min     |
+| 04-wishlist-sync        | 2/2   | 7min  | 4min     |
 
 ## Accumulated Context
 
 ### Decisions
 
-Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting current work:
-
-- [Roadmap]: 4 phases strictly linear (INFRA -> AUTH -> WISH-CRUD -> WISH-SYNC)
-- [Roadmap]: WISH split into two phases -- basic CRUD (Phase 3) vs merge/sync complexity (Phase 4)
-- [01-01]: Supabase CLI installed via devenv.nix (not npm) for system-level tool management
-- [01-01]: Single migration file for initial schema (profiles + wishlists + wishlist_items + RLS + triggers)
-- [01-01]: SECURITY DEFINER trigger for handle_new_user to bypass RLS during auto-creation
-- [Phase 01]: Supabase CLI via devenv.nix, single migration file, SECURITY DEFINER trigger
-- [Phase 01-02]: Hono with basePath('/api') as Vercel serverless entry -- aligns with existing vercel.json rewrite
-- [Phase 01-02]: tRPC v11 createTRPCContext pattern with type-only AppRouter import prevents server code leaking to client
-- [Phase 01-02]: Excluded src/server from tsconfig.app.json to prevent DOM/JSX conflicts with server code
-- [02-01]: createContext accepts opts?.req from fetchRequestHandler -- compatible with @hono/trpc-server adapter
-- [02-01]: protectedProcedure uses getUser() not getSession() for server-side token validation
-- [02-01]: onAuthStateChange callback is strictly synchronous to avoid Supabase deadlock pitfall
-- [02-01]: Auth header injection uses getState() (not hook) since it runs outside React render
-- [02-02]: Auth modal uses tabbed UI (email/password vs magic link) with Google OAuth always visible above
-- [02-02]: useAuthGatedAction gates actions at hook level -- components call gateAction() and never know about auth
-- [02-02]: Modal auto-closes via useEffect watching user state transition from null to authenticated
-- [Phase 02]: UserMenu placed after Tout effacer button as last flex child in FilterBar header
-- [03-01]: list uses publicProcedure with accessToken guard -- returns [] for anonymous users instead of throwing
-- [03-01]: add uses upsert with onConflict to handle duplicate poi_id silently
-- [03-01]: reorder uses Promise.all for parallel position updates
-- [03-02]: clearWishlist stays as direct useAppStore import (Phase 4 scope per CONTEXT.md)
-- [03-02]: Fire-and-forget via useTRPCClient avoids React lifecycle for background mutations
-- [03-02]: Server fetch on login replaces local only if server returns non-empty array
-- [Phase 04-wishlist-sync]: useAppStore imported directly in authStore for cross-store getState() call — synchronous, no selector needed
-- [Phase 04-wishlist-sync]: Snapshot-before-mutation pattern: capture getState().wishlistItems before optimistic update, restore in .catch() for rollback
-- [Phase 04-wishlist-sync]: mergeLocalToServer uses Promise.all for parallel upserts, getState() at transition time to avoid stale closure, server is canonical after successful merge
-- [Phase 04-wishlist-sync]: On merge failure, catch block preserves local state intact — retry happens on next login via same auth-transition effect
+All decisions archived in PROJECT.md Key Decisions table.
 
 ### Pending Todos
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
-- [Research]: onAuthStateChange deadlock -- no async/await inside the callback (design sync flow correctly from Phase 2)
-- [Research]: tRPC + @hono/trpc-server version compatibility -- pin versions on day one (Phase 1)
-- [Research]: OAuth callback URLs must be configured in Supabase for both localhost and Vercel preview domains (Phase 2)
+All resolved during v1.0.
 
 ## Session Continuity
 
-Last session: 2026-03-13T17:07:56.215Z
-Stopped at: Completed 04-02-PLAN.md (login merge: localStorage to server)
+Last session: 2026-03-13
+Stopped at: Milestone v1.0 completed and archived
 Resume file: None
