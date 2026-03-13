@@ -30,15 +30,50 @@ export function useWishlist() {
     }
   }, [queryClient, trpc, setWishlistItems]);
 
+  // Merge local items to server on login, then replace local with canonical server state
+  const mergeLocalToServer = useCallback(
+    async (localItems: WishlistItem[]) => {
+      try {
+        // Upsert all local items to server in parallel (dedup via onConflict on server)
+        await Promise.all(
+          localItems.map((item) =>
+            client.wishlist.add.mutate({
+              poiId: item.poiId,
+              countryCode: item.countryCode,
+              daysMin: item.daysMin,
+            }),
+          ),
+        );
+
+        // Fetch canonical server state (includes both existing server + newly merged items)
+        const serverItems = await queryClient.fetchQuery(trpc.wishlist.list.queryOptions());
+
+        // Replace local state with server data atomically
+        // Zustand persist middleware propagates to localStorage automatically
+        setWishlistItems(serverItems ?? []);
+      } catch (err) {
+        // Keep localStorage intact -- will retry on next auth state change
+        console.error("Failed to merge wishlist:", err);
+      }
+    },
+    [client, queryClient, trpc, setWishlistItems],
+  );
+
   // Auto-fetch on auth transition (null -> User)
   useEffect(() => {
     const prevUser = prevUserRef.current;
     prevUserRef.current = user;
 
     if (!prevUser && user) {
-      fetchServerWishlist();
+      // Capture local items BEFORE any async work to avoid stale closure
+      const localItems = useAppStore.getState().wishlistItems;
+      if (localItems.length > 0) {
+        mergeLocalToServer(localItems);
+      } else {
+        fetchServerWishlist();
+      }
     }
-  }, [user, fetchServerWishlist]);
+  }, [user, fetchServerWishlist, mergeLocalToServer]);
 
   // Auto-fetch on mount with existing session (page refresh)
   const mountedRef = useRef(false);

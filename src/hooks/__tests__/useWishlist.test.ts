@@ -145,9 +145,10 @@ describe("useWishlist", () => {
     });
   });
 
-  it("if server returns empty, keeps existing local items (no wipe)", async () => {
-    const localItems = [{ poiId: "ge-tbilisi", countryCode: "GE", daysMin: 2 }];
-    useAppStore.setState({ wishlistItems: localItems });
+  it("fetchServerWishlist path (empty local): if server returns empty, keeps Zustand state unchanged", async () => {
+    // When local items are empty on auth transition, we call fetchServerWishlist (not merge)
+    // fetchServerWishlist only calls setWishlistItems if server returns non-empty items
+    useAppStore.setState({ wishlistItems: [] });
     mockFetchQuery.mockResolvedValue([]);
     currentUser = null;
 
@@ -161,8 +162,10 @@ describe("useWishlist", () => {
       expect(mockFetchQuery).toHaveBeenCalled();
     });
 
-    // Local items should remain untouched
-    expect(useAppStore.getState().wishlistItems).toEqual(localItems);
+    // No add.mutate called (merge path not taken)
+    expect(mockMutateAdd).not.toHaveBeenCalled();
+    // State remains empty (not wiped, just unchanged)
+    expect(useAppStore.getState().wishlistItems).toEqual([]);
   });
 
   it("on mount with existing user (page refresh), fetches server data in background", async () => {
